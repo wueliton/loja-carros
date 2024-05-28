@@ -1,5 +1,19 @@
 .nav {
-    @apply fixed left-0 -translate-x-full top-0 min-h-screen p-4 flex md:translate-x-0 md:sticky flex-col w-64 bg-white border-r border-gray-200;
+    @apply fixed
+    left-0
+    -translate-x-full
+    top-0
+    min-h-screen
+    p-4
+    flex
+    md:translate-x-0
+    md:sticky
+    flex-col
+    w-64
+    bg-slate-700
+    border-r
+    border-gray-200
+    self-start;
 
     &.active {
         @apply translate-x-0;

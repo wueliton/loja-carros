@@ -1,0 +1,70 @@
+.file-upload {
+  @apply flex
+    items-center
+    justify-center
+    w-full
+    text-gray-400;
+
+  label {
+    @apply flex
+        flex-col
+        items-center
+        justify-center
+        w-full
+        gap-1
+        h-40
+        border-2
+        border-gray-300
+        border-dashed
+        rounded-lg
+        cursor-pointer
+        bg-gray-50
+        hover:bg-blue-50
+        hover:text-blue-500
+        hover:border-blue-300
+        focus-within:text-blue-500
+        focus-within:bg-blue-50
+        focus-within:border-blue-300
+        active:bg-blue-100
+        active:text-blue-500
+        active:border-blue-300
+        transition-colors
+        text-sm;
+  }
+
+  input {
+    @apply h-0 w-0 overflow-hidden;
+  }
+
+  .hint {
+    @apply text-xs uppercase;
+  }
+}
+
+.list {
+    @apply grid md:auto-cols-[minmax(0,400px)] mt-3 gap-1;
+
+    > p {
+        @apply col-span-full font-bold;
+    }
+}
+
+.list-item {
+    @apply p-3 bg-gray-100 rounded-md text-sm;
+
+    .header {
+        @apply flex gap-3;
+
+        span {
+            @apply bg-white shadow-sm w-10 h-10 rounded-md;
+        }
+
+        > div p:last-child {
+            @apply text-gray-400;
+        }
+
+        > :last-child {
+            @apply ml-auto;
+        }
+    }
+}

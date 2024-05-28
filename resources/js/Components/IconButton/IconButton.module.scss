@@ -1,0 +1,25 @@
+.icon-button {
+    @apply bg-transparent
+        border-transparent
+        border-0 hover:bg-gray-100 active:bg-gray-200 p-2 rounded-sm;
+
+    &.xs {
+        @apply h-8 w-8;
+    }
+
+    &.md {
+        @apply h-10 w-10;
+    }
+
+    &.lg {
+        @apply h-16 w-16;
+    }
+
+    &.xl {
+        @apply h-20 w-20;
+    }
+
+    svg {
+        @apply w-full h-full;
+    }
+}

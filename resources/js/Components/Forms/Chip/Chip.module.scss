@@ -1,0 +1,20 @@
+.chip {
+    @apply flex
+        items-center
+        w-max
+        p-2
+        px-3
+        gap-2
+        rounded-full
+        bg-gray-200
+        hover:shadow
+        text-sm
+        cursor-default;
+
+    button {
+        height: 16px !important;
+        width: 16px !important;
+        @apply p-0
+            rounded-full;
+    }
+}

@@ -3,5 +3,20 @@
 }
 
 .header {
-    @apply p-4 mb-4;
+    @apply p-4 mb-4 flex justify-start items-center;
+
+    .breadcrumb {
+        @apply flex
+            items-center
+            gap-1
+            pr-2;
+
+        > a {
+            @apply p-1 relative text-blue-600;
+        }
+    }
+
+    .actions {
+        @apply ml-auto;
+    }
 }

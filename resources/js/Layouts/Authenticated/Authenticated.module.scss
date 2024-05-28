@@ -1,7 +1,7 @@
 .layout {
-    @apply max-h-screen flex overflow-hidden;
+    @apply min-h-screen h-full flex;
 
     main {
-        @apply p-4 flex-1 overflow-y-auto;
+        @apply p-4 flex-1;
     }
 }

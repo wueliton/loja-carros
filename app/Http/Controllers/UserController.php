@@ -17,4 +17,11 @@ class UserController extends Controller
             'users' => $users
         ]);
     }
+
+    public function list(Request $request)
+    {
+        $users = User::where('name', $request->name)->get();
+
+        return $users;
+    }
 }

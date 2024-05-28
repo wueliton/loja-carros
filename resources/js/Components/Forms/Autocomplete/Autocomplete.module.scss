@@ -1,0 +1,29 @@
+.field {
+    @apply flex
+        flex-col
+        gap-1
+        relative;
+
+    .values {
+        @apply flex
+            flex-wrap
+            gap-2;
+    }
+
+    .option {
+        @apply p-2
+            cursor-pointer;
+    }
+
+    .loading {
+        @apply flex
+            items-center
+            justify-center
+            p-2
+            text-blue-500;
+
+        svg {
+            @apply h-5 w-5 animate-spin;
+        }
+    }
+}

@@ -29,13 +29,17 @@ Route::middleware('auth')->group(function () {
 
 // Usuários
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/users', [UserController::class, 'view'])->name('users.view');
+    Route::get('/users', [UserController::class, 'view'])->name('users');
+
+    Route::get('/users/list', [UserController::class, 'list'])->name('users.list');
 });
 
 //Lojas
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/stores', [StoreController::class, 'index'])->name('stores');
     Route::delete('/stores/{id}', [StoreController::class, 'delete'])->name('stores.delete');
+    Route::inertia('/stores/create', 'Stores/New')->name('stores.create');
+    Route::post('/stores/create', [StoreController::class, 'create'])->name('stores.create');
 });
 
 require __DIR__ . '/auth.php';

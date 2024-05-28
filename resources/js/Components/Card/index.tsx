@@ -1,8 +1,12 @@
-import { FC } from "react";
+import { FC, HTMLAttributes } from 'react';
 import styles from './Card.module.scss';
 
-export const Card: FC<{ children: React.ReactNode }> = ({ children }) => {
-    return <div className={styles.card}>
-        {children}
-    </div>;
+export const Card: FC<
+  { children: React.ReactNode } & HTMLAttributes<HTMLDivElement>
+> = ({ children, className, ...props }) => {
+  return (
+    <div className={`${styles.card} ${className ?? ''}`} {...props}>
+      {children}
+    </div>
+  );
 };
