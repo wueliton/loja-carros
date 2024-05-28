@@ -1,0 +1,7 @@
+.link {
+    @apply flex gap-2 items-center p-3 text-gray-400 hover:text-gray-500 w-full transition-colors;
+
+    &.active {
+        @apply text-gray-900 bg-gray-50 rounded cursor-default;
+    }
+}

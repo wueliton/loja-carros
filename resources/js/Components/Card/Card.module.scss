@@ -1,0 +1,10 @@
+.card {
+    @apply w-full
+        p-4
+        bg-white
+        border
+        border-gray-200
+        sm:rounded-lg
+        shadow-sm
+        sm:p-8;
+}

@@ -1,0 +1,19 @@
+.nav {
+    @apply fixed left-0 -translate-x-full top-0 min-h-screen p-4 flex md:translate-x-0 md:sticky flex-col w-64 bg-white border-r border-gray-200;
+
+    &.active {
+        @apply translate-x-0;
+    }
+}
+
+.logo {
+    @apply block h-10 w-auto fill-current;
+}
+
+.logo-link {
+    @apply mb-8;
+}
+
+.links {
+    @apply flex flex-col gap-1 w-full;
+}

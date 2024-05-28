@@ -1,0 +1,23 @@
+.button {
+    @apply text-gray-800
+    font-semibold
+    py-2
+    px-4
+    border
+    border-gray-400
+    rounded
+    shadow
+    hover:brightness-105
+    active:brightness-90
+    transition-colors;
+
+    &.warn {
+        @apply bg-red-500
+        text-white
+        border-red-600;
+    }
+
+    svg {
+        @apply h-5 w-5;
+    }
+}
