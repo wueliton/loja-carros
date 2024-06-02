@@ -1,7 +1,7 @@
 .layout {
-    @apply min-h-screen h-full flex;
+    @apply min-h-screen max-w-full h-full flex flex-nowrap;
 
     main {
-        @apply p-4 flex-1;
+        @apply p-4 flex-1 overflow-hidden;
     }
 }

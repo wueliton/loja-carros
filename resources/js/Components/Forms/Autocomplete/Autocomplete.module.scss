@@ -26,4 +26,8 @@
             @apply h-5 w-5 animate-spin;
         }
     }
+
+    .empty {
+        @apply p-2 cursor-default text-center;
+    }
 }

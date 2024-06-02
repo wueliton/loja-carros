@@ -5,24 +5,33 @@ import {
   ChangeEvent,
   FC,
   HTMLAttributes,
+  ReactElement,
   useCallback,
   useEffect,
   useId,
   useRef,
   useState,
 } from 'react';
+import { Error } from '../Error';
 import styles from './UploadFile.module.scss';
 
 export interface UploadFileProps
   extends Omit<HTMLAttributes<HTMLInputElement>, 'type' | 'onChange'> {
   isMultiple?: boolean;
   hint?: string;
+  error?: string;
+  fieldName?: string;
+  handle?: ReactElement;
   onChange?: (files?: File[]) => void;
 }
 
 export const UploadFile: FC<UploadFileProps> = ({
   className,
   hint,
+  error,
+  fieldName,
+  isMultiple,
+  handle,
   onChange,
   ...props
 }) => {
@@ -51,27 +60,39 @@ export const UploadFile: FC<UploadFileProps> = ({
 
   return (
     <div className={className}>
-      <div className={styles['file-upload']}>
-        <label htmlFor={id}>
-          <UploadIcon />
-          <p>
-            <strong>Clique para adicionar arquivos</strong> ou arraste arquivos
-            aqui.
-          </p>
-          {hint && <p className={styles.hint}>{hint}</p>}
-          <input
-            {...props}
-            ref={inputRef}
-            id={id}
-            type="file"
-            onChange={handleChange}
-          />
-        </label>
-      </div>
+      {!files?.length && !isMultiple && (
+        <>
+          {handle && (
+            <label className="inline-block cursor-pointer" htmlFor={id}>
+              {handle}
+            </label>
+          )}
+          <div className={handle ? 'hidden' : ''}>
+            <div className={`${styles['file-upload']}`}>
+              <label htmlFor={id}>
+                <UploadIcon />
+                <p>
+                  <strong>Clique para adicionar arquivos</strong> ou arraste
+                  arquivos aqui.
+                </p>
+                {hint && <p className={styles.hint}>{hint}</p>}
+                <input
+                  {...props}
+                  ref={inputRef}
+                  id={id}
+                  type="file"
+                  onChange={handleChange}
+                />
+              </label>
+            </div>
+          </div>
+          <Error error={error} fieldName={fieldName} />
+        </>
+      )}
 
       {!!files?.length && (
         <div className={styles['list']}>
-          <p>Arquivos</p>
+          <p>Arquivo{isMultiple ? 's' : ''}</p>
           {files.map((file, index) => (
             <div className={styles['list-item']} key={index}>
               <div className={styles['header']}>

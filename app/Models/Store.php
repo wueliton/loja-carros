@@ -17,4 +17,9 @@ class Store extends Model
         'phone',
         'whatsapp'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

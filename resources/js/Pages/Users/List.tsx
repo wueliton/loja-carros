@@ -14,10 +14,7 @@ const usersHeader: THeadProps<User>[] = [
   },
 ];
 
-export default function UserPage({
-  users,
-  auth,
-}: PageProps<{ users: User[] }>) {
+export default function ListUserPage({ users }: PageProps<{ users: User[] }>) {
   return (
     <AuthenticatedLayout>
       <Head title="Usuários" />

@@ -4,13 +4,12 @@ import { Autocomplete } from '@/Components/Forms/Autocomplete';
 import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
-import { useDialog } from '@/Context/Dialog';
+import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
-import { router, useForm } from '@inertiajs/react';
-import { FormEvent, useEffect } from 'react';
+import { useForm } from '@inertiajs/react';
+import { FormEvent } from 'react';
 
-export default function NewStorePage() {
-  const { openDialog } = useDialog();
+export default function CreateStorePage() {
   const { data, setData, errors, isDirty, post, reset, transform } = useForm<{
     logo_url?: File;
     name?: string;
@@ -18,11 +17,13 @@ export default function NewStorePage() {
     email?: string;
     phone?: string | number;
     whatsapp?: string | number;
+    users: number[];
   }>({
     logo_url: undefined,
     name: '',
     store_number: '',
     email: '',
+    users: [],
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -39,26 +40,7 @@ export default function NewStorePage() {
     post('/stores/create');
   };
 
-  useEffect(() => {
-    return router.on('before', (event) => {
-      if (!isDirty || event.detail.visit.method !== 'get') return true;
-      openDialog({
-        content: {
-          title: 'Deseja sair?',
-          content:
-            'Há alterações não salvas no formulário, ao sair essas alterações serão perdidas.',
-        },
-        onClose: (confirm) => {
-          if (!confirm) return;
-          reset();
-          setTimeout(() => {
-            router.visit(event.detail.visit.url);
-          }, 10);
-        },
-      });
-      return false;
-    });
-  }, [isDirty]);
+  useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
 
   return (
     <AuthenticatedLayout>
@@ -71,13 +53,6 @@ export default function NewStorePage() {
           className="grid grid-cols-1 md:grid-cols-2 gap-3"
           onSubmit={handleSubmit}
         >
-          <Autocomplete
-            label="Busca"
-            propertyToDisplay="name"
-            propertyValue="id"
-            url={route('users.list')}
-            searchProperties={['name']}
-          />
           <Input
             error={errors.name}
             value={data.name}
@@ -88,7 +63,7 @@ export default function NewStorePage() {
           <Input
             error={errors.store_number}
             value={data.store_number}
-            label="Endereço"
+            label="Número"
             onChange={(e) => setData('store_number', e.target.value)}
           />
           <Input
@@ -101,31 +76,49 @@ export default function NewStorePage() {
             error={errors.phone}
             value={data.phone}
             label="Telefone"
-            mask="(__) ____-____"
-            replacement={{ _: /\d/ }}
-            modify={(input) => ({
-              mask: input[2] === '9' ? '(__) _____-____' : undefined,
-            })}
-            showMask
+            mask={[
+              {
+                mask: '(00) 90000-0000',
+                comparison: (value: string) => value.charAt(5) === '9',
+              },
+              { mask: '(00) 0000-0000' },
+            ]}
             onChange={(e) => setData('phone', e.target.value)}
           />
           <Input
             error={errors.whatsapp}
             value={data.whatsapp}
             label="WhatsApp"
-            mask="(__) ____-____"
-            replacement={{ _: /\d/ }}
-            modify={(input) => ({
-              mask: input[2] === '9' ? '(__) _____-____' : undefined,
-            })}
-            showMask
+            mask={[
+              {
+                mask: '(00) 90000-0000',
+                comparison: (value: string) => value.charAt(5) === '9',
+              },
+              { mask: '(00) 0000-0000' },
+            ]}
             onChange={(e) => setData('whatsapp', e.target.value)}
           />
           <UploadFile
             hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
             className="md:col-span-2"
             onChange={(files) => setData('logo_url', files?.[0])}
+            error={errors.logo_url}
+            fieldName="Logo da Empresa"
           />
+          <div className="md:col-span-2 mt-2">
+            <h2 className="text-lg font-bold">Administradores</h2>
+            <Autocomplete
+              error={errors.users}
+              label="Administradores da Loja"
+              propertyToDisplay="name"
+              propertyValue="id"
+              url={route('users.list')}
+              searchProperties={['name']}
+              name="administradores-conta"
+              value={data.users}
+              onChange={(e) => setData('users', e)}
+            />
+          </div>
           <div className="col-span-full flex justify-end">
             <Button type="submit">Salvar</Button>
           </div>

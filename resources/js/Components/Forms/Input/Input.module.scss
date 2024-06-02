@@ -31,10 +31,4 @@
     p {
         @apply text-sm text-gray-500 h-5;
     }
-
-    &.error {
-        p {
-            @apply text-red-500;
-        }
-    }
 }

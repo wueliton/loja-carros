@@ -20,7 +20,13 @@ const storeHeader: THeadProps<Store>[] = [
   {
     key: 'logo_url',
     title: 'logo',
-    render: (data) => <img src={data.logo_url} title={data.name} />,
+    render: (data) => (
+      <img
+        src={`/files/${data.logo_url}`}
+        title={data.name}
+        className="max-h-6 max-w-6"
+      />
+    ),
   },
   {
     key: 'email',
@@ -36,7 +42,9 @@ const storeHeader: THeadProps<Store>[] = [
   },
 ];
 
-export default function StoresPage({ stores }: PageProps<{ stores: Store[] }>) {
+export default function ListStorePage({
+  stores,
+}: PageProps<{ stores: Store[] }>) {
   const { openDialog } = useDialog();
 
   const handleDelete = (item: Store) => {
@@ -67,6 +75,7 @@ export default function StoresPage({ stores }: PageProps<{ stores: Store[] }>) {
         data={stores}
         headers={storeHeader}
         onDelete={(item) => handleDelete(item)}
+        onEdit={(item) => router.visit(`stores/${item.id}`)}
       />
     </AuthenticatedLayout>
   );

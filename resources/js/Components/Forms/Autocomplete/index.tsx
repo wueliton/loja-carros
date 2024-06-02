@@ -1,4 +1,5 @@
 import { SpinIcon } from '@/Components/Icons/Spin';
+import { Filter, Where } from '@/models/Filter';
 import axios from 'axios';
 import debounce from 'lodash/debounce';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -13,6 +14,11 @@ export interface AutocompleteProps<T> {
   propertyToDisplay: keyof T;
   searchProperties: string[];
   url: string;
+  name?: string;
+  value?: T[keyof T][];
+  error?: string;
+  onChange?: (values: T[keyof T][]) => void;
+  onChangeFull?: (values: T[]) => void;
 }
 
 export const Autocomplete = <T,>({
@@ -21,6 +27,11 @@ export const Autocomplete = <T,>({
   propertyValue,
   searchProperties = [],
   url,
+  value,
+  name,
+  error,
+  onChange,
+  onChangeFull,
 }: AutocompleteProps<T>) => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState<string | null>(null);
@@ -29,25 +40,60 @@ export const Autocomplete = <T,>({
   const [options, setOptions] = useState<T[]>([]);
   const inputRef = useRef<HTMLDivElement | null>(null);
 
-  const loadResults = async (inputSearch: string) => {
-    if (inputSearch === search) return;
-    setSearch(inputSearch);
-    setLoading(true);
+  const fetchResult = async (params: Filter<T>) => {
     const { data } = await axios.get<T[]>(url, {
-      params: Object.fromEntries(
-        searchProperties.map((key) => [key, inputSearch]),
-      ),
+      params,
+    });
+
+    return data;
+  };
+
+  const loadResults = async (inputSearch: string) => {
+    setSearch(inputSearch);
+    const data = await fetchResult({
+      where: [
+        ...(searchProperties.map((prop) => ({
+          fieldName: prop,
+          comparison: 'contains',
+          value: inputSearch,
+        })) as unknown as Where<T>[]),
+        {
+          fieldName: propertyValue,
+          comparison: 'ninq',
+          value: selected.map((item) => item[propertyValue]),
+        } as Where<T>,
+      ],
     });
     setLoading(false);
     setOptions(data);
   };
 
+  const loadInitialValues = async (value?: T[keyof T][]) => {
+    if (!value || !value.length) {
+      setSelected([]);
+      return;
+    }
+
+    const data = await fetchResult({
+      where: [
+        {
+          fieldName: propertyValue,
+          comparison: 'inq',
+          value: value,
+        } as Where<T>,
+      ],
+    });
+
+    setSelected(data);
+  };
+
   const handleOpendMenu = () => {
     setOpened(true);
+    loadResults(search ?? '');
   };
 
   const handleSelectOption = (item: T) => {
-    setSelected((prev) => [...prev, item]);
+    setSelected((prev) => Array.from(new Set([...prev, item])));
     setOpened(false);
   };
 
@@ -60,12 +106,28 @@ export const Autocomplete = <T,>({
     setOpened(false);
   };
 
-  const debounceSearch = debounce(
-    (e: ChangeEvent<HTMLInputElement>) => loadResults(e.target.value),
-    1000,
-  );
+  const debounceSearch = debounce((e: ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
+    loadResults(e.target.value);
+  }, 500);
 
   useEffect(() => {
+    if (
+      value?.every((option) =>
+        selected.some((item) => option === item[propertyValue]),
+      )
+    )
+      return;
+    loadInitialValues(value);
+  }, [value]);
+
+  useEffect(() => {
+    onChange?.(selected.map((item) => item[propertyValue]));
+    onChangeFull?.(selected);
+  }, [selected]);
+
+  useEffect(() => {
+    setLoading(true);
     loadResults('');
   }, []);
 
@@ -76,7 +138,14 @@ export const Autocomplete = <T,>({
         onChange={debounceSearch}
         onFocus={handleOpendMenu}
         onKeyDown={handleTabPressed}
+        autoComplete="off"
+        name={name}
         ref={inputRef}
+        role="combobox"
+        type="text"
+        aria-autocomplete="list"
+        aria-haspopup="listbox"
+        error={error}
       ></Input>
       <div className={styles.values}>
         {selected.map((item, index) => (
@@ -94,20 +163,26 @@ export const Autocomplete = <T,>({
         parent={inputRef}
         onClose={() => setOpened(false)}
       >
-        {loading && (
+        {loading ? (
           <div className={styles.loading}>
             <SpinIcon />
           </div>
+        ) : (
+          <>
+            {!options.length && (
+              <div className={styles.empty}>Nenhuma opção disponível</div>
+            )}
+            {options.map((item, index) => (
+              <div
+                key={index}
+                className={styles.option}
+                onClick={() => handleSelectOption(item)}
+              >
+                <>{item[propertyToDisplay]}</>
+              </div>
+            ))}
+          </>
         )}
-        {options.map((item, index) => (
-          <div
-            key={index}
-            className={styles.option}
-            onClick={() => handleSelectOption(item)}
-          >
-            <>{item[propertyToDisplay]}</>
-          </div>
-        ))}
       </AutocompleteMenu>
     </div>
   );

@@ -1,5 +1,12 @@
-import { InputMask, Modify, Replacement } from '@react-input/mask';
-import { InputHTMLAttributes, ReactElement, forwardRef, useId } from 'react';
+import {
+  InputHTMLAttributes,
+  LegacyRef,
+  ReactElement,
+  forwardRef,
+  useEffect,
+  useId,
+} from 'react';
+import { ReactMaskOpts, useIMask } from 'react-imask';
 import { Error } from '../Error';
 import styles from './Input.module.scss';
 
@@ -10,10 +17,11 @@ export interface InputProps
   hint?: string;
   prefix?: ReactElement;
   suffix?: ReactElement;
-  mask?: string;
-  replacement?: string | Replacement;
-  showMask?: boolean;
-  modify?: Modify;
+  mask?:
+    | string
+    | (ReactMaskOpts['mask'] &
+        { comparison?: (value: string) => boolean; mask: string }[]);
+  unmaskedValueChange?: (value: string) => void;
 }
 
 export const Input = forwardRef<HTMLDivElement, InputProps>(
@@ -24,48 +32,52 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       prefix,
       suffix,
       hint,
+      value,
       mask,
-      replacement,
-      showMask,
-      modify,
       className,
+      unmaskedValueChange,
       ...props
     },
     ref,
   ) => {
     const id = useId();
+    const {
+      ref: inputRef,
+      setValue,
+      unmaskedValue,
+      value: maskValue,
+    } = useIMask({
+      mask: (mask as string) ?? new RegExp(''),
+      dispatch: (_, dynamicMasked) => {
+        const value = dynamicMasked.value;
+        return dynamicMasked.compiledMasks.find(
+          (m) =>
+            (
+              m as unknown as { comparison: (value: string) => boolean }
+            ).comparison?.(value) ?? true,
+        );
+      },
+    });
+
+    useEffect(() => {
+      setValue(String(value ?? ''));
+    }, []);
+
+    useEffect(() => {
+      unmaskedValueChange?.(unmaskedValue);
+    }, [unmaskedValue]);
 
     return (
-      <div
-        className={`${styles['form-field']} ${error ? styles.error : ''} ${className ?? ''}`}
-        ref={ref}
-      >
+      <div className={`${styles['form-field']} ${className ?? ''}`} ref={ref}>
         <label htmlFor={id}>{label}</label>
         <div className={styles['field']}>
           {prefix && <>{prefix}</>}
-          {mask ? (
-            <InputMask
-              {...props}
-              mask={mask}
-              replacement={replacement}
-              showMask={showMask}
-              modify={modify}
-              id={id}
-              value={props.value}
-              onChange={(e) => {
-                props.onChange?.(e);
-              }}
-            />
-          ) : (
-            <input
-              {...props}
-              id={id}
-              value={props.value}
-              onChange={(e) => {
-                props.onChange?.(e);
-              }}
-            />
-          )}
+          <input
+            {...props}
+            id={id}
+            ref={inputRef as LegacyRef<HTMLInputElement>}
+            value={maskValue}
+          />
           {suffix && <>{suffix}</>}
         </div>
         <p>{error ? <Error error={error} fieldName={label} /> : hint ?? ''}</p>
