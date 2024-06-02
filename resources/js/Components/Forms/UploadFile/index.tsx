@@ -12,7 +12,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Error } from '../Error';
+import { ErrorLabel } from '../Error';
 import styles from './UploadFile.module.scss';
 
 export interface UploadFileProps
@@ -86,7 +86,7 @@ export const UploadFile: FC<UploadFileProps> = ({
               </label>
             </div>
           </div>
-          <Error error={error} fieldName={fieldName} />
+          <ErrorLabel error={error} fieldName={fieldName} />
         </>
       )}
 

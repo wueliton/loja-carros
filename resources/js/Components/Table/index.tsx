@@ -75,7 +75,7 @@ export const Table = <T,>({
                 </td>
               ))}
               {onDelete && (
-                <td>
+                <td className={styles.actions}>
                   <Button onClick={(e) => handleDelete(e, item)} color="warn">
                     <TrashIcon />
                   </Button>

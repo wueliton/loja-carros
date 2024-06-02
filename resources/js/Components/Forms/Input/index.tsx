@@ -1,3 +1,6 @@
+import { IconButton } from '@/Components/IconButton';
+import { EyeIcon } from '@/Components/Icons/Eye';
+import { EyeNoIcon } from '@/Components/Icons/EyeNo';
 import {
   InputHTMLAttributes,
   LegacyRef,
@@ -5,9 +8,10 @@ import {
   forwardRef,
   useEffect,
   useId,
+  useState,
 } from 'react';
 import { ReactMaskOpts, useIMask } from 'react-imask';
-import { Error } from '../Error';
+import { ErrorLabel } from '../Error';
 import styles from './Input.module.scss';
 
 export interface InputProps
@@ -34,6 +38,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       hint,
       value,
       mask,
+      type,
       className,
       unmaskedValueChange,
       ...props
@@ -41,6 +46,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
     ref,
   ) => {
     const id = useId();
+    const [showPass, setShowPass] = useState(false);
     const {
       ref: inputRef,
       setValue,
@@ -77,10 +83,20 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
             id={id}
             ref={inputRef as LegacyRef<HTMLInputElement>}
             value={maskValue}
+            type={showPass ? 'text' : type}
           />
-          {suffix && <>{suffix}</>}
+          {type === 'password' ? (
+            <IconButton
+              icon={showPass ? <EyeNoIcon /> : <EyeIcon />}
+              onClick={() => setShowPass((prev) => !prev)}
+            />
+          ) : (
+            suffix && <>{suffix}</>
+          )}
         </div>
-        <p>{error ? <Error error={error} fieldName={label} /> : hint ?? ''}</p>
+        <p>
+          {error ? <ErrorLabel error={error} fieldName={label} /> : hint ?? ''}
+        </p>
       </div>
     );
   },

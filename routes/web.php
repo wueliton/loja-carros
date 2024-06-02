@@ -30,6 +30,11 @@ Route::middleware('auth')->group(function () {
 // Usuários
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/users', [UserController::class, 'list'])->name('users');
+    Route::get('/users/create', [UserController::class, 'createView']);
+    Route::post('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::delete('/users/{id}', [UserController::class, 'delete'])->name('users.delete')->where('id', '[0-9]+');
+    Route::get('/users/{id}', [UserController::class, 'getUser'])->name('users.get')->where('id', '[0-9]+');
+    Route::patch('users/{id}', [UserController::class, 'edit'])->name('users.edit')->where('id', '[0-9]+');
 
     Route::get('/users/list', [UserController::class, 'get'])->name('users.list');
 });

@@ -3,10 +3,10 @@ import { Filter, Where } from '@/models/Filter';
 import axios from 'axios';
 import debounce from 'lodash/debounce';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { FloatingMenu } from '../../Menu';
 import { Chip } from '../Chip';
 import { Input } from '../Input';
 import styles from './Autocomplete.module.scss';
-import { AutocompleteMenu } from './Menu';
 
 export interface AutocompleteProps<T> {
   label: string;
@@ -158,7 +158,7 @@ export const Autocomplete = <T,>({
           </Chip>
         ))}
       </div>
-      <AutocompleteMenu
+      <FloatingMenu
         opened={opened}
         parent={inputRef}
         onClose={() => setOpened(false)}
@@ -183,7 +183,7 @@ export const Autocomplete = <T,>({
             ))}
           </>
         )}
-      </AutocompleteMenu>
+      </FloatingMenu>
     </div>
   );
 };

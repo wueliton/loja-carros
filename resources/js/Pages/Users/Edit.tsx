@@ -6,25 +6,27 @@ import { Head } from '@/Components/Head';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Role } from '@/models/Role';
+import { User } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
-export default function CreateUserPage({ roles }: { roles: Role[] }) {
-  const { data, setData, errors, isDirty, post, reset } = useForm<{
+export default function EditUserPage({
+  user,
+  roles,
+}: {
+  user: User;
+  roles: Role[];
+}) {
+  const { data, setData, errors, isDirty, patch, reset } = useForm<{
     name?: string;
     email?: string;
     password?: string;
     role?: (number | string)[];
-  }>({
-    name: '',
-    email: '',
-    password: '',
-    role: [],
-  });
+  }>({ ...user, role: user.roles.map((role) => role.id) });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post('/users/create');
+    patch(`/users/${user.id}`);
   };
 
   useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
@@ -32,7 +34,7 @@ export default function CreateUserPage({ roles }: { roles: Role[] }) {
   return (
     <AuthenticatedLayout>
       <Head
-        title="Adicionar Usuário"
+        title={`Editar Usuário ${user.name}`}
         breadcrumb={[{ title: 'Usuários', url: '/users' }]}
       />
       <Card>

@@ -23,6 +23,10 @@
                 @apply px-6 py-4;
             }
         }
+
+        .actions {
+            @apply flex justify-end;
+        }
     }
 }
 

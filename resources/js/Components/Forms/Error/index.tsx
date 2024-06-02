@@ -9,7 +9,7 @@ const errorMessages = {
   'validation.mimes': 'Extensão do arquivo não permitida',
 };
 
-export const Error: FC<{ error?: string; fieldName?: string }> = ({
+export const ErrorLabel: FC<{ error?: string; fieldName?: string }> = ({
   error,
   fieldName,
 }) => {
