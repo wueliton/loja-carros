@@ -13,10 +13,11 @@ export interface MenuProps extends PropsWithChildren {
   parent: MutableRefObject<HTMLElement | null>;
   opened: boolean;
   onClose: () => void;
+  className?: string;
 }
 
 export const FloatingMenu: FC<MenuProps> = memo(
-  ({ children, parent, opened, onClose }) => {
+  ({ children, parent, opened, className, onClose }) => {
     const [top, setTop] = useState(
       (parent.current?.getBoundingClientRect().height ?? 82) - 8,
     );
@@ -66,7 +67,7 @@ export const FloatingMenu: FC<MenuProps> = memo(
       <div
         ref={menuRef}
         style={{ top: `${top}px` }}
-        className={`${styles.list} ${opened ? styles.opened : ''}`}
+        className={`${styles.list} ${opened ? styles.opened : ''} ${className ?? ''}`}
       >
         {children}
       </div>

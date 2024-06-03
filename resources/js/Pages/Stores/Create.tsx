@@ -6,10 +6,11 @@ import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
+import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
-export default function CreateStorePage() {
+export default function CreateStorePage({ auth }: PageProps) {
   const { data, setData, errors, isDirty, post, reset, transform } = useForm<{
     logo_url?: File;
     name?: string;
@@ -43,11 +44,15 @@ export default function CreateStorePage() {
   useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
 
   return (
-    <AuthenticatedLayout>
-      <Head
-        title="Nova Loja"
-        breadcrumb={[{ title: 'Lojas', url: '/stores' }]}
-      ></Head>
+    <AuthenticatedLayout
+      user={auth.user}
+      head={
+        <Head
+          title="Nova Loja"
+          breadcrumb={[{ title: 'Lojas', url: '/stores' }]}
+        ></Head>
+      }
+    >
       <Card>
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-3"

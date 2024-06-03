@@ -8,6 +8,10 @@
     active:brightness-90
     bg-white;
 
+    &.only-icon {
+        @apply px-2;
+    }
+
     &.outline {
         @apply border
             border-gray-400

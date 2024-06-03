@@ -30,7 +30,10 @@ const usersHeader: THeadProps<User>[] = [
   },
 ];
 
-export default function ListUserPage({ users }: PageProps<{ users: User[] }>) {
+export default function ListUserPage({
+  users,
+  auth,
+}: PageProps<{ users: User[] }>) {
   const { openDialog } = useDialog();
 
   const handleDelete = (item: User) => {
@@ -53,10 +56,16 @@ export default function ListUserPage({ users }: PageProps<{ users: User[] }>) {
   };
 
   return (
-    <AuthenticatedLayout>
-      <Head title="Usuários">
-        <Button onClick={() => router.visit('users/create')}>Adicionar</Button>
-      </Head>
+    <AuthenticatedLayout
+      user={auth.user}
+      head={
+        <Head title="Usuários">
+          <Button onClick={() => router.visit('users/create')}>
+            Adicionar
+          </Button>
+        </Head>
+      }
+    >
       <Table
         data={users}
         headers={usersHeader}

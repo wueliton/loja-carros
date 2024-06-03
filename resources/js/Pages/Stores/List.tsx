@@ -44,6 +44,7 @@ const storeHeader: THeadProps<Store>[] = [
 
 export default function ListStorePage({
   stores,
+  auth,
 }: PageProps<{ stores: Store[] }>) {
   const { openDialog } = useDialog();
 
@@ -67,10 +68,16 @@ export default function ListStorePage({
   };
 
   return (
-    <AuthenticatedLayout>
-      <Head title="Lojas">
-        <Button onClick={() => router.visit('stores/create')}>Adicionar</Button>
-      </Head>
+    <AuthenticatedLayout
+      user={auth.user}
+      head={
+        <Head title="Lojas">
+          <Button onClick={() => router.visit('stores/create')}>
+            Adicionar
+          </Button>
+        </Head>
+      }
+    >
       <Table
         data={stores}
         headers={storeHeader}

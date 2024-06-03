@@ -13,6 +13,7 @@ import { FormEvent } from 'react';
 
 export default function EditStore({
   store,
+  auth,
 }: PageProps<{ store: Store & { users_ids: number[] } }>) {
   const { data, setData, errors, isDirty, post, reset, transform } = useForm<
     Omit<Store, 'logo_url' | 'phone' | 'whatsapp'> & {
@@ -46,11 +47,15 @@ export default function EditStore({
   useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
 
   return (
-    <AuthenticatedLayout>
-      <Head
-        title={`Editar ${store.name}`}
-        breadcrumb={[{ title: 'Lojas', url: '/stores' }]}
-      />
+    <AuthenticatedLayout
+      user={auth.user}
+      head={
+        <Head
+          title={`Editar ${store.name}`}
+          breadcrumb={[{ title: 'Lojas', url: '/stores' }]}
+        />
+      }
+    >
       <Card>
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-3"

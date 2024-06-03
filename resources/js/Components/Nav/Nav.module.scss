@@ -11,11 +11,11 @@
     flex-col
     w-64
     bg-slate-700
-    border-r
-    border-gray-200
-    self-start;
+    self-start
+    transition-transform
+    z-30;
 
-    &.active {
+    &.opened {
         @apply translate-x-0;
     }
 }

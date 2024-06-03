@@ -1,4 +1,9 @@
-import { ButtonHTMLAttributes, FC, PropsWithChildren } from 'react';
+import {
+  ButtonHTMLAttributes,
+  FC,
+  PropsWithChildren,
+  ReactElement,
+} from 'react';
 import styles from './Button.module.scss';
 
 export interface ButtonProps
@@ -9,6 +14,7 @@ export interface ButtonProps
   form?: string;
   variant?: 'basic' | 'outline';
   contentEditable?: boolean;
+  icon?: ReactElement;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -17,13 +23,15 @@ export const Button: FC<ButtonProps> = ({
   active,
   color,
   variant,
+  icon,
   ...props
 }) => {
   return (
     <button
       {...props}
-      className={`${styles.button} ${className} ${active ? styles.active : ''} ${color ? styles[color] : ''} ${styles[variant ?? 'outline']}`}
+      className={`${styles.button} ${className} ${active ? styles.active : ''} ${color ? styles[color] : ''} ${styles[variant ?? 'outline']} ${icon && !children ? styles['only-icon'] : ''}`}
     >
+      {icon}
       {children}
     </button>
   );
