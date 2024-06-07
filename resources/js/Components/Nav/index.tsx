@@ -18,12 +18,19 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
           <NavLink href="dashboard">
             <DashboardIcon /> Dashboard
           </NavLink>
-          <NavLink href="users">
-            <UsersIcon /> Usuários
-          </NavLink>
-          <NavLink href="stores">
-            <StoreIcon /> Lojas
-          </NavLink>
+          {route().has('users') && (
+            <NavLink href="users">
+              <UsersIcon /> Usuários
+            </NavLink>
+          )}
+          {route().has('stores') && (
+            <NavLink href="stores">
+              <StoreIcon /> Lojas
+            </NavLink>
+          )}
+          {/* <NavLink href="cars">
+            <StoreIcon /> Veículos
+          </NavLink> */}
         </div>
       </nav>
     );

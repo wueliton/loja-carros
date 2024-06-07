@@ -7,8 +7,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-use function Termwind\render;
-
 Route::get('/', function () {
     return redirect()->route('login');
 });

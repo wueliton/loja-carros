@@ -13,6 +13,16 @@
         }
     }
 
+    .fixed-column {
+        @apply sticky
+            right-0
+            bg-white;
+    }
+
+    th.fixed-column {
+        @apply bg-gray-50;
+    }
+
     tbody {
         @apply bg-white;
 

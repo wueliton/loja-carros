@@ -48,7 +48,7 @@ export const Table = <T,>({
             {headers.map((item) => (
               <th key={`table-head-${String(item.key)}`}>{item.title}</th>
             ))}
-            {onDelete && <th></th>}
+            {onDelete && <th className={styles['fixed-column']}></th>}
           </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@ export const Table = <T,>({
                 </td>
               ))}
               {onDelete && (
-                <td className={styles.actions}>
+                <td className={`${styles.actions} ${styles['fixed-column']}`}>
                   <Button
                     onClick={(e) => handleDelete(e, item)}
                     color="warn"

@@ -1,7 +1,9 @@
 import { IconButton } from '@/Components/IconButton';
 import { MenuIcon } from '@/Components/Icons/Menu';
+import { FloatingMenu } from '@/Components/Menu';
 import { NavComponent } from '@/Components/Nav';
 import { User } from '@/types';
+import { Link } from '@inertiajs/react';
 import {
   FC,
   PropsWithChildren,
@@ -13,9 +15,10 @@ import {
 import styles from './Authenticated.module.scss';
 
 export const AuthenticatedLayout: FC<
-  PropsWithChildren & { user: User; head?: ReactElement }
-> = ({ children, head }) => {
+  PropsWithChildren & { user?: User; head?: ReactElement }
+> = ({ children, head, user }) => {
   const [navOpened, setNavOpened] = useState(false);
+  const [menuOpened, setMenuOpened] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const avatarRef = useRef<HTMLButtonElement>(null);
 
@@ -54,15 +57,28 @@ export const AuthenticatedLayout: FC<
         <div className={styles.head}>
           <div className={styles.content}>{head}</div>
           <div className={styles.profile}>
-            <button className={styles.avatar}>P</button>
-            {/* <FloatingMenu
-              className="w-52"
-              opened={true}
-              parent={avatarRef}
-              onClose={() => {}}
+            <button
+              className={styles.avatar}
+              onClick={(e) => {
+                setMenuOpened((prev) => !prev);
+                e.stopPropagation();
+              }}
             >
-              <>Item</>
-            </FloatingMenu> */}
+              {user?.name.charAt(0)}
+            </button>
+            <FloatingMenu
+              className={styles['floating-menu']}
+              opened={menuOpened}
+              parent={avatarRef}
+              onClose={() => setMenuOpened(false)}
+            >
+              <Link href={route('profile.edit')} as="button">
+                Meu Perfil
+              </Link>
+              <Link href={route('logout')} method="post" as="button">
+                Sair
+              </Link>
+            </FloatingMenu>
             <IconButton
               onClick={handleOpenMenu}
               icon={<MenuIcon />}
