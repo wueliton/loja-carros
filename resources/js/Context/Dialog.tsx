@@ -10,12 +10,17 @@ import {
   useState,
 } from 'react';
 
+export type DialogProps<P = unknown> = P & {
+  close: (data?: unknown) => void;
+};
+
 export interface OpenDialogProps {
   onClose?: (data?: unknown) => void;
 }
 
 export interface DialogComponentProps extends OpenDialogProps {
-  component: FC<{ close: (data?: unknown) => void }>;
+  component: FC<DialogProps>;
+  props?: unknown;
 }
 
 export interface DialogTextProps extends OpenDialogProps {
@@ -48,6 +53,7 @@ export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
       setActiveComponent(
         createElement((props as DialogComponentProps).component, {
           close: handleClose,
+          ...((props as DialogComponentProps).props ?? {}),
         }),
       );
     else setContent((props as DialogTextProps).content!);

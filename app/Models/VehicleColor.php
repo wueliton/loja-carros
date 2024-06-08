@@ -10,6 +10,6 @@ class VehicleColor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'color'
     ];
 }

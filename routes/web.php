@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
@@ -37,7 +38,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/users/list', [UserController::class, 'get'])->name('users.list');
 });
 
-//Lojas
+// Lojas
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/stores', [StoreController::class, 'index'])->name('stores');
     Route::inertia('/stores/create', 'Stores/Create');
@@ -45,6 +46,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/stores/create', [StoreController::class, 'create'])->name('stores.create');
     Route::delete('/stores/{id}', [StoreController::class, 'delete'])->name('stores.delete')->where('id', '[0-9]+');
     Route::post('/stores/{id}', [StoreController::class, 'edit'])->name('stores.edit')->where('id', '[0-9]+');
+});
+
+// Colors
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/colors', [ColorController::class, 'list'])->name('colors');
+    Route::post('/colors/create', [ColorController::class, 'create'])->name('colors.create');
 });
 
 Route::get('/files/{fileName}', [ImageController::class, 'getImage'])->where('fileName', '.*');

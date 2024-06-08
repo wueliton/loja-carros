@@ -1,0 +1,11 @@
+.dialog-header {
+    @apply flex
+        min-h-10
+        -ml-4
+        -mr-4
+        px-4
+        border-b
+        border-gray-200
+        font-bold
+        text-lg;
+}

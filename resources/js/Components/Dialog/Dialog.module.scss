@@ -13,7 +13,8 @@
     h-full
     md:inset-0
     max-h-full
-    bg-black/40;
+    bg-black/30
+    backdrop-blur-sm;
 
     &.opened {
         @apply flex;
@@ -30,11 +31,14 @@
             @apply relative
                 bg-white
                 rounded-lg
-                shadow;
+                shadow-2xl
+                border
+                border-gray-400;
 
             .close {
                 @apply absolute
-                    top-3 end-2.5;
+                    top-3 end-2.5
+                    text-gray-400;
             }
 
             .content {

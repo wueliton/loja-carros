@@ -3,7 +3,7 @@ import { IconButton } from '../IconButton';
 import { CloseIcon } from '../Icons/Close';
 import styles from './Dialog.module.scss';
 
-export interface DialogProps extends PropsWithChildren {
+interface DialogProps extends PropsWithChildren {
   open?: boolean;
   closeClicked: () => void;
 }

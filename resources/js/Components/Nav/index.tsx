@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { forwardRef } from 'react';
 import ApplicationLogo from '../ApplicationLogo';
+import { ColorsIcon } from '../Icons/Colors';
 import { DashboardIcon } from '../Icons/Dashboard';
 import { StoreIcon } from '../Icons/Store';
 import { UsersIcon } from '../Icons/Users';
@@ -28,9 +29,10 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
               <StoreIcon /> Lojas
             </NavLink>
           )}
-          {/* <NavLink href="cars">
-            <StoreIcon /> Veículos
-          </NavLink> */}
+          <div className={styles.category}>Config. de Veículos</div>
+          <NavLink href="colors">
+            <ColorsIcon /> Cores
+          </NavLink>
         </div>
       </nav>
     );

@@ -31,3 +31,16 @@
 .links {
     @apply flex flex-col gap-1 w-full;
 }
+
+.category {
+    @apply block
+        mt-4
+        py-2
+        px-3
+        uppercase
+        text-sm
+        font-extrabold
+        text-gray-500
+        cursor-default
+        select-none;
+}
