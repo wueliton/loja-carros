@@ -7,7 +7,7 @@ import { Color } from '@/models/Color';
 import { useForm } from '@inertiajs/react';
 import { FC, FormEvent } from 'react';
 
-export const AddColorModal: FC<DialogProps<{ color?: Color }>> = ({
+export const PutColorModal: FC<DialogProps<{ color?: Color }>> = ({
   close,
   color,
 }) => {
@@ -22,7 +22,7 @@ export const AddColorModal: FC<DialogProps<{ color?: Color }>> = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (color) {
-      put(route('colors.edit'), {
+      put(route('colors.update', { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;

@@ -15,8 +15,7 @@
 
     .fixed-column {
         @apply sticky
-            right-0
-            bg-white;
+            right-0;
     }
 
     th.fixed-column {
@@ -27,10 +26,20 @@
         @apply bg-white;
 
         tr {
-            @apply border-b hover:bg-gray-50 active:bg-gray-100;
+            @apply border-b;
 
             td {
-                @apply px-6 py-4;
+                @apply px-6 py-4 bg-white;
+            }
+
+            &:not(.empty) {
+                &:hover td {
+                    @apply bg-gray-50;
+                }
+
+                &:active td {
+                    @apply bg-gray-100;
+                }
             }
         }
 

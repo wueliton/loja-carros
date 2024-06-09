@@ -4,33 +4,33 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
-import { Color } from '@/models/Color';
+import { Brand } from '@/models/Brand';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
-import { PutColorModal } from './PutColorModal';
+import { PutBrandModal } from './PutBrandModal';
 
-const colorsHeader: THeadProps<Color>[] = [
+const brandsHeader: THeadProps<Brand>[] = [
   {
-    key: 'color',
-    title: 'Cor',
+    key: 'name',
+    title: 'Tipo de Combustível',
   },
 ];
 
-export default function ListColorsPage({
+export default function ListFuelTypesPage({
   auth,
-  colors,
-}: PageProps<{ colors: Color[] }>) {
+  brands,
+}: PageProps<{ brands: Brand[] }>) {
   const { openDialog } = useDialog();
 
-  const handleAddColor = (color?: Color) =>
+  const handlePutBrand = (fuelType?: Brand) =>
     openDialog({
-      component: PutColorModal,
+      component: PutBrandModal,
       props: {
-        color,
+        fuelType,
       },
     });
 
-  const handleDeleteColor = (color: Color) =>
+  const handleDeleteBrand = (fuelType: Brand) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -39,7 +39,7 @@ export default function ListColorsPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('colors.delete', { id: color.id }), {
+        router.delete(route('brands.delete', { id: fuelType.id }), {
           preserveScroll: true,
           onSuccess: () => {
             console.log('excluído com sucesso');
@@ -52,16 +52,16 @@ export default function ListColorsPage({
     <AuthenticatedLayout
       user={auth.user}
       head={
-        <Head title="Cores">
-          <Button onClick={() => handleAddColor()}>Adicionar</Button>
+        <Head title="Marcas">
+          <Button onClick={() => handlePutBrand()}>Adicionar</Button>
         </Head>
       }
     >
       <Table
-        data={colors}
-        headers={colorsHeader}
-        onEdit={(color) => handleAddColor(color)}
-        onDelete={handleDeleteColor}
+        data={brands}
+        headers={brandsHeader}
+        onEdit={(color) => handlePutBrand(color)}
+        onDelete={handleDeleteBrand}
       />
     </AuthenticatedLayout>
   );

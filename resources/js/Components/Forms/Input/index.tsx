@@ -1,6 +1,7 @@
 import { IconButton } from '@/Components/IconButton';
 import { EyeIcon } from '@/Components/Icons/Eye';
 import { EyeNoIcon } from '@/Components/Icons/EyeNo';
+import { useMask } from '@/Hooks/useMask';
 import {
   InputHTMLAttributes,
   LegacyRef,
@@ -10,7 +11,7 @@ import {
   useId,
   useState,
 } from 'react';
-import { ReactMaskOpts, useIMask } from 'react-imask';
+import { ReactMaskOpts } from 'react-imask';
 import { ErrorLabel } from '../Error';
 import styles from './Input.module.scss';
 
@@ -52,17 +53,8 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       setValue,
       unmaskedValue,
       value: maskValue,
-    } = useIMask({
-      mask: (mask as string) ?? new RegExp(''),
-      dispatch: (_, dynamicMasked) => {
-        const value = dynamicMasked.value;
-        return dynamicMasked.compiledMasks.find(
-          (m) =>
-            (
-              m as unknown as { comparison: (value: string) => boolean }
-            ).comparison?.(value) ?? true,
-        );
-      },
+    } = useMask({
+      mask: mask,
     });
 
     useEffect(() => {
@@ -77,7 +69,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       <div className={`${styles['form-field']} ${className ?? ''}`} ref={ref}>
         <label htmlFor={id}>{label}</label>
         <div className={styles['field']}>
-          {prefix && <>{prefix}</>}
+          {prefix && <div className={styles.prefix}>{prefix}</div>}
           <input
             {...props}
             id={id}

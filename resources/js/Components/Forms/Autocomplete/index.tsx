@@ -8,31 +8,35 @@ import { Chip } from '../Chip';
 import { Input } from '../Input';
 import styles from './Autocomplete.module.scss';
 
-export interface AutocompleteProps<T> {
+export interface AutocompleteProps<T, isMulti extends boolean> {
   label: string;
   propertyValue: keyof T;
   propertyToDisplay: keyof T;
   searchProperties: string[];
+  moreThanOne?: isMulti;
   url: string;
   name?: string;
-  value?: T[keyof T][];
+  value?: isMulti extends true ? T[keyof T][] : T[keyof T];
   error?: string;
-  onChange?: (values: T[keyof T][]) => void;
-  onChangeFull?: (values: T[]) => void;
+  autoFocus?: boolean;
+  onChange?: (values: isMulti extends true ? T[keyof T][] : T[keyof T]) => void;
+  onChangeFull?: (values: isMulti extends true ? T[] : T) => void;
 }
 
-export const Autocomplete = <T,>({
+export const Autocomplete = <T, isMulti extends boolean = boolean>({
   label,
   propertyToDisplay,
   propertyValue,
   searchProperties = [],
+  moreThanOne,
+  autoFocus,
   url,
   value,
   name,
   error,
   onChange,
   onChangeFull,
-}: AutocompleteProps<T>) => {
+}: AutocompleteProps<T, isMulti>) => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState<string | null>(null);
   const [selected, setSelected] = useState<T[]>([]);
@@ -112,18 +116,28 @@ export const Autocomplete = <T,>({
   }, 500);
 
   useEffect(() => {
+    const valueToArray = Array.isArray(value) ? value : value ? [value] : [];
     if (
-      value?.every((option) =>
+      valueToArray?.every((option) =>
         selected.some((item) => option === item[propertyValue]),
       )
     )
       return;
-    loadInitialValues(value);
+    loadInitialValues(valueToArray as T[keyof T][]);
   }, [value]);
 
   useEffect(() => {
-    onChange?.(selected.map((item) => item[propertyValue]));
-    onChangeFull?.(selected);
+    if (!selected.length) return;
+    onChange?.(
+      (moreThanOne
+        ? selected.map((item) => item[propertyValue])
+        : selected?.[0][propertyValue]) as isMulti extends true
+        ? T[keyof T][]
+        : T[keyof T],
+    );
+    onChangeFull?.(
+      (moreThanOne ? selected : selected[0]) as isMulti extends true ? T[] : T,
+    );
   }, [selected]);
 
   useEffect(() => {
@@ -138,6 +152,18 @@ export const Autocomplete = <T,>({
         onChange={debounceSearch}
         onFocus={handleOpendMenu}
         onKeyDown={handleTabPressed}
+        disabled={!moreThanOne && !!selected.length}
+        prefix={
+          !moreThanOne && selected.length ? (
+            <Chip
+              key="chip-selected"
+              canRemove
+              onRemove={() => handleRemoveOption(selected[0])}
+            >
+              <>{selected[0][propertyToDisplay]}</>
+            </Chip>
+          ) : undefined
+        }
         autoComplete="off"
         name={name}
         ref={inputRef}
@@ -146,18 +172,22 @@ export const Autocomplete = <T,>({
         aria-autocomplete="list"
         aria-haspopup="listbox"
         error={error}
+        autoFocus={autoFocus}
       ></Input>
-      <div className={styles.values}>
-        {selected.map((item, index) => (
-          <Chip
-            key={`chip-${index}`}
-            canRemove
-            onRemove={() => handleRemoveOption(item)}
-          >
-            <>{item[propertyToDisplay]}</>
-          </Chip>
-        ))}
-      </div>
+
+      {moreThanOne && (
+        <div className={styles.values}>
+          {selected.map((item, index) => (
+            <Chip
+              key={`chip-${index}`}
+              canRemove
+              onRemove={() => handleRemoveOption(item)}
+            >
+              <>{item[propertyToDisplay]}</>
+            </Chip>
+          ))}
+        </div>
+      )}
       <FloatingMenu
         opened={opened}
         parent={inputRef}

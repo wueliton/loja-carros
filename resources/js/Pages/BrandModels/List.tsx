@@ -4,33 +4,38 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
-import { Color } from '@/models/Color';
+import { BrandModel } from '@/models/BrandModels';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
-import { PutColorModal } from './PutColorModal';
+import { PutBrandModelModal } from './PutBrandModelModal';
 
-const colorsHeader: THeadProps<Color>[] = [
+const brandModelsHeader: THeadProps<BrandModel>[] = [
   {
-    key: 'color',
-    title: 'Cor',
+    key: 'name',
+    title: 'Tipo de Combustível',
+  },
+  {
+    key: 'brand',
+    title: 'Marca',
+    render: (model) => <>{model.brand?.name}</>,
   },
 ];
 
-export default function ListColorsPage({
+export default function ListFuelTypesPage({
   auth,
-  colors,
-}: PageProps<{ colors: Color[] }>) {
+  models,
+}: PageProps<{ models: BrandModel[] }>) {
   const { openDialog } = useDialog();
 
-  const handleAddColor = (color?: Color) =>
+  const handlePutBrandModel = (brandModel?: BrandModel) =>
     openDialog({
-      component: PutColorModal,
+      component: PutBrandModelModal,
       props: {
-        color,
+        brandModel,
       },
     });
 
-  const handleDeleteColor = (color: Color) =>
+  const handleDeleteBrandModel = (brandModel: BrandModel) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -39,7 +44,7 @@ export default function ListColorsPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('colors.delete', { id: color.id }), {
+        router.delete(route('brandModels.delete', { id: brandModel.id }), {
           preserveScroll: true,
           onSuccess: () => {
             console.log('excluído com sucesso');
@@ -52,16 +57,16 @@ export default function ListColorsPage({
     <AuthenticatedLayout
       user={auth.user}
       head={
-        <Head title="Cores">
-          <Button onClick={() => handleAddColor()}>Adicionar</Button>
+        <Head title="Modelos">
+          <Button onClick={() => handlePutBrandModel()}>Adicionar</Button>
         </Head>
       }
     >
       <Table
-        data={colors}
-        headers={colorsHeader}
-        onEdit={(color) => handleAddColor(color)}
-        onDelete={handleDeleteColor}
+        data={models}
+        headers={brandModelsHeader}
+        onEdit={(brandModel) => handlePutBrandModel(brandModel)}
+        onDelete={handleDeleteBrandModel}
       />
     </AuthenticatedLayout>
   );

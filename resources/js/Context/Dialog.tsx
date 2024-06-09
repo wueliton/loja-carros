@@ -44,6 +44,12 @@ export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
   );
   const [content, setContent] = useState<DialogContentProps | null>(null);
 
+  const handleEscPressed = (e: KeyboardEvent) => {
+    if (e.key.toLowerCase() !== 'escape') return;
+    e.preventDefault();
+    handleClose();
+  };
+
   const openDialog = ({
     onClose,
     ...props
@@ -57,6 +63,7 @@ export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
         }),
       );
     else setContent((props as DialogTextProps).content!);
+    document.addEventListener('keydown', handleEscPressed);
     setOpened(true);
   };
 
@@ -65,6 +72,8 @@ export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
     setOpened(false);
     setActiveComponent(null);
     setContent(null);
+    dialogOnClose = null;
+    document.removeEventListener('keydown', handleEscPressed);
   };
 
   return (

@@ -122,6 +122,7 @@ export default function CreateStorePage({ auth }: PageProps) {
               name="administradores-conta"
               value={data.users}
               onChange={(e) => setData('users', e)}
+              moreThanOne
             />
           </div>
           <div className="col-span-full flex justify-end">

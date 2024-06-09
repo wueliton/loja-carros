@@ -7,6 +7,7 @@ const errorMessages = {
   'validation.required': 'O campo é obrigatório',
   'validation.uploaded': 'Tamanho do arquivo não permitido',
   'validation.mimes': 'Extensão do arquivo não permitida',
+  'validation.unique': 'Campo deve ser único',
 };
 
 export const ErrorLabel: FC<{ error?: string; fieldName?: string }> = ({

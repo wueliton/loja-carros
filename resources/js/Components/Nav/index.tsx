@@ -1,8 +1,10 @@
 import { Link } from '@inertiajs/react';
 import { forwardRef } from 'react';
 import ApplicationLogo from '../ApplicationLogo';
+import { CarIcon } from '../Icons/Car';
 import { ColorsIcon } from '../Icons/Colors';
 import { DashboardIcon } from '../Icons/Dashboard';
+import { FuelPumpIcon } from '../Icons/FuelPump';
 import { StoreIcon } from '../Icons/Store';
 import { UsersIcon } from '../Icons/Users';
 import styles from './Nav.module.scss';
@@ -32,6 +34,15 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
           <div className={styles.category}>Config. de Veículos</div>
           <NavLink href="colors">
             <ColorsIcon /> Cores
+          </NavLink>
+          <NavLink href="fuelTypes">
+            <FuelPumpIcon /> Tipos de Combustível
+          </NavLink>
+          <NavLink href="brands">
+            <CarIcon /> Marcas
+          </NavLink>
+          <NavLink href="brandModels">
+            <CarIcon /> Modelos
           </NavLink>
         </div>
       </nav>

@@ -24,11 +24,31 @@ class ColorController extends Controller
         $request->validate([
             'color' => 'required|string'
         ]);
-        print_r($request->color);
 
         VehicleColor::create([
             'color' => $request->color
         ]);
+
+        return Redirect::route('colors');
+    }
+
+    public function update(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            'color' => 'required|string'
+        ]);
+
+        $color = VehicleColor::findOrFail($id);
+        $color->color = $request->color;
+        $color->save();
+
+        return Redirect::route('colors');
+    }
+
+    public function delete(Request $request, $id): RedirectResponse
+    {
+        $color = VehicleColor::findOrFail($id);
+        $color->delete();
 
         return Redirect::route('colors');
     }

@@ -53,7 +53,7 @@ export const Table = <T,>({
         </thead>
         <tbody>
           {!data.length && (
-            <tr>
+            <tr className={styles['empty']}>
               <td colSpan={headers.length + (onDelete ? 1 : 0)}>
                 <div className={styles['empty-list']}>
                   <EmptyIcon />

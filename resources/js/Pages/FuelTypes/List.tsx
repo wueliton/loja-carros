@@ -4,33 +4,33 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
-import { Color } from '@/models/Color';
+import { FuelType } from '@/models/FuelType';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
-import { PutColorModal } from './PutColorModal';
+import { PutFuelTypeModal } from './PutFuelTypeModal';
 
-const colorsHeader: THeadProps<Color>[] = [
+const fuelTypesHeader: THeadProps<FuelType>[] = [
   {
-    key: 'color',
-    title: 'Cor',
+    key: 'name',
+    title: 'Tipo de Combustível',
   },
 ];
 
-export default function ListColorsPage({
+export default function ListFuelTypesPage({
   auth,
-  colors,
-}: PageProps<{ colors: Color[] }>) {
+  fuelTypes,
+}: PageProps<{ fuelTypes: FuelType[] }>) {
   const { openDialog } = useDialog();
 
-  const handleAddColor = (color?: Color) =>
+  const handleAddFuelType = (fuelType?: FuelType) =>
     openDialog({
-      component: PutColorModal,
+      component: PutFuelTypeModal,
       props: {
-        color,
+        fuelType,
       },
     });
 
-  const handleDeleteColor = (color: Color) =>
+  const handleDeleteFuelType = (fuelType: FuelType) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -39,7 +39,7 @@ export default function ListColorsPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('colors.delete', { id: color.id }), {
+        router.delete(route('colors.delete', { id: fuelType.id }), {
           preserveScroll: true,
           onSuccess: () => {
             console.log('excluído com sucesso');
@@ -52,16 +52,16 @@ export default function ListColorsPage({
     <AuthenticatedLayout
       user={auth.user}
       head={
-        <Head title="Cores">
-          <Button onClick={() => handleAddColor()}>Adicionar</Button>
+        <Head title="Tipos de Combustíveis">
+          <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
         </Head>
       }
     >
       <Table
-        data={colors}
-        headers={colorsHeader}
-        onEdit={(color) => handleAddColor(color)}
-        onDelete={handleDeleteColor}
+        data={fuelTypes}
+        headers={fuelTypesHeader}
+        onEdit={(color) => handleAddFuelType(color)}
+        onDelete={handleDeleteFuelType}
       />
     </AuthenticatedLayout>
   );

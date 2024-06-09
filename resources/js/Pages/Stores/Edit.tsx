@@ -133,6 +133,7 @@ export default function EditStore({
               name="administradores-conta"
               value={data.users}
               onChange={(e) => setData('users', e)}
+              moreThanOne
             />
           </div>
           <div className="col-span-full flex justify-end">
