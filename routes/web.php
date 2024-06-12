@@ -8,6 +8,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ModelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\TransmissionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -78,12 +79,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/brands/list', [BrandController::class, 'get'])->name('brands.list');
 });
 
-// Brand
+// Models
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/brandModels', [BrandModelController::class, 'list'])->name('brandModels');
     Route::post('/brandModels/create', [BrandModelController::class, 'create'])->name('brandModels.create');
     Route::put('/brandModels/{id}', [BrandModelController::class, 'update'])->name('brandModels.update')->where('id', '[0-9]+');
     Route::delete('/brandModels/{id}', [BrandModelController::class, 'delete'])->name('brandModels.delete')->where('id', '[0-9]+');
+});
+
+// Transmissions
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/transmissions', [TransmissionController::class, 'list'])->name('transmissions');
+    Route::post('/transmissions/create', [TransmissionController::class, 'create'])->name('transmissions.create');
+    Route::put('/transmissions/{id}', [TransmissionController::class, 'update'])->name('transmissions.update')->where('id', '[0-9]+');
+    Route::delete('/transmissions/{id}', [TransmissionController::class, 'delete'])->name('transmissions.delete')->where('id', '[0-9]+');
 });
 
 Route::get('/files/{fileName}', [ImageController::class, 'getImage'])->where('fileName', '.*');

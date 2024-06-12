@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { forwardRef } from 'react';
 import ApplicationLogo from '../ApplicationLogo';
+import { CambioIcon } from '../Icons/Cambio';
 import { CarIcon } from '../Icons/Car';
 import { ColorsIcon } from '../Icons/Colors';
 import { DashboardIcon } from '../Icons/Dashboard';
@@ -43,6 +44,9 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
           </NavLink>
           <NavLink href="brandModels">
             <CarIcon /> Modelos
+          </NavLink>
+          <NavLink href="transmissions">
+            <CambioIcon /> Tipos de Câmbio
           </NavLink>
         </div>
       </nav>

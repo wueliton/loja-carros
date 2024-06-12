@@ -4,33 +4,33 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
-import { Brand } from '@/models/Brand';
+import { Transmission } from '@/models/Transmission';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
-import { PutBrandModal } from './PutBrandModal';
+import { PutTransmissionModal } from './PutTransmissionModal';
 
-const brandsHeader: THeadProps<Brand>[] = [
+const TransmissionsHeader: THeadProps<Transmission>[] = [
   {
     key: 'name',
-    title: 'Tipo de Combustível',
+    title: 'Tipo de Câmbio',
   },
 ];
 
-export default function ListFuelTypesPage({
+export default function ListTransmissionsPage({
   auth,
-  brands,
-}: PageProps<{ brands: Brand[] }>) {
+  transmissions,
+}: PageProps<{ transmissions: Transmission[] }>) {
   const { openDialog } = useDialog();
 
-  const handlePutBrand = (brand?: Brand) =>
+  const handleAddFuelType = (transmission?: Transmission) =>
     openDialog({
-      component: PutBrandModal,
+      component: PutTransmissionModal,
       props: {
-        brand,
+        transmission,
       },
     });
 
-  const handleDeleteBrand = (brand: Brand) =>
+  const handleDeleteFuelType = (transmission: Transmission) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -39,7 +39,7 @@ export default function ListFuelTypesPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('brands.delete', { id: brand.id }), {
+        router.delete(route('colors.delete', { id: transmission.id }), {
           preserveScroll: true,
           onSuccess: () => {
             console.log('excluído com sucesso');
@@ -52,16 +52,16 @@ export default function ListFuelTypesPage({
     <AuthenticatedLayout
       user={auth.user}
       head={
-        <Head title="Marcas">
-          <Button onClick={() => handlePutBrand()}>Adicionar</Button>
+        <Head title="Tipos de Câmbios">
+          <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
         </Head>
       }
     >
       <Table
-        data={brands}
-        headers={brandsHeader}
-        onEdit={(color) => handlePutBrand(color)}
-        onDelete={handleDeleteBrand}
+        data={transmissions}
+        headers={TransmissionsHeader}
+        onEdit={(color) => handleAddFuelType(color)}
+        onDelete={handleDeleteFuelType}
       />
     </AuthenticatedLayout>
   );
