@@ -3,7 +3,7 @@ import { Filter, Where } from '@/models/Filter';
 import axios from 'axios';
 import debounce from 'lodash/debounce';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { FloatingMenu } from '../../Menu';
+import { AcceptedKeys, FloatingMenu } from '../../FloatingMenu';
 import { Chip } from '../Chip';
 import { Input } from '../Input';
 import styles from './Autocomplete.module.scss';
@@ -40,9 +40,14 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState<string | null>(null);
   const [selected, setSelected] = useState<T[]>([]);
+  const [focused, setFocused] = useState<number>(0);
   const [opened, setOpened] = useState(false);
   const [options, setOptions] = useState<T[]>([]);
   const inputRef = useRef<HTMLDivElement | null>(null);
+  const keyboardSelectRef = useRef<{ options: T[]; focused: number }>({
+    options,
+    focused,
+  });
 
   const fetchResult = async (params: Filter<T>) => {
     const { data } = await axios.get<T[]>(url, {
@@ -93,6 +98,7 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
 
   const handleOpendMenu = () => {
     setOpened(true);
+    setFocused(0);
     loadResults(search ?? '');
   };
 
@@ -108,6 +114,22 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
   const handleTabPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key.toLowerCase() !== 'tab') return;
     setOpened(false);
+  };
+
+  const handlePressKey = (key: AcceptedKeys) => {
+    const { options, focused } = keyboardSelectRef.current;
+    switch (key) {
+      case 'arrowup':
+        setFocused((prev) => Math.max(0, prev - 1));
+        break;
+      case 'arrowdown':
+        setFocused((prev) => Math.min(options.length - 1, prev + 1));
+        break;
+      default:
+        handleSelectOption(options[focused]);
+        setOpened(false);
+        break;
+    }
   };
 
   const debounceSearch = debounce((e: ChangeEvent<HTMLInputElement>) => {
@@ -139,6 +161,10 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
       (moreThanOne ? selected : selected[0]) as isMulti extends true ? T[] : T,
     );
   }, [selected]);
+
+  useEffect(() => {
+    keyboardSelectRef.current = { options, focused };
+  }, [options, focused]);
 
   useEffect(() => {
     setLoading(true);
@@ -192,6 +218,7 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
         opened={opened}
         parent={inputRef}
         onClose={() => setOpened(false)}
+        onKeyPressed={handlePressKey}
       >
         {loading ? (
           <div className={styles.loading}>
@@ -205,8 +232,9 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
             {options.map((item, index) => (
               <div
                 key={index}
-                className={styles.option}
+                className={`${styles.option} ${focused === index ? styles['active-option'] : ''}`}
                 onClick={() => handleSelectOption(item)}
+                onMouseEnter={() => setFocused(index)}
               >
                 <>{item[propertyToDisplay]}</>
               </div>

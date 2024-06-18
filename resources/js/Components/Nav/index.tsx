@@ -48,6 +48,10 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
           <NavLink href="transmissions">
             <CambioIcon /> Tipos de Câmbio
           </NavLink>
+          <div className={styles.category}>Veículos</div>
+          <NavLink href="brandModels">
+            <CarIcon /> Veículos
+          </NavLink>
         </div>
       </nav>
     );

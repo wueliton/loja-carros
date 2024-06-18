@@ -13,6 +13,10 @@
     .option {
         @apply p-2
             cursor-pointer;
+
+            &.active-option {
+                @apply bg-gray-100;
+            }
     }
 
     .loading {

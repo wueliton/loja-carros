@@ -1,5 +1,5 @@
+import { FloatingMenu } from '@/Components/FloatingMenu';
 import { ArrowDownIcon } from '@/Components/Icons/ArrowDown';
-import { FloatingMenu } from '@/Components/Menu';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ErrorLabel } from '../Error';
 import styles from './Select.module.scss';

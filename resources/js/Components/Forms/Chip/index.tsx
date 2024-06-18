@@ -7,6 +7,7 @@ export interface ChipProps extends PropsWithChildren {
   checked?: boolean;
   canRemove?: boolean;
   onRemove?: () => void;
+  className?: string;
 }
 
 export const Chip: FC<ChipProps> = ({
@@ -14,9 +15,12 @@ export const Chip: FC<ChipProps> = ({
   canRemove,
   onRemove,
   children,
+  className,
 }) => {
   return (
-    <div className={`${styles.chip} ${checked ? styles.checked : ''}`}>
+    <div
+      className={`${styles.chip} ${checked ? styles.checked : ''} ${className ?? ''}`}
+    >
       {children}
       {canRemove && (
         <IconButton

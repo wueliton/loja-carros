@@ -1,6 +1,6 @@
+import { FloatingMenu } from '@/Components/FloatingMenu';
 import { IconButton } from '@/Components/IconButton';
 import { MenuIcon } from '@/Components/Icons/Menu';
-import { FloatingMenu } from '@/Components/Menu';
 import { NavComponent } from '@/Components/Nav';
 import { User } from '@/types';
 import { Link } from '@inertiajs/react';

@@ -9,15 +9,18 @@ import {
 } from 'react';
 import styles from './Menu.module.scss';
 
-export interface MenuProps extends PropsWithChildren {
+export type AcceptedKeys = 'enter' | 'arrowup' | 'arrowdown';
+
+export interface FloatingMenuProps extends PropsWithChildren {
   parent: MutableRefObject<HTMLElement | null>;
   opened: boolean;
-  onClose: () => void;
   className?: string;
+  onClose: () => void;
+  onKeyPressed?: (key: AcceptedKeys) => void;
 }
 
-export const FloatingMenu: FC<MenuProps> = memo(
-  ({ children, parent, opened, className, onClose }) => {
+export const FloatingMenu: FC<FloatingMenuProps> = memo(
+  ({ children, parent, opened, className, onClose, onKeyPressed }) => {
     const [top, setTop] = useState(
       (parent.current?.getBoundingClientRect().height ?? 82) - 8,
     );
@@ -49,6 +52,15 @@ export const FloatingMenu: FC<MenuProps> = memo(
       onClose();
     }
 
+    function keyboardOptionSelect(e: KeyboardEvent) {
+      const acceptedKeys = ['arrowup', 'arrowdown', 'enter'];
+      const isOpen = menuRef.current?.classList.contains(styles.opened);
+      const pressedKey = e.key.toLowerCase();
+      if (!acceptedKeys.includes(pressedKey) || !isOpen) return;
+      e.preventDefault();
+      onKeyPressed?.(pressedKey as AcceptedKeys);
+    }
+
     useEffect(() => {
       if (opened) adjustPosition();
     }, [opened]);
@@ -56,10 +68,12 @@ export const FloatingMenu: FC<MenuProps> = memo(
     useEffect(() => {
       window.addEventListener('scroll', adjustPosition);
       document.addEventListener('click', clickedOutside);
+      document.addEventListener('keydown', keyboardOptionSelect);
 
       return () => {
         document.removeEventListener('click', clickedOutside);
         window.removeEventListener('scroll', adjustPosition);
+        document.removeEventListener('keydown', keyboardOptionSelect);
       };
     }, []);
 
