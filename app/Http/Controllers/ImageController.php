@@ -8,7 +8,7 @@ class ImageController extends Controller
 {
     public function getImage(Request $request, String $imageName)
     {
-        $path = storage_path('app/public/' . $imageName);
+        $path = storage_path('app/public/uploads/' . $imageName);
         return response()->file($path);
     }
 }

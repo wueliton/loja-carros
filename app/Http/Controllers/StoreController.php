@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use App\Services\ImageUploadService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
@@ -14,6 +15,11 @@ use Inertia\Response;
 
 class StoreController extends Controller
 {
+
+    public function __construct(protected ImageUploadService $imageUploadService)
+    {
+    }
+
     public function index(Request $request): Response
     {
         $stores = Store::all();
@@ -41,7 +47,7 @@ class StoreController extends Controller
             'whatsapp' => 'required|numeric|digits_between:10,11',
             'users' => 'required|array',
             'users.*' => 'nullable|required|numeric|exists:users,id',
-            'logo_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:1024'
+            'logo_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:1024'
         ], [
             'phone.digits_between' => 'O campo deve ter entre :min e :max números',
             'whatsapp.digits_between' => 'O campo deve ter entre :min e :max números'
@@ -51,9 +57,7 @@ class StoreController extends Controller
 
         if ($request->has('logo_url')) {
             $file = $request->file('logo_url');
-            $fileExtension = $file->getClientOriginalExtension();
-            $fileName = time() . '_' . mt_rand(100000, 999999) . '.' . $fileExtension;
-            $filePath = $request->file('logo_url')->storeAs('uploads', $fileName, 'public');
+            $filePath = $this->imageUploadService->upload($file);
         }
 
         $store = Store::create([
@@ -97,7 +101,7 @@ class StoreController extends Controller
             'whatsapp' => 'required|numeric|digits_between:10,11',
             'users' => 'required|array',
             'users.*' => 'nullable|required|numeric|exists:users,id',
-            'logo_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:1024'
+            'logo_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:1024'
         ], [
             'phone.digits_between' => 'O campo deve ter entre :min e :max números',
             'whatsapp.digits_between' => 'O campo deve ter entre :min e :max números'
@@ -106,14 +110,14 @@ class StoreController extends Controller
         $store = Store::findOrFail($id);
 
         if ($request->has('logo_url')) {
-            if (Storage::disk('public')->exists($store->logo_url)) {
-                Storage::disk('public')->delete($store->logo_url);
+            $filePath = 'uploads/' . $store->logo_url;
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
             }
 
             $file = $request->file('logo_url');
-            $fileExtension = $file->getClientOriginalExtension();
-            $fileName = time() . '_' . mt_rand(100000, 999999) . '.' . $fileExtension;
-            $store->logo_url = $request->file('logo_url')->storeAs('uploads', $fileName, 'public');
+            $fileName = $this->imageUploadService->upload($file);
+            $store->logo_url = $fileName;
         }
 
         $store->name = $request->name;

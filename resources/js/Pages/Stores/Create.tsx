@@ -107,6 +107,7 @@ export default function CreateStorePage({ auth }: PageProps) {
             hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
             className="md:col-span-2"
             onChange={(files) => setData('logo_url', files?.[0])}
+            accept="image/png, image/jpg, image/webp, image/jpeg"
             error={errors.logo_url}
             fieldName="Logo da Empresa"
           />

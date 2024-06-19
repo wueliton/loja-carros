@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TransmissionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -93,6 +94,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/transmissions/create', [TransmissionController::class, 'create'])->name('transmissions.create');
     Route::put('/transmissions/{id}', [TransmissionController::class, 'update'])->name('transmissions.update')->where('id', '[0-9]+');
     Route::delete('/transmissions/{id}', [TransmissionController::class, 'delete'])->name('transmissions.delete')->where('id', '[0-9]+');
+});
+
+// Vehicles
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/vehicles', [VehicleController::class, 'list'])->name('vehicles');
+    Route::inertia('/vehicles/create', 'Vehicles/Create');
 });
 
 Route::get('/files/{fileName}', [ImageController::class, 'getImage'])->where('fileName', '.*');

@@ -15,11 +15,8 @@ use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
-    protected $filter;
-
-    public function __construct(FilterService $filterService)
+    public function __construct(protected FilterService $filterService)
     {
-        $this->filter = $filterService;
     }
 
     public function list(Request $request): Response
@@ -36,7 +33,7 @@ class UserController extends Controller
     {
         $users = User::where(function ($query) use ($request) {
             if ($request->has('where')) {
-                $query = $this->filter->apply($query, $request->where);
+                $query = $this->filterService->apply($query, $request->where);
             }
             return $query;
         })->get();

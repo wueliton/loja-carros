@@ -22,6 +22,7 @@ export interface UploadFileProps
   error?: string;
   fieldName?: string;
   handle?: ReactElement;
+  accept?: string;
   onChange?: (files?: File[]) => void;
 }
 
@@ -32,6 +33,7 @@ export const UploadFile: FC<UploadFileProps> = ({
   fieldName,
   isMultiple,
   handle,
+  accept,
   onChange,
   ...props
 }) => {
@@ -60,7 +62,7 @@ export const UploadFile: FC<UploadFileProps> = ({
 
   return (
     <div className={className}>
-      {!files?.length && !isMultiple && (
+      {!files?.length && (
         <>
           {handle && (
             <label className="inline-block cursor-pointer" htmlFor={id}>
@@ -81,12 +83,13 @@ export const UploadFile: FC<UploadFileProps> = ({
                   ref={inputRef}
                   id={id}
                   type="file"
+                  multiple={isMultiple}
+                  accept={accept}
                   onChange={handleChange}
                 />
               </label>
             </div>
           </div>
-          <ErrorLabel error={error} fieldName={fieldName} />
         </>
       )}
 
@@ -111,6 +114,7 @@ export const UploadFile: FC<UploadFileProps> = ({
           ))}
         </div>
       )}
+      <ErrorLabel error={error} fieldName={fieldName} />
     </div>
   );
 };
