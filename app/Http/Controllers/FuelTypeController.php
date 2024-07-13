@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VehicleFuelType;
+use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -11,12 +12,27 @@ use Inertia\Response;
 
 class FuelTypeController extends Controller
 {
-    public function list(Request $request): Response
+    public function __construct(protected FilterService $filterService)
+    {
+    }
+
+    public function list(): Response
     {
         $fuelTypes = VehicleFuelType::all();
         return Inertia::render('FuelTypes/List', [
             'fuelTypes' => $fuelTypes
         ]);
+    }
+
+    public function get(Request $request)
+    {
+        $fuelTypes = VehicleFuelType::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $fuelTypes;
     }
 
     public function create(Request $request): RedirectResponse

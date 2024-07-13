@@ -23,6 +23,7 @@ export interface UploadFileProps
   fieldName?: string;
   handle?: ReactElement;
   accept?: string;
+  maxFiles?: number;
   onChange?: (files?: File[]) => void;
 }
 
@@ -32,6 +33,7 @@ export const UploadFile: FC<UploadFileProps> = ({
   error,
   fieldName,
   isMultiple,
+  maxFiles,
   handle,
   accept,
   onChange,
@@ -42,7 +44,7 @@ export const UploadFile: FC<UploadFileProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFiles(Array.from(e.target.files ?? []));
+    setFiles(Array.from(e.target.files ?? []).slice(0, maxFiles));
     if (inputRef.current) inputRef.current.value = '';
   };
 

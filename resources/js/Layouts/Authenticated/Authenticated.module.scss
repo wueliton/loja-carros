@@ -5,7 +5,7 @@
         @apply flex-1 overflow-hidden flex flex-col gap-5;
 
         .floating-menu {
-            @apply max-w-60;
+            @apply max-w-60 z-50;
 
             button {
                 @apply block w-full p-4 text-left text-sm hover:bg-gray-50 active:bg-gray-100;
@@ -23,7 +23,8 @@
             items-center
             min-h-11
             pt-20
-            md:pt-0;
+            md:pt-0
+            z-20;
 
         .content {
             @apply p-4;

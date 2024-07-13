@@ -4,33 +4,33 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
-import { FuelType } from '@/models/FuelType';
+import { VehicleOptional } from '@/models/VehicleOptional';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
-import { PutFuelTypeModal } from './PutFuelTypeModal';
+import { PutOptionalModal } from './PutOptionalModal';
 
-const fuelTypesHeader: THeadProps<FuelType>[] = [
+const OptionalHeader: THeadProps<VehicleOptional>[] = [
   {
     key: 'name',
-    title: 'Tipo de Combustível',
+    title: 'Nome',
   },
 ];
 
-export default function ListFuelTypesPage({
+export default function ListOptionalPage({
   auth,
-  fuelTypes,
-}: PageProps<{ fuelTypes: FuelType[] }>) {
+  optional,
+}: PageProps<{ optional: VehicleOptional[] }>) {
   const { openDialog } = useDialog();
 
-  const handleAddFuelType = (fuelType?: FuelType) =>
+  const handleAddFuelType = (optional?: VehicleOptional) =>
     openDialog({
-      component: PutFuelTypeModal,
+      component: PutOptionalModal,
       props: {
-        fuelType,
+        optional: optional,
       },
     });
 
-  const handleDeleteFuelType = (fuelType: FuelType) =>
+  const handleDeleteOptional = (optional: VehicleOptional) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -39,7 +39,7 @@ export default function ListFuelTypesPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('fuelTypes.delete', { id: fuelType.id }), {
+        router.delete(route('optional.delete', { id: optional.id }), {
           preserveScroll: true,
           onSuccess: () => {
             console.log('excluído com sucesso');
@@ -52,16 +52,16 @@ export default function ListFuelTypesPage({
     <AuthenticatedLayout
       user={auth.user}
       head={
-        <Head title="Tipos de Combustíveis">
+        <Head title="Opcionais">
           <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
         </Head>
       }
     >
       <Table
-        data={fuelTypes}
-        headers={fuelTypesHeader}
+        data={optional}
+        headers={OptionalHeader}
         onEdit={(color) => handleAddFuelType(color)}
-        onDelete={handleDeleteFuelType}
+        onDelete={handleDeleteOptional}
       />
     </AuthenticatedLayout>
   );

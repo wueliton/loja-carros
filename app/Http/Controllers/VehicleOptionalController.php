@@ -2,38 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VehicleTransmission;
+use App\Models\VehicleOptional;
 use App\Services\FilterService;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Inertia\Response;
 use Inertia\Inertia;
+use Inertia\Response;
 
-class TransmissionController extends Controller
+class VehicleOptionalController extends Controller
 {
     public function __construct(protected FilterService $filterService)
     {
     }
 
-    public function list(Request $request): Response
+    public function list(): Response
     {
-        $transmissions = VehicleTransmission::all();
-
-        return Inertia::render('Transmissions/List', [
-            'transmissions' => $transmissions
+        $optional = VehicleOptional::all();
+        return Inertia::render('Optional/List', [
+            'optional' => $optional
         ]);
     }
 
     public function get(Request $request)
     {
-        $transmissions = VehicleTransmission::where(function ($query) use ($request) {
+        $optional = VehicleOptional::where(function ($query) use ($request) {
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }
             return $query;
         })->get();
-        return $transmissions;
+        return $optional;
     }
 
     public function create(Request $request): RedirectResponse
@@ -42,11 +41,11 @@ class TransmissionController extends Controller
             'name' => 'required|string'
         ]);
 
-        VehicleTransmission::create([
+        VehicleOptional::create([
             'name' => $request->name
         ]);
 
-        return Redirect::route('transmissions');
+        return Redirect::route('optional');
     }
 
     public function update(Request $request, $id): RedirectResponse
@@ -55,18 +54,18 @@ class TransmissionController extends Controller
             'name' => 'required|string'
         ]);
 
-        $transmission = VehicleTransmission::findOrFail($id);
-        $transmission->name = $request->name;
-        $transmission->save();
+        $fuelType = VehicleOptional::findOrFail($id);
+        $fuelType->name = $request->name;
+        $fuelType->save();
 
-        return Redirect::route('transmissions');
+        return Redirect::route('optional');
     }
 
     public function delete(Request $request, $id): RedirectResponse
     {
-        $transmission = VehicleTransmission::findOrFail($id);
-        $transmission->delete();
+        $fuelType = VehicleOptional::findOrFail($id);
+        $fuelType->delete();
 
-        return Redirect::route('transmissions');
+        return Redirect::route('optional');
     }
 }

@@ -3,6 +3,7 @@ import { forwardRef } from 'react';
 import ApplicationLogo from '../ApplicationLogo';
 import { CambioIcon } from '../Icons/Cambio';
 import { CarIcon } from '../Icons/Car';
+import { CarFrontIcon } from '../Icons/CarFront';
 import { ColorsIcon } from '../Icons/Colors';
 import { DashboardIcon } from '../Icons/Dashboard';
 import { FuelPumpIcon } from '../Icons/FuelPump';
@@ -47,6 +48,9 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
           </NavLink>
           <NavLink href="transmissions">
             <CambioIcon /> Tipos de Câmbio
+          </NavLink>
+          <NavLink href="optional">
+            <CarFrontIcon /> Opcionais
           </NavLink>
           <div className={styles.category}>Veículos</div>
           <NavLink href="vehicles">

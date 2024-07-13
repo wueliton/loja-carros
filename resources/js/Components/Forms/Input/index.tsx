@@ -22,6 +22,8 @@ export interface InputProps
   hint?: string;
   prefix?: ReactElement;
   suffix?: ReactElement;
+  hideInput?: boolean;
+  disabled?: boolean;
   mask?:
     | string
     | (ReactMaskOpts['mask'] &
@@ -40,6 +42,8 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       value,
       mask,
       type,
+      hideInput,
+      disabled,
       className,
       unmaskedValueChange,
       ...props
@@ -70,13 +74,16 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
         <label htmlFor={id}>{label}</label>
         <div className={styles['field']}>
           {prefix && <div className={styles.prefix}>{prefix}</div>}
-          <input
-            {...props}
-            id={id}
-            ref={inputRef as LegacyRef<HTMLInputElement>}
-            value={maskValue}
-            type={showPass ? 'text' : type}
-          />
+          {!hideInput && (
+            <input
+              {...props}
+              id={id}
+              ref={inputRef as LegacyRef<HTMLInputElement>}
+              value={maskValue}
+              type={showPass ? 'text' : type}
+              disabled={disabled}
+            />
+          )}
           {type === 'password' ? (
             <IconButton
               icon={showPass ? <EyeNoIcon /> : <EyeIcon />}

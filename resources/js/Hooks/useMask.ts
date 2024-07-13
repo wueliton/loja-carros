@@ -23,10 +23,6 @@ export const useMask = ({ value: inputValue, mask }: MaskProps) => {
         inputRef.current?.removeEventListener('input', handleChangeValue);
     }, [inputRef]);
 
-    useEffect(() => {
-      console.log(inputValue);
-    }, [inputValue]);
-
     return { ref: inputRef, value, setValue, unmaskedValue: value };
   }
 

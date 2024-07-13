@@ -13,7 +13,7 @@
     bg-slate-700
     self-start
     transition-transform
-    z-30;
+    z-50;
 
     &.opened {
         @apply translate-x-0;

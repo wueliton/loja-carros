@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VehicleBrandModel;
+use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -11,12 +12,27 @@ use Inertia\Response;
 
 class BrandModelController extends Controller
 {
+    public function __construct(protected FilterService $filterService)
+    {
+    }
+
     public function list(Request $request): Response
     {
         $models = VehicleBrandModel::with('brand')->get();
         return Inertia::render('BrandModels/List', [
             'models' => $models
         ]);
+    }
+
+    public function get(Request $request)
+    {
+        $brandModels = VehicleBrandModel::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $brandModels;
     }
 
     public function create(Request $request): RedirectResponse

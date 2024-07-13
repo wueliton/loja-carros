@@ -18,7 +18,10 @@ export interface AutocompleteProps<T, isMulti extends boolean> {
   name?: string;
   value?: isMulti extends true ? T[keyof T][] : T[keyof T];
   error?: string;
+  disabled?: boolean;
   autoFocus?: boolean;
+  filter?: Where<T>[];
+  className?: string;
   onChange?: (values: isMulti extends true ? T[keyof T][] : T[keyof T]) => void;
   onChangeFull?: (values: isMulti extends true ? T[] : T) => void;
 }
@@ -30,6 +33,9 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
   searchProperties = [],
   moreThanOne,
   autoFocus,
+  className,
+  disabled,
+  filter,
   url,
   value,
   name,
@@ -71,6 +77,9 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
           comparison: 'ninq',
           value: selected.map((item) => item[propertyValue]),
         } as Where<T>,
+        ...(filter?.filter(
+          (cond) => cond.comparison && cond.fieldName && cond.value,
+        ) ?? []),
       ],
     });
     setLoading(false);
@@ -138,6 +147,10 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
   }, 500);
 
   useEffect(() => {
+    if (!value) {
+      setSelected([]);
+      return;
+    }
     const valueToArray = Array.isArray(value) ? value : value ? [value] : [];
     if (
       valueToArray?.every((option) =>
@@ -149,11 +162,15 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
   }, [value]);
 
   useEffect(() => {
-    if (!selected.length) return;
+    const allSelected = moreThanOne
+      ? [...selected]
+      : [...selected].splice(0, 1);
+    const mappedChangedValues = allSelected.map((item) => item[propertyValue]);
+
     onChange?.(
       (moreThanOne
-        ? selected.map((item) => item[propertyValue])
-        : selected?.[0][propertyValue]) as isMulti extends true
+        ? mappedChangedValues
+        : mappedChangedValues[0]) as isMulti extends true
         ? T[keyof T][]
         : T[keyof T],
     );
@@ -172,13 +189,14 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
   }, []);
 
   return (
-    <div className={styles.field}>
+    <div className={`${styles.field} ${className ?? ''}`}>
       <Input
         label={label}
         onChange={debounceSearch}
         onFocus={handleOpendMenu}
         onKeyDown={handleTabPressed}
-        disabled={!moreThanOne && !!selected.length}
+        disabled={disabled}
+        hideInput={!moreThanOne && !!selected.length}
         prefix={
           !moreThanOne && selected.length ? (
             <Chip

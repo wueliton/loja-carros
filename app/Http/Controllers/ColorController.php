@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VehicleColor;
+use App\Services\FilterService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -11,12 +12,27 @@ use Inertia\Response;
 
 class ColorController extends Controller
 {
+    public function __construct(protected FilterService $filterService)
+    {
+    }
+
     public function list(Request $request): Response
     {
         $colors = VehicleColor::all();
         return Inertia::render('Colors/List', [
             'colors' => $colors
         ]);
+    }
+
+    public function get(Request $request)
+    {
+        $colors = VehicleColor::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $colors;
     }
 
     public function create(Request $request): RedirectResponse
