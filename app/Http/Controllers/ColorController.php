@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Color;
 use App\Models\VehicleColor;
 use App\Services\FilterService;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +19,7 @@ class ColorController extends Controller
 
     public function list(Request $request): Response
     {
-        $colors = VehicleColor::all();
+        $colors = Color::all();
         return Inertia::render('Colors/List', [
             'colors' => $colors
         ]);
@@ -26,7 +27,7 @@ class ColorController extends Controller
 
     public function get(Request $request)
     {
-        $colors = VehicleColor::where(function ($query) use ($request) {
+        $colors = Color::where(function ($query) use ($request) {
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }
@@ -38,10 +39,10 @@ class ColorController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $request->validate([
-            'color' => 'required|string'
+            'color' => 'required|string|unique:colors'
         ]);
 
-        VehicleColor::create([
+        Color::create([
             'color' => $request->color
         ]);
 
@@ -51,10 +52,10 @@ class ColorController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            'color' => 'required|string'
+            'color' => 'required|string|unique:colors'
         ]);
 
-        $color = VehicleColor::findOrFail($id);
+        $color = Color::findOrFail($id);
         $color->color = $request->color;
         $color->save();
 
@@ -63,7 +64,7 @@ class ColorController extends Controller
 
     public function delete(Request $request, $id): RedirectResponse
     {
-        $color = VehicleColor::findOrFail($id);
+        $color = Color::findOrFail($id);
         $color->delete();
 
         return Redirect::route('colors');

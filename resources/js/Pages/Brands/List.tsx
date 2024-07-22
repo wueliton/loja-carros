@@ -39,7 +39,7 @@ export default function ListFuelTypesPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('brands.delete', { id: brand.id }), {
+        router.delete(route(Brand.GET_ROUTE('delete'), { id: brand.id }), {
           preserveScroll: true,
           onSuccess: () => {
             console.log('excluído com sucesso');

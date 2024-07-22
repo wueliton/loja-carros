@@ -41,7 +41,7 @@ export default function EditStore({
         : undefined,
     }));
     e.preventDefault();
-    post(`/stores/${data.id}`);
+    post(route(Store.GET_ROUTE('edit'), { id: store.id }));
   };
 
   useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
@@ -52,7 +52,7 @@ export default function EditStore({
       head={
         <Head
           title={`Editar ${store.name}`}
-          breadcrumb={[{ title: 'Lojas', url: '/stores' }]}
+          breadcrumb={[{ title: 'Lojas', url: Store.GET_ROUTE() }]}
         />
       }
     >

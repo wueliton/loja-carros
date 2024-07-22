@@ -10,7 +10,7 @@ export default function ListVehiclesPage({ auth }: PageProps) {
       user={auth.user}
       head={
         <Head title="Veículos">
-          <Button onClick={() => router.visit('vehicles/create')}>
+          <Button onClick={() => router.visit(route('vehicles.createView'))}>
             Adicionar
           </Button>
         </Head>

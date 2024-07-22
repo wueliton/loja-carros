@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VehicleFuelType;
+use App\Models\FuelType;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +18,7 @@ class FuelTypeController extends Controller
 
     public function list(): Response
     {
-        $fuelTypes = VehicleFuelType::all();
+        $fuelTypes = FuelType::all();
         return Inertia::render('FuelTypes/List', [
             'fuelTypes' => $fuelTypes
         ]);
@@ -26,7 +26,7 @@ class FuelTypeController extends Controller
 
     public function get(Request $request)
     {
-        $fuelTypes = VehicleFuelType::where(function ($query) use ($request) {
+        $fuelTypes = FuelType::where(function ($query) use ($request) {
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }
@@ -38,10 +38,10 @@ class FuelTypeController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string|unique:fuel_types'
         ]);
 
-        VehicleFuelType::create([
+        FuelType::create([
             'name' => $request->name
         ]);
 
@@ -51,10 +51,10 @@ class FuelTypeController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string|unique:fuel_types'
         ]);
 
-        $fuelType = VehicleFuelType::findOrFail($id);
+        $fuelType = FuelType::findOrFail($id);
         $fuelType->name = $request->name;
         $fuelType->save();
 
@@ -63,7 +63,7 @@ class FuelTypeController extends Controller
 
     public function delete(Request $request, $id): RedirectResponse
     {
-        $fuelType = VehicleFuelType::findOrFail($id);
+        $fuelType = FuelType::findOrFail($id);
         $fuelType->delete();
 
         return Redirect::route('fuelTypes');

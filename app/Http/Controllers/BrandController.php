@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VehicleBrands;
+use App\Models\Brands;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -19,9 +19,9 @@ class BrandController extends Controller
         $this->filter = $filterService;
     }
 
-    public function list(Request $request): Response
+    public function list(): Response
     {
-        $brands = VehicleBrands::all();
+        $brands = Brands::all();
         return Inertia::render('Brands/List', [
             'brands' => $brands
         ]);
@@ -29,7 +29,7 @@ class BrandController extends Controller
 
     public function get(Request $request)
     {
-        $brands = VehicleBrands::where(function ($query) use ($request) {
+        $brands = Brands::where(function ($query) use ($request) {
             if ($request->has('where')) {
                 $query = $this->filter->apply($query, $request->where);
             }
@@ -41,10 +41,10 @@ class BrandController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|unique:vehicle_brands|string'
+            'name' => 'required|unique:brands|string'
         ]);
 
-        VehicleBrands::create([
+        Brands::create([
             'name' => $request->name
         ]);
 
@@ -54,10 +54,10 @@ class BrandController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|exists:vehicle_brands|string'
+            'name' => 'required|unique:brands|string'
         ]);
 
-        $fuelType = VehicleBrands::findOrFail($id);
+        $fuelType = Brands::findOrFail($id);
         $fuelType->name = $request->name;
         $fuelType->save();
 
@@ -66,7 +66,7 @@ class BrandController extends Controller
 
     public function delete(Request $request, $id): RedirectResponse
     {
-        $fuelType = VehicleBrands::findOrFail($id);
+        $fuelType = Brands::findOrFail($id);
         $fuelType->delete();
 
         return Redirect::route('brands');

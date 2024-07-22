@@ -22,13 +22,13 @@ export const PutFuelTypeModal: FC<DialogProps<{ fuelType?: FuelType }>> = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (fuelType) {
-      put(route('fuelTypes.update', { id: data.id }), {
+      put(route(FuelType.GET_ROUTE('update'), { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route('fuelTypes.create'), {
+    post(route(FuelType.GET_ROUTE('create')), {
       onSuccess: () => close(true),
     });
   };

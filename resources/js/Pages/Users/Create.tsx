@@ -28,7 +28,7 @@ export default function CreateUserPage({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post('/users/create');
+    post(route('users.create'));
   };
 
   useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
@@ -39,7 +39,7 @@ export default function CreateUserPage({
       head={
         <Head
           title="Adicionar Usuário"
-          breadcrumb={[{ title: 'Usuários', url: '/users' }]}
+          breadcrumb={[{ title: 'Usuários', url: route('users') }]}
         />
       }
     >

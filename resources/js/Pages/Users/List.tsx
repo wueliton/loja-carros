@@ -60,7 +60,7 @@ export default function ListUserPage({
       user={auth.user}
       head={
         <Head title="Usuários">
-          <Button onClick={() => router.visit('users/create')}>
+          <Button onClick={() => router.visit(route('users.createView'))}>
             Adicionar
           </Button>
         </Head>
@@ -70,7 +70,7 @@ export default function ListUserPage({
         data={users}
         headers={usersHeader}
         onDelete={handleDelete}
-        onEdit={(item) => router.visit(`users/${item.id}`)}
+        onEdit={(item) => router.visit(route('users.edit', { id: item.id }))}
       />
     </AuthenticatedLayout>
   );

@@ -1,3 +1,4 @@
+import 'react-tooltip/dist/react-tooltip.css';
 import '../css/app.scss';
 import './bootstrap';
 

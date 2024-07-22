@@ -22,13 +22,13 @@ export const PutColorModal: FC<DialogProps<{ color?: Color }>> = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (color) {
-      put(route('colors.update', { id: data.id }), {
+      put(route(Color.GET_ROUTE('update'), { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route('colors.create'), {
+    post(route(Color.GET_ROUTE('create')), {
       onSuccess: () => close(true),
     });
   };

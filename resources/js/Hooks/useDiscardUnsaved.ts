@@ -1,24 +1,29 @@
 import { DialogContentProps } from '@/Components/Dialog/Content';
 import { useDialog } from '@/Context/Dialog';
 import { router } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export interface DiscardUnsavedProps {
-  isDirty?: boolean;
   content?: DialogContentProps;
   onConfirm?: () => void;
 }
 
-export const useDiscardUnsaved = ({
-  isDirty,
-  content,
-  onConfirm,
-}: DiscardUnsavedProps) => {
+export const useDiscardUnsaved = (
+  isDirty: boolean,
+  props?: DiscardUnsavedProps,
+) => {
   const { openDialog } = useDialog();
+  const isDirtyRef = useRef<boolean>();
+  const { content, onConfirm } = props ?? {};
+
+  useEffect(() => {
+    isDirtyRef.current = isDirty;
+  }, [isDirty]);
 
   useEffect(() => {
     return router.on('before', (event) => {
-      if (!isDirty || event.detail.visit.method !== 'get') return true;
+      if (!isDirtyRef.current || event.detail.visit.method !== 'get')
+        return true;
       openDialog({
         content: content ?? {
           title: 'Deseja sair?',
@@ -27,6 +32,7 @@ export const useDiscardUnsaved = ({
         },
         onClose: (confirm) => {
           if (!confirm) return;
+          isDirtyRef.current = false;
           onConfirm?.();
           setTimeout(() => {
             router.visit(event.detail.visit.url);
@@ -35,5 +41,5 @@ export const useDiscardUnsaved = ({
       });
       return false;
     });
-  }, [isDirty]);
+  }, []);
 };

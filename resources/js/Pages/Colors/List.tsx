@@ -39,7 +39,7 @@ export default function ListColorsPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('colors.delete', { id: color.id }), {
+        router.delete(route(Color.GET_ROUTE('delete'), { id: color.id }), {
           preserveScroll: true,
           onSuccess: () => {
             console.log('excluído com sucesso');

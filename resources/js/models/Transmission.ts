@@ -1,4 +1,7 @@
-export interface Transmission {
-  id: number;
-  name: string;
+import { DefaultModel } from './DefaultModel';
+
+export class Transmission extends DefaultModel {
+  static ROUTE = 'transmissions';
+  id?: number;
+  name?: string;
 }

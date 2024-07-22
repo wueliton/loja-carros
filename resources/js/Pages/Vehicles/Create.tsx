@@ -12,6 +12,7 @@ import { useMemo } from 'react';
 export default function CreateVehiclePage({ auth }: PageProps) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { data, setData } = useForm<{
+    title?: string;
     brand?: number;
     model?: number;
     manufacturingYear?: number;
@@ -41,12 +42,18 @@ export default function CreateVehiclePage({ auth }: PageProps) {
       head={
         <Head
           title="Adicionar Veículo"
-          breadcrumb={[{ title: 'Veículos', url: '/vehicles' }]}
+          breadcrumb={[{ title: 'Veículos', url: route('vehicles') }]}
         />
       }
     >
       <Card>
         <form className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <Input
+            label="Título"
+            className="md:col-span-2"
+            value={data.title}
+            onChange={(e) => setData('title', e.target.value)}
+          />
           <h2 className="md:col-span-2 text-lg font-bold">Dados gerais</h2>
           <Autocomplete
             label="Marca"

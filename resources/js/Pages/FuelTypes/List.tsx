@@ -39,12 +39,15 @@ export default function ListFuelTypesPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('fuelTypes.delete', { id: fuelType.id }), {
-          preserveScroll: true,
-          onSuccess: () => {
-            console.log('excluído com sucesso');
+        router.delete(
+          route(FuelType.GET_ROUTE('delete'), { id: fuelType.id }),
+          {
+            preserveScroll: true,
+            onSuccess: () => {
+              console.log('excluído com sucesso');
+            },
           },
-        });
+        );
       },
     });
 

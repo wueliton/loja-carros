@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
@@ -71,7 +70,7 @@ class UserController extends Controller
 
         event(new Registered($user));
 
-        return Redirect::route('users');
+        return to_route('users');
     }
 
     public function delete(Request $request, $id): RedirectResponse
@@ -79,7 +78,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return Redirect::route('users');
+        return to_route('users');
     }
 
     public function getUser(Request $request, $id): Response
@@ -118,6 +117,6 @@ class UserController extends Controller
 
         $user->syncRoles($request->role);
 
-        return Redirect::route('users');
+        return to_route('users');
     }
 }

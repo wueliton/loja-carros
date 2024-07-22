@@ -33,12 +33,22 @@ import {
 import 'ckeditor5/ckeditor5.css';
 import translations from 'ckeditor5/translations/pt.js';
 import { FC } from 'react';
+import { ErrorLabel } from '../Error';
 
-export const Editor: FC<{ className?: string }> = ({ className }) => {
+export const Editor: FC<{
+  className?: string;
+  value?: string;
+  label?: string;
+  hint?: string;
+  error?: string;
+  onChange?: (value: string) => void;
+}> = ({ className, error, value, label, hint, onChange }) => {
   return (
     <div className={className ? className : ''}>
       <CKEditor
         editor={ClassicEditor}
+        onChange={(_, editor) => onChange?.(editor.getData())}
+        data={value}
         config={{
           plugins: [
             AccessibilityHelp,
@@ -206,6 +216,9 @@ export const Editor: FC<{ className?: string }> = ({ className }) => {
           translations: [translations],
         }}
       />
+      <p>
+        {error ? <ErrorLabel error={error} fieldName={label} /> : hint ?? ''}
+      </p>
     </div>
   );
 };

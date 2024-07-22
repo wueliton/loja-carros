@@ -44,7 +44,8 @@ export const UploadFile: FC<UploadFileProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFiles(Array.from(e.target.files ?? []).slice(0, maxFiles));
+    const newFiles = Array.from(e.target.files ?? []);
+    setFiles((prev) => [...(prev ?? []), ...newFiles].slice(0, maxFiles));
     if (inputRef.current) inputRef.current.value = '';
   };
 
@@ -64,7 +65,7 @@ export const UploadFile: FC<UploadFileProps> = ({
 
   return (
     <div className={className}>
-      {!files?.length && (
+      {(files?.length || 0) < (maxFiles || 0) && (
         <>
           {handle && (
             <label className="inline-block cursor-pointer" htmlFor={id}>
@@ -97,7 +98,9 @@ export const UploadFile: FC<UploadFileProps> = ({
 
       {!!files?.length && (
         <div className={styles['list']}>
-          <p>Arquivo{isMultiple ? 's' : ''}</p>
+          <p>
+            Arquivo{isMultiple ? 's' : ''} ({files.length}/{maxFiles})
+          </p>
           {files.map((file, index) => (
             <div className={styles['list-item']} key={index}>
               <div className={styles['header']}>

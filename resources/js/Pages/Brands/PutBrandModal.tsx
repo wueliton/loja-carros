@@ -22,13 +22,13 @@ export const PutBrandModal: FC<DialogProps<{ brand?: Brand }>> = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (brand) {
-      put(route('brands.update', { id: data.id }), {
+      put(route(Brand.GET_ROUTE('update'), { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route('brands.create'), {
+    post(route(Brand.GET_ROUTE('create')), {
       onSuccess: () => close(true),
     });
   };

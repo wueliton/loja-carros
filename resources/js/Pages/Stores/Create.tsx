@@ -6,12 +6,13 @@ import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
+import { Store } from '@/models/Store';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
 export default function CreateStorePage({ auth }: PageProps) {
-  const { data, setData, errors, isDirty, post, reset, transform } = useForm<{
+  const { data, setData, errors, isDirty, post, transform } = useForm<{
     logo_url?: File;
     name?: string;
     store_number?: string;
@@ -38,10 +39,10 @@ export default function CreateStorePage({ auth }: PageProps) {
         : undefined,
     }));
     e.preventDefault();
-    post('/stores/create');
+    post(route(Store.GET_ROUTE('create')));
   };
 
-  useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
+  useDiscardUnsaved(isDirty);
 
   return (
     <AuthenticatedLayout
@@ -49,7 +50,7 @@ export default function CreateStorePage({ auth }: PageProps) {
       head={
         <Head
           title="Nova Loja"
-          breadcrumb={[{ title: 'Lojas', url: '/stores' }]}
+          breadcrumb={[{ title: 'Lojas', url: route(Store.GET_ROUTE()) }]}
         ></Head>
       }
     >

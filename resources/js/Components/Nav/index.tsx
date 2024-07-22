@@ -1,3 +1,6 @@
+import { MotorcycleBrandModels } from '@/models/MotorcycleBrandModels';
+import { MotorcycleOptional } from '@/models/MotorcycleOptional';
+import { MotorcycleTypes } from '@/models/MotorcycleTypes';
 import { Link } from '@inertiajs/react';
 import { forwardRef } from 'react';
 import ApplicationLogo from '../ApplicationLogo';
@@ -33,7 +36,7 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
               <StoreIcon /> Lojas
             </NavLink>
           )}
-          <div className={styles.category}>Config. de Veículos</div>
+          <div className={styles.category}>Config. Gerais</div>
           <NavLink href="colors">
             <ColorsIcon /> Cores
           </NavLink>
@@ -43,6 +46,7 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
           <NavLink href="brands">
             <CarIcon /> Marcas
           </NavLink>
+          <div className={styles.category}>Carros</div>
           <NavLink href="brandModels">
             <CarIcon /> Modelos
           </NavLink>
@@ -52,9 +56,21 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
           <NavLink href="optional">
             <CarFrontIcon /> Opcionais
           </NavLink>
-          <div className={styles.category}>Veículos</div>
-          <NavLink href="vehicles">
-            <CarIcon /> Veículos
+          <NavLink preserveScroll href="vehicles">
+            <CarIcon /> Carros
+          </NavLink>
+          <div className={styles.category}>Motos</div>
+          <NavLink href={MotorcycleBrandModels.GET_ROUTE()}>
+            <CarIcon /> Modelos
+          </NavLink>
+          <NavLink preserveScroll href={MotorcycleOptional.GET_ROUTE()}>
+            <CarFrontIcon /> Opcionais
+          </NavLink>
+          <NavLink preserveScroll href={MotorcycleTypes.GET_ROUTE()}>
+            <CarFrontIcon /> Tipos
+          </NavLink>
+          <NavLink preserveScroll href="motorcycle">
+            <CarIcon /> Motos
           </NavLink>
         </div>
       </nav>

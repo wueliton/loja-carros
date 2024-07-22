@@ -27,7 +27,7 @@ export default function EditUserPage({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    patch(`/users/${user.id}`);
+    patch(route('users.edit', { id: user.id }));
   };
 
   useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
@@ -38,7 +38,7 @@ export default function EditUserPage({
       head={
         <Head
           title={`Editar Usuário ${user.name}`}
-          breadcrumb={[{ title: 'Usuários', url: '/users' }]}
+          breadcrumb={[{ title: 'Usuários', url: route('users') }]}
         />
       }
     >

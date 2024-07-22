@@ -57,7 +57,7 @@ export default function ListStorePage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('stores.delete', { id: item.id }), {
+        router.delete(route(Store.GET_ROUTE('delete'), { id: item.id }), {
           preserveScroll: true,
           onSuccess: () => {
             console.log('excluído com sucesso');
@@ -72,7 +72,9 @@ export default function ListStorePage({
       user={auth.user}
       head={
         <Head title="Lojas">
-          <Button onClick={() => router.visit('stores/create')}>
+          <Button
+            onClick={() => router.visit(route(Store.GET_ROUTE('create')))}
+          >
             Adicionar
           </Button>
         </Head>
@@ -82,7 +84,9 @@ export default function ListStorePage({
         data={stores}
         headers={storeHeader}
         onDelete={(item) => handleDelete(item)}
-        onEdit={(item) => router.visit(`stores/${item.id}`)}
+        onEdit={(item) =>
+          router.visit(route(Store.GET_ROUTE('edit'), { id: item.id }))
+        }
       />
     </AuthenticatedLayout>
   );
