@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Models;
+
+use App\Traits\LogsActivityWithDescription;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+
+class Car extends Model
+{
+    use HasFactory, LogsActivity, LogsActivityWithDescription;
+
+    public $displayName = 'Carro';
+    public $displayProperty = 'title';
+
+    protected $fillable = [
+        'title',
+        'brand_id',
+        'model_id',
+        'manufacturing_year',
+        'year',
+        'version',
+        'color_id',
+        'fuel_type_id',
+        'doors',
+        'transmission_id',
+        'motor',
+        'km',
+        'last_digit',
+        'details',
+        'seats',
+        'power',
+        'size',
+        'fuel_capacity',
+        'axis_length'
+    ];
+
+    public function brand()
+    {
+        return $this->belongsTo(Brands::class);
+    }
+
+    public function model()
+    {
+        return $this->belongsTo(CarBrandModel::class);
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(Color::class);
+    }
+
+    public function transmission()
+    {
+        return $this->belongsTo(CarTransmission::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(CarImages::class, 'car_id', 'id');
+    }
+
+    public function optionals()
+    {
+        return $this->belongsToMany(CarOptional::class, 'car_optionals_relations', 'car_id', 'car_optional_id');
+    }
+}

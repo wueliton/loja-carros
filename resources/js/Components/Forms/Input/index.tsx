@@ -42,6 +42,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       value,
       mask,
       type,
+      required,
       hideInput,
       disabled,
       className,
@@ -71,7 +72,16 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
 
     return (
       <div className={`${styles['form-field']} ${className ?? ''}`} ref={ref}>
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id}>
+          {label}
+          {required ? (
+            <span className={styles.required}>
+              * <span>(obrigatório)</span>
+            </span>
+          ) : (
+            ''
+          )}
+        </label>
         <div className={styles['field']}>
           {prefix && <div className={styles.prefix}>{prefix}</div>}
           {!hideInput && (

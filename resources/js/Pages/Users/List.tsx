@@ -70,7 +70,7 @@ export default function ListUserPage({
         data={users}
         headers={usersHeader}
         onDelete={handleDelete}
-        onEdit={(item) => router.visit(route('users.edit', { id: item.id }))}
+        onEdit={(item) => router.visit(route('users.get', { id: item.id }))}
       />
     </AuthenticatedLayout>
   );

@@ -8,14 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Color extends Model
+class CarImages extends Model
 {
     use HasFactory, LogsActivity, LogsActivityWithDescription;
 
-    public $displayName = 'Cor';
-    public $displayProperty = 'color';
+    public $displayName = 'Imagem de Carro';
 
     protected $fillable = [
-        'color'
+        'url',
+        'car_id'
     ];
+
+    public function cars()
+    {
+        return $this->belongsTo(Car::class, 'car_id', 'id');
+    }
 }

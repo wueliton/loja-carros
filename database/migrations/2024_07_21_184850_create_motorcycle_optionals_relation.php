@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('motorcycle_id');
             $table->unsignedInteger('motorcycle_optionals_id');
-            $table->foreign('motorcycle_id')->references('id')->on('motorcycles');
+            $table->foreign('motorcycle_id')->references('id')->on('motorcycles')->onDelete('cascade');
             $table->foreign('motorcycle_optionals_id')->references('id')->on('motorcycle_optionals');
             $table->timestamps();
         });

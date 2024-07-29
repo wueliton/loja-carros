@@ -10,7 +10,10 @@ export const NavLink: FC<InertiaLinkProps> = ({
 }) => {
   const { url } = usePage();
   const link = useMemo(() => route(href), [href]);
-  const active = useCallback(() => url.includes(new URL(link).pathname), [url]);
+  const active = useCallback(() => {
+    const pathName = new URL(link).pathname;
+    return url.endsWith(pathName) || url.includes(`${pathName}/`);
+  }, [url]);
 
   return (
     <Link

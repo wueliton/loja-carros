@@ -5,7 +5,8 @@ import { Editor } from '@/Components/Forms/Editor';
 import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
-import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
+import { TrashIcon } from '@/Components/Icons/Trash';
+import { useDialog } from '@/Context/Dialog';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Color } from '@/models/Color';
 import { Motorcycle } from '@/models/Motorcycle';
@@ -14,11 +15,19 @@ import { MotorcycleOptional } from '@/models/MotorcycleOptional';
 import { MotorcycleTypes } from '@/models/MotorcycleTypes';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { FormEvent, useMemo } from 'react';
+import axios from 'axios';
+import { FormEvent, useMemo, useState } from 'react';
 
-export default function CreateMotorcyclePage({ auth }: PageProps) {
+export default function EditMotorcyclePage({
+  auth,
+  motorcycle,
+}: PageProps<{ motorcycle: Motorcycle }>) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
-  const { data, setData, errors, post, isDirty } = useForm<{
+  const { openDialog } = useDialog();
+  const [currentFiles, setCurrentFiles] = useState<Motorcycle['images']>(
+    motorcycle.images,
+  );
+  const { data, setData, errors, post } = useForm<{
     title?: string;
     brand?: number;
     model?: number;
@@ -32,27 +41,52 @@ export default function CreateMotorcyclePage({ auth }: PageProps) {
     fuelCapacity?: number;
     size?: string;
     axisLength?: string;
-    optionals?: number[];
+    optionals?: (number | undefined)[];
     images?: File[];
     details?: string;
   }>({
-    year: currentYear,
-    manufacturingYear: currentYear,
+    ...motorcycle,
+    brand: motorcycle.brand_id,
+    model: motorcycle.model_id,
+    type: motorcycle.type_id,
+    color: motorcycle.color_id,
+    optionals: motorcycle.optionals?.map((optional) => optional.id),
+    fuelCapacity: motorcycle.fuel_capacity,
+    axisLength: motorcycle.axis_length,
+    manufacturingYear: motorcycle.manufacturing_year,
+    images: [],
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post(route(Motorcycle.GET_ROUTE('create')));
+    post(route(Motorcycle.GET_ROUTE('edit'), { id: motorcycle.id }));
   };
 
-  useDiscardUnsaved(isDirty);
+  const handleDeleteFile = (id?: number) => {
+    openDialog({
+      content: {
+        title: 'Deseja excluir a imagem?',
+        icon: <TrashIcon />,
+        content: 'Esta ação não poderá ser revertida.',
+      },
+      onClose: (data) => {
+        if (!data) return;
+
+        axios
+          .delete(route(Motorcycle.GET_ROUTE('deleteImage'), { id }))
+          .then(() =>
+            setCurrentFiles((prev) => prev?.filter((img) => img.id !== id)),
+          );
+      },
+    });
+  };
 
   return (
     <AuthenticatedLayout
       user={auth.user}
       head={
         <Head
-          title="Adicionar Moto"
+          title={`Editar ${motorcycle.title}`}
           breadcrumb={[{ title: 'Motos', url: route('motorcycle') }]}
         />
       }
@@ -190,6 +224,11 @@ export default function CreateMotorcyclePage({ auth }: PageProps) {
             className="md:col-span-2"
             onChange={(files) => setData('images', files)}
             error={errors.images}
+            onDelete={(file) => handleDeleteFile(file.id)}
+            files={currentFiles?.map((image) => ({
+              ...image,
+              fileName: image.url,
+            }))}
             isMultiple
           />
           <h2 className="md:col-span-2 text-lg font-bold mt-4">Observações</h2>

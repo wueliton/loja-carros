@@ -38,7 +38,7 @@ class MotorcycleBrandModelController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|unique:car_brand_models|string',
+            'name' => 'required|unique:motorcycle_brand_models|string',
             'brand' => 'required|exists:brands,id'
         ]);
 
@@ -53,7 +53,7 @@ class MotorcycleBrandModelController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|unique:car_brand_models|string',
+            'name' => 'required|unique:motorcycle_brand_models|string',
             'brand' => 'required|exists:brands,id'
         ]);
 

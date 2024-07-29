@@ -1,19 +1,28 @@
+import { Card } from '@/Components/Card';
+import { Head } from '@/Components/Head';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
+import { ACTION, CustomLog, Logs } from '@/models/Logs';
 import { PageProps } from '@/types';
-import { Head } from '@inertiajs/react';
+import moment from 'moment';
+import { useMemo } from 'react';
 
-export default function Dashboard({ auth }: PageProps) {
+export default function Dashboard({ auth, logs }: PageProps<{ logs: Logs[] }>) {
+  const parsedLogs = useMemo<CustomLog[]>(() => {
+    return logs.map((log) => JSON.parse(log.description ?? ''));
+  }, [logs]);
+
   return (
-    <AuthenticatedLayout user={auth.user}>
-      <Head title="Dashboard" />
-
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div className="p-6 text-gray-900">You're logged in!</div>
-          </div>
-        </div>
-      </div>
+    <AuthenticatedLayout user={auth.user} head={<Head title="Dashboard" />}>
+      <Card>
+        <>
+          {parsedLogs.map((log) => (
+            <div>
+              {ACTION[log.event]} o registro {log.title} em {log.model} •{' '}
+              {moment.duration(moment().diff(log.created_at)).humanize()}.
+            </div>
+          ))}
+        </>
+      </Card>
     </AuthenticatedLayout>
   );
 }

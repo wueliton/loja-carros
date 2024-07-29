@@ -18,7 +18,7 @@ export default function EditUserPage({
   user: User;
   roles: Role[];
 }>) {
-  const { data, setData, errors, isDirty, patch, reset } = useForm<{
+  const { data, setData, errors, isDirty, patch } = useForm<{
     name?: string;
     email?: string;
     password?: string;
@@ -30,7 +30,7 @@ export default function EditUserPage({
     patch(route('users.edit', { id: user.id }));
   };
 
-  useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
+  useDiscardUnsaved(isDirty);
 
   return (
     <AuthenticatedLayout

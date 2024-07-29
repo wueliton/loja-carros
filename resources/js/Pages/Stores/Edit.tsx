@@ -15,7 +15,7 @@ export default function EditStore({
   store,
   auth,
 }: PageProps<{ store: Store & { users_ids: number[] } }>) {
-  const { data, setData, errors, isDirty, post, reset, transform } = useForm<
+  const { data, setData, errors, isDirty, post, transform } = useForm<
     Omit<Store, 'logo_url' | 'phone' | 'whatsapp'> & {
       phone?: string | number;
       whatsapp?: string | number;
@@ -44,7 +44,7 @@ export default function EditStore({
     post(route(Store.GET_ROUTE('edit'), { id: store.id }));
   };
 
-  useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
+  useDiscardUnsaved(isDirty);
 
   return (
     <AuthenticatedLayout
@@ -52,7 +52,7 @@ export default function EditStore({
       head={
         <Head
           title={`Editar ${store.name}`}
-          breadcrumb={[{ title: 'Lojas', url: Store.GET_ROUTE() }]}
+          breadcrumb={[{ title: 'Lojas', url: route(Store.GET_ROUTE()) }]}
         />
       }
     >

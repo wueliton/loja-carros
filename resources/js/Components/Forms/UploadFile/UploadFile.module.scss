@@ -56,7 +56,11 @@
         @apply flex gap-3;
 
         span {
-            @apply bg-white shadow-sm w-10 h-10 rounded-md;
+            @apply bg-white shadow-sm w-10 h-10 rounded-md overflow-hidden;
+
+            > img {
+                @apply h-full w-full object-cover;
+            }
         }
 
         > div p:last-child {
@@ -67,4 +71,8 @@
             @apply ml-auto;
         }
     }
+}
+
+.list-existing-file {
+    @apply bg-blue-100;
 }

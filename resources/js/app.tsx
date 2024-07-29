@@ -4,8 +4,12 @@ import './bootstrap';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import moment from 'moment';
+import 'moment/dist/locale/pt-br';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { DialogProvider } from './Context/Dialog';
+
+moment.locale('pt-br');
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

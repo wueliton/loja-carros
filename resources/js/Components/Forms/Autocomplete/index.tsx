@@ -8,7 +8,11 @@ import { Chip } from '../Chip';
 import { Input } from '../Input';
 import styles from './Autocomplete.module.scss';
 
-export interface AutocompleteProps<T, isMulti extends boolean> {
+export interface AutocompleteProps<
+  T,
+  isMulti extends boolean,
+  CanCreate extends boolean,
+> {
   label: string;
   propertyValue: keyof T;
   propertyToDisplay: keyof T;
@@ -22,19 +26,27 @@ export interface AutocompleteProps<T, isMulti extends boolean> {
   autoFocus?: boolean;
   filter?: Where<T>[];
   className?: string;
+  canCreate?: CanCreate;
+  required?: boolean;
   onChange?: (values: isMulti extends true ? T[keyof T][] : T[keyof T]) => void;
   onChangeFull?: (values: isMulti extends true ? T[] : T) => void;
 }
 
-export const Autocomplete = <T, isMulti extends boolean = boolean>({
+export const Autocomplete = <
+  T,
+  isMulti extends boolean = boolean,
+  CanCreate extends boolean = false,
+>({
   label,
   propertyToDisplay,
   propertyValue,
   searchProperties = [],
   moreThanOne,
   autoFocus,
+  canCreate,
   className,
   disabled,
+  required,
   filter,
   url,
   value,
@@ -42,7 +54,9 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
   error,
   onChange,
   onChangeFull,
-}: AutocompleteProps<T, isMulti>) => {
+}: CanCreate extends true
+  ? { createUrl: string } & AutocompleteProps<T, isMulti, CanCreate>
+  : AutocompleteProps<T, isMulti, CanCreate>) => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState<string | null>(null);
   const [selected, setSelected] = useState<T[]>([]);
@@ -64,7 +78,6 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
   };
 
   const loadResults = async (inputSearch: string) => {
-    setSearch(inputSearch);
     const data = await fetchResult({
       where: [
         ...(searchProperties.map((prop) => ({
@@ -143,6 +156,7 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
 
   const debounceSearch = debounce((e: ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
+    setSearch(e.target.value);
     loadResults(e.target.value);
   }, 500);
 
@@ -217,6 +231,7 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
         aria-haspopup="listbox"
         error={error}
         autoFocus={autoFocus}
+        required={required}
       ></Input>
 
       {moreThanOne && (
@@ -244,8 +259,17 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
           </div>
         ) : (
           <>
-            {!options.length && (
+            {!options.length && !canCreate && (
               <div className={styles.empty}>Nenhuma opção disponível</div>
+            )}
+            {!options.length && canCreate && search && (
+              <div
+                key={0}
+                className={`${styles.option} ${focused === 0 ? styles['active-option'] : ''}`}
+                onMouseEnter={() => setFocused(0)}
+              >
+                Criar "{search}"
+              </div>
             )}
             {options.map((item, index) => (
               <div

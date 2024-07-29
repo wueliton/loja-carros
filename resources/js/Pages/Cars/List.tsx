@@ -4,13 +4,13 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
-import { Motorcycle } from '@/models/Motorcycle';
+import { Car } from '@/models/Car';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import moment from 'moment';
 import { Tooltip } from 'react-tooltip';
 
-const motorcycleHeader: THeadProps<Motorcycle>[] = [
+const carHeader: THeadProps<Car>[] = [
   {
     key: 'title',
     title: 'Título Anuncio',
@@ -43,13 +43,12 @@ const motorcycleHeader: THeadProps<Motorcycle>[] = [
   },
 ];
 
-export default function MotorcyclePage({
+export default function ListVehiclesPage({
   auth,
-  motorcycles,
-}: PageProps<{ motorcycles: Motorcycle[] }>) {
+  cars,
+}: PageProps<{ cars: Car[] }>) {
   const { openDialog } = useDialog();
-
-  const handleDeleteMotorcycle = (motorcycle: Motorcycle) =>
+  const handleDelete = (car: Car) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -58,12 +57,9 @@ export default function MotorcyclePage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(
-          route(Motorcycle.GET_ROUTE('delete'), { id: motorcycle.id }),
-          {
-            preserveScroll: true,
-          },
-        );
+        router.delete(route(Car.GET_ROUTE('delete'), { id: car.id }), {
+          preserveScroll: true,
+        });
       },
     });
 
@@ -72,11 +68,9 @@ export default function MotorcyclePage({
       <AuthenticatedLayout
         user={auth.user}
         head={
-          <Head title="Motos">
+          <Head title="Carros">
             <Button
-              onClick={() =>
-                router.visit(route(Motorcycle.GET_ROUTE('createView')))
-              }
+              onClick={() => router.visit(route(Car.GET_ROUTE('createView')))}
             >
               Adicionar
             </Button>
@@ -84,11 +78,11 @@ export default function MotorcyclePage({
         }
       >
         <Table
-          data={motorcycles}
-          headers={motorcycleHeader}
-          onDelete={handleDeleteMotorcycle}
+          data={cars}
+          headers={carHeader}
+          onDelete={handleDelete}
           onEdit={(item) =>
-            router.visit(route(Motorcycle.GET_ROUTE('get'), { id: item.id }))
+            router.visit(route(Car.GET_ROUTE('get'), { id: item.id }))
           }
         />
       </AuthenticatedLayout>

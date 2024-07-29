@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('motorcycle_images', function (Blueprint $table) {
+        Schema::create('car_images', function (Blueprint $table) {
             $table->id();
             $table->string('url');
-            $table->unsignedInteger('motorcycle_id');
-            $table->foreign('motorcycle_id')->references('id')->on('motorcycles')->onDelete('cascade');
+            $table->unsignedInteger('car_id');
+            $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('motorcycle_images');
+        Schema::dropIfExists('car_images');
     }
 };

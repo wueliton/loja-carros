@@ -4,12 +4,16 @@ import { MotorcycleTypes } from '@/models/MotorcycleTypes';
 import { Link } from '@inertiajs/react';
 import { forwardRef } from 'react';
 import ApplicationLogo from '../ApplicationLogo';
+import { BisIcon } from '../Icons/Bis';
 import { CambioIcon } from '../Icons/Cambio';
+import { CapaceteIcon } from '../Icons/Capacete';
 import { CarIcon } from '../Icons/Car';
 import { CarFrontIcon } from '../Icons/CarFront';
 import { ColorsIcon } from '../Icons/Colors';
 import { DashboardIcon } from '../Icons/Dashboard';
 import { FuelPumpIcon } from '../Icons/FuelPump';
+import { MotoIcon } from '../Icons/Moto';
+import { MotoqueiroIcon } from '../Icons/Motoqueiro';
 import { StoreIcon } from '../Icons/Store';
 import { UsersIcon } from '../Icons/Users';
 import styles from './Nav.module.scss';
@@ -56,21 +60,21 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
           <NavLink href="optional">
             <CarFrontIcon /> Opcionais
           </NavLink>
-          <NavLink preserveScroll href="vehicles">
+          <NavLink preserveScroll href="cars">
             <CarIcon /> Carros
           </NavLink>
           <div className={styles.category}>Motos</div>
           <NavLink href={MotorcycleBrandModels.GET_ROUTE()}>
-            <CarIcon /> Modelos
+            <MotoIcon /> Modelos
           </NavLink>
           <NavLink preserveScroll href={MotorcycleOptional.GET_ROUTE()}>
-            <CarFrontIcon /> Opcionais
+            <CapaceteIcon /> Opcionais
           </NavLink>
           <NavLink preserveScroll href={MotorcycleTypes.GET_ROUTE()}>
-            <CarFrontIcon /> Tipos
+            <BisIcon /> Tipos
           </NavLink>
           <NavLink preserveScroll href="motorcycle">
-            <CarIcon /> Motos
+            <MotoqueiroIcon /> Motos
           </NavLink>
         </div>
       </nav>

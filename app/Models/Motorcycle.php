@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\LogsActivityWithDescription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Motorcycle extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity, LogsActivityWithDescription;
+
+    public $displayName = 'Moto';
+    public $displayProperty = 'title';
 
     protected $fillable = [
         'title',
@@ -16,7 +22,7 @@ class Motorcycle extends Model
         'type_id',
         'manufacturing_year',
         'year',
-        'cilynder',
+        'cylinder',
         'motor',
         'color_id',
         'km',
@@ -28,7 +34,7 @@ class Motorcycle extends Model
 
     public function optionals()
     {
-        return $this->belongsToMany(MotorcycleOptionalsRelations::class, 'motorcycle_optionals_relations', 'motorcycle_id', 'motorcycle_optionals_id');
+        return $this->belongsToMany(MotorcycleOptional::class, 'motorcycle_optionals_relations', 'motorcycle_id', 'motorcycle_optionals_id');
     }
 
     public function images()

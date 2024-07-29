@@ -11,26 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('motorcycles', function (Blueprint $table) {
+        Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->unsignedInteger('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands');
             $table->unsignedInteger('model_id');
-            $table->foreign('model_id')->references('id')->on('motorcycle_brand_models');
-            $table->unsignedInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('motorcycle_types');
+            $table->foreign('model_id')->references('id')->on('car_brand_models');
             $table->integer('manufacturing_year');
             $table->integer('year');
-            $table->integer('cylinder');
-            $table->string('motor');
+            $table->string('version')->nullable();
             $table->unsignedInteger('color_id');
             $table->foreign('color_id')->references('id')->on('colors');
+            $table->unsignedInteger('fuel_type_id');
+            $table->foreign('fuel_type_id')->references('id')->on('fuel_types');
+            $table->integer('doors');
+            $table->unsignedInteger('transmission_id');
+            $table->foreign('transmission_id')->references('id')->on('car_transmissions');
+            $table->string('motor');
             $table->integer('km');
-            $table->integer('fuel_capacity');
-            $table->string('size')->nullable();
-            $table->string('axis_length')->nullable();
+            $table->string('last_digit');
             $table->string('details')->nullable();
+            $table->integer('seats')->nullable();
+            $table->string('power')->nullable();
+            $table->string('size')->nullable();
+            $table->integer('fuel_capacity');
+            $table->string('axis_length')->nullable();
             $table->timestamps();
         });
     }
@@ -40,6 +46,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('motorcycles');
+        Schema::dropIfExists('cars');
     }
 };

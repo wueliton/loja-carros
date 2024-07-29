@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\LogsActivityWithDescription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Store extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity, LogsActivityWithDescription;
 
     protected $fillable = [
         'name',
@@ -17,6 +20,9 @@ class Store extends Model
         'phone',
         'whatsapp'
     ];
+
+    public $displayName = 'Loja';
+    public $displayProperty = 'name';
 
     public function users()
     {

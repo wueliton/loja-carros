@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CarBrandModelController;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\CarOptionalController;
 use App\Http\Controllers\CarTransmissionController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FuelTypeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MotorcycleBrandModelController;
@@ -14,9 +16,7 @@ use App\Http\Controllers\MotorcycleTypesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -26,9 +26,7 @@ Route::get('/site/loja', function () {
     return view('lojas');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -111,9 +109,14 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], func
         Route::get('list', [CarOptionalController::class, 'get'])->name('optional.list');
     });
 
-    Route::group(['prefix' => 'vehicles'], function () {
-        Route::get('', [VehicleController::class, 'list'])->name('vehicles');
-        Route::inertia('create', 'Vehicles/Create')->name('vehicles.createView');
+    Route::group(['prefix' => 'cars'], function () {
+        Route::get('', [CarController::class, 'list'])->name('cars');
+        Route::inertia('create', 'Cars/Create')->name('cars.createView');
+        Route::post('create', [CarController::class, 'create'])->name('cars.create');
+        Route::get('{id}', [CarController::class, 'getCar'])->name('cars.get')->where('id', '[0-9]+');
+        Route::delete('{id}', [CarController::class, 'delete'])->name('cars.delete')->where('id', '[0-9]+');
+        Route::post('{id}', [CarController::class, 'edit'])->name('cars.edit')->where('id', '[0-9]+');
+        Route::delete('image/{id}', [CarController::class, 'deleteImage'])->name('cars.deleteImage')->where('id', '[0-9]+');
     });
 
     Route::group(['prefix' => 'motorcycle-brand-model'], function () {
@@ -147,6 +150,10 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], func
         Route::get('', [MotorcycleController::class, 'list'])->name('motorcycle');
         Route::inertia('create', 'Motorcycle/Create')->name('motorcycle.createView');
         Route::post('create', [MotorcycleController::class, 'create'])->name('motorcycle.create');
+        Route::delete('{id}', [MotorcycleController::class, 'delete'])->name('motorcycle.delete')->where('id', '[0-9]+');
+        Route::get('{id}', [MotorcycleController::class, 'getMotorcycle'])->name('motorcycle.get')->where('id', '[0-9]+');
+        Route::post('{id}', [MotorcycleController::class, 'edit'])->name('motorcycle.edit')->where('id', '[0-9]+');
+        Route::delete('image/{id}', [MotorcycleController::class, 'deleteImage'])->name('motorcycle.deleteImage')->where('id', '[0-9]+');
     });
 });
 

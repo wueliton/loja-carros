@@ -14,7 +14,7 @@ export default function CreateUserPage({
   roles,
   auth,
 }: PageProps<{ roles: Role[] }>) {
-  const { data, setData, errors, isDirty, post, reset } = useForm<{
+  const { data, setData, errors, isDirty, post } = useForm<{
     name?: string;
     email?: string;
     password?: string;
@@ -31,7 +31,7 @@ export default function CreateUserPage({
     post(route('users.create'));
   };
 
-  useDiscardUnsaved({ isDirty, onConfirm: () => reset() });
+  useDiscardUnsaved(isDirty);
 
   return (
     <AuthenticatedLayout

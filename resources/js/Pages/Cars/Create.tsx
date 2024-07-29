@@ -1,3 +1,4 @@
+import { Button } from '@/Components/Button';
 import { Card } from '@/Components/Card';
 import { Autocomplete } from '@/Components/Forms/Autocomplete';
 import { Editor } from '@/Components/Forms/Editor';
@@ -5,13 +6,14 @@ import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
+import { Car } from '@/models/Car';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { useMemo } from 'react';
+import { FormEvent, useMemo } from 'react';
 
 export default function CreateVehiclePage({ auth }: PageProps) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
-  const { data, setData } = useForm<{
+  const { data, setData, errors, post } = useForm<{
     title?: string;
     brand?: number;
     model?: number;
@@ -19,22 +21,29 @@ export default function CreateVehiclePage({ auth }: PageProps) {
     year?: number;
     version?: string;
     color?: number;
-    fuelType?: number[];
+    fuelType?: number;
     doors?: number;
     transmission?: number;
-    motor?: number;
+    motor?: string;
     km?: number;
-    lastDigit?: string;
+    lastDigit?: number;
     seats?: number;
     fuelCapacity?: number;
     power?: string;
     size?: string;
     axisLength?: string;
-    optionals?: number[];
+    optionals?: (number | undefined)[];
+    images?: File[];
+    details?: string;
   }>({
     year: currentYear,
     manufacturingYear: currentYear,
   });
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    post(route(Car.GET_ROUTE('create')));
+  };
 
   return (
     <AuthenticatedLayout
@@ -42,17 +51,22 @@ export default function CreateVehiclePage({ auth }: PageProps) {
       head={
         <Head
           title="Adicionar Veículo"
-          breadcrumb={[{ title: 'Veículos', url: route('vehicles') }]}
+          breadcrumb={[{ title: 'Veículos', url: route('cars') }]}
         />
       }
     >
       <Card>
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <form
+          className="grid grid-cols-1 md:grid-cols-2 gap-3"
+          onSubmit={handleSubmit}
+        >
           <Input
             label="Título"
             className="md:col-span-2"
             value={data.title}
             onChange={(e) => setData('title', e.target.value)}
+            error={errors.title}
+            required
           />
           <h2 className="md:col-span-2 text-lg font-bold">Dados gerais</h2>
           <Autocomplete
@@ -70,6 +84,8 @@ export default function CreateVehiclePage({ auth }: PageProps) {
               });
             }}
             name="brand"
+            error={errors.brand}
+            required
           />
           <Autocomplete
             label="Modelo"
@@ -88,6 +104,8 @@ export default function CreateVehiclePage({ auth }: PageProps) {
               },
             ]}
             value={data.model}
+            error={errors.model}
+            required
           />
           <Input
             label="Ano de Fabricação"
@@ -97,6 +115,8 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             step={1}
             value={data.manufacturingYear}
             onChange={(e) => setData('manufacturingYear', +e.target.value)}
+            error={errors.manufacturingYear}
+            required
           />
           <Input
             label="Ano"
@@ -106,11 +126,14 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             value={data.year}
             step={1}
             onChange={(e) => setData('year', +e.target.value)}
+            error={errors.year}
+            required
           />
           <Input
             label="Versão"
             value={data.version}
             onChange={(e) => setData('version', e.target.value)}
+            error={errors.version}
           />
           <Autocomplete
             label="Cor"
@@ -121,6 +144,8 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             value={data.color}
             onChange={(e) => setData('color', e)}
             name="color"
+            error={errors.color}
+            required
           />
           <Autocomplete
             label="Tipo de combustível"
@@ -131,7 +156,8 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             value={data.fuelType}
             onChange={(e) => setData('fuelType', e)}
             name="fuelType"
-            moreThanOne
+            error={errors.fuelType}
+            required
           />
           <Input
             label="Portas"
@@ -139,6 +165,8 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             min={1}
             value={data.doors}
             onChange={(e) => setData('doors', +e.target.value)}
+            error={errors.doors}
+            required
           />
           <Autocomplete
             label="Transmissão"
@@ -149,15 +177,18 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             value={data.transmission}
             onChange={(e) => setData('transmission', e)}
             name="transmission"
+            error={errors.transmission}
+            required
           />
           <Input
             label="Motor"
             type="number"
             step={0.1}
-            defaultValue={2.0}
             value={data.motor}
-            onChange={(e) => setData('motor', +e.target.value)}
+            onChange={(e) => setData('motor', e.target.value)}
             name="motor"
+            error={errors.motor}
+            required
           />
           <Input
             label="Quilômetros"
@@ -168,12 +199,17 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             onChange={(e) => setData('km', +e.target.value)}
             suffix={<span className="p-2 bg-gray-50">km</span>}
             name="km"
+            error={errors.km}
+            required
           />
           <Input
             label="Último dígito da placa"
             value={data.lastDigit}
-            onChange={(e) => setData('lastDigit', e.target.value)}
+            onChange={(e) => setData('lastDigit', +e.target.value)}
             name="lastDigit"
+            error={errors.lastDigit}
+            type="number"
+            required
           />
           <h2 className="md:col-span-2 text-lg font-bold mt-4">Imagens</h2>
           <UploadFile
@@ -182,10 +218,17 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             accept="image/png, image/jpg, image/webp, image/jpeg"
             maxFiles={5}
             className="md:col-span-2"
+            onChange={(files) => setData('images', files)}
+            error={errors.images}
             isMultiple
           />
           <h2 className="md:col-span-2 text-lg font-bold mt-4">Observações</h2>
-          <Editor className="md:col-span-2" />
+          <Editor
+            className="md:col-span-2"
+            value={data.details}
+            onChange={(data) => setData('details', data)}
+            error={errors.details}
+          />
           <h2 className="md:col-span-2 text-lg font-bold mt-4">
             Desempenho e dimensões
           </h2>
@@ -197,18 +240,21 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             value={data.seats}
             onChange={(e) => setData('seats', +e.target.value)}
             name="seats"
+            error={errors.seats}
           />
           <Input
             label="Potência"
             value={data.power}
             onChange={(e) => setData('power', e.target.value)}
             name="power"
+            error={errors.power}
           />
           <Input
             label="Comprimento x Altura x Largura"
             value={data.size}
             onChange={(e) => setData('size', e.target.value)}
             name="size"
+            error={errors.size}
           />
           <Input
             label="Tanque de combustível"
@@ -221,12 +267,15 @@ export default function CreateVehiclePage({ auth }: PageProps) {
               <span className="p-2 min-w-10 text-center bg-gray-50">L</span>
             }
             name="fuelCapacity"
+            error={errors.fuelCapacity}
+            required
           />
           <Input
             label="Distância entre eixos"
             value={data.axisLength}
             onChange={(e) => setData('axisLength', e.target.value)}
             name="axisLength"
+            error={errors.axisLength}
           />
           <h2 className="md:col-span-2 text-lg font-bold mt-4">Outros</h2>
           <Autocomplete
@@ -240,7 +289,11 @@ export default function CreateVehiclePage({ auth }: PageProps) {
             name="optionals"
             className={'md:col-span-2'}
             moreThanOne
+            error={errors.optionals}
           />
+          <div className="col-span-full flex justify-end">
+            <Button type="submit">Salvar</Button>
+          </div>
         </form>
       </Card>
     </AuthenticatedLayout>

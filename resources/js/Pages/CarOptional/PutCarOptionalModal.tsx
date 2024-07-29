@@ -3,13 +3,14 @@ import { DialogFooter } from '@/Components/Dialog/Footer';
 import { DialogHeader } from '@/Components/Dialog/Header';
 import { Input } from '@/Components/Forms/Input';
 import { DialogProps } from '@/Context/Dialog';
-import { VehicleOptional } from '@/models/VehicleOptional';
+import { CarOptional } from '@/models/VehicleOptional';
 import { useForm } from '@inertiajs/react';
 import { FC, FormEvent } from 'react';
 
-export const PutOptionalModal: FC<
-  DialogProps<{ optional?: VehicleOptional }>
-> = ({ close, optional }) => {
+export const PutOptionalModal: FC<DialogProps<{ optional?: CarOptional }>> = ({
+  close,
+  optional,
+}) => {
   const { setData, data, errors, post, put } = useForm<{
     name?: string;
     id?: number;
@@ -21,13 +22,13 @@ export const PutOptionalModal: FC<
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (optional) {
-      put(route(VehicleOptional.GET_ROUTE('update'), { id: data.id }), {
+      put(route(CarOptional.GET_ROUTE('update'), { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route(VehicleOptional.GET_ROUTE('create')), {
+    post(route(CarOptional.GET_ROUTE('create')), {
       onSuccess: () => close(true),
     });
   };

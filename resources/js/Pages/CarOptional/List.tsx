@@ -4,12 +4,12 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
-import { VehicleOptional } from '@/models/VehicleOptional';
+import { CarOptional } from '@/models/VehicleOptional';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import { PutOptionalModal } from './PutCarOptionalModal';
 
-const OptionalHeader: THeadProps<VehicleOptional>[] = [
+const OptionalHeader: THeadProps<CarOptional>[] = [
   {
     key: 'name',
     title: 'Nome',
@@ -19,10 +19,10 @@ const OptionalHeader: THeadProps<VehicleOptional>[] = [
 export default function ListOptionalPage({
   auth,
   optional,
-}: PageProps<{ optional: VehicleOptional[] }>) {
+}: PageProps<{ optional: CarOptional[] }>) {
   const { openDialog } = useDialog();
 
-  const handleAddFuelType = (optional?: VehicleOptional) =>
+  const handleAddFuelType = (optional?: CarOptional) =>
     openDialog({
       component: PutOptionalModal,
       props: {
@@ -30,7 +30,7 @@ export default function ListOptionalPage({
       },
     });
 
-  const handleDeleteOptional = (optional: VehicleOptional) =>
+  const handleDeleteOptional = (optional: CarOptional) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -40,12 +40,9 @@ export default function ListOptionalPage({
       onClose: (data) => {
         if (!data) return;
         router.delete(
-          route(VehicleOptional.GET_ROUTE('delete'), { id: optional.id }),
+          route(CarOptional.GET_ROUTE('delete'), { id: optional.id }),
           {
             preserveScroll: true,
-            onSuccess: () => {
-              console.log('excluído com sucesso');
-            },
           },
         );
       },
