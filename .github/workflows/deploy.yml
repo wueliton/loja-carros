@@ -31,15 +31,24 @@ jobs:
       - name: Build React App
         run: npm run build
 
-      - name: Prepare deploy directory
-        run: |
-          rm -r node_modules && rm -r resources && rm -r public
-
-      - name: FTP Deploy Locaweb
+      - name: Deploy Front with FTP Deploy Locaweb
         uses: locaweb/ftp-deploy@1.0.0
         with:
           host: ${{ secrets.DEPLOY_HOST_LCW }}
           user: ${{ secrets.DEPLOY_USER_LCW }}
           password: ${{ secrets.DEPLOY_PASSWORD_LCW }}
-          remoteDir: 'sistema'
-          localDir: './'
+          remoteDir: 'public_html/admin/'
+          localDir: './public/'
+
+      # - name: Prepare deploy directory
+      #   run: |
+      #     rm -r node_modules && rm -r resources && rm -r public
+
+      # - name: FTP Deploy Locaweb
+      #   uses: locaweb/ftp-deploy@1.0.0
+      #   with:
+      #     host: ${{ secrets.DEPLOY_HOST_LCW }}
+      #     user: ${{ secrets.DEPLOY_USER_LCW }}
+      #     password: ${{ secrets.DEPLOY_PASSWORD_LCW }}
+      #     remoteDir: 'sistema'
+      #     localDir: './'
