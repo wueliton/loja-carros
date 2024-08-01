@@ -14,20 +14,15 @@ return new class extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->unsignedInteger('brand_id');
-            $table->foreign('brand_id')->references('id')->on('brands');
-            $table->unsignedInteger('model_id');
-            $table->foreign('model_id')->references('id')->on('car_brand_models');
+            $table->foreignId('brand_id')->constrained(table: 'brands');
+            $table->foreignId('model_id')->constrained(table: 'car_brand_models');
             $table->integer('manufacturing_year');
             $table->integer('year');
             $table->string('version')->nullable();
-            $table->unsignedInteger('color_id');
-            $table->foreign('color_id')->references('id')->on('colors');
-            $table->unsignedInteger('fuel_type_id');
-            $table->foreign('fuel_type_id')->references('id')->on('fuel_types');
+            $table->foreignId('color_id')->constrained(table: 'colors');
+            $table->foreignId('fuel_type_id')->constrained(table: 'fuel_types');
             $table->integer('doors');
-            $table->unsignedInteger('transmission_id');
-            $table->foreign('transmission_id')->references('id')->on('car_transmissions');
+            $table->foreignId('transmission_id')->constrained(table: 'car_transmissions');
             $table->string('motor');
             $table->integer('km');
             $table->string('last_digit');

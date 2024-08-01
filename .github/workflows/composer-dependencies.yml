@@ -1,0 +1,32 @@
+name: Upgrade Composer Dependencies
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'composer.json'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Composer
+        uses: php-actions/composer@v6
+        with:
+          php_version: '8.3.7'
+          args: --optimize-autoloader --no-dev
+          ssh_key: ${{ secrets.SSH_KEY }}
+          ssh_key_pub: ${{ secrets.SSH_KEY_PUB }}
+
+      - name: Deploy
+        uses: locaweb/ftp-deploy@1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST_LCW }}
+          user: ${{ secrets.DEPLOY_USER_LCW }}
+          password: ${{ secrets.DEPLOY_PASSWORD_LCW }}
+          remoteDir: 'sistema/'
+          localDir: './vendor'

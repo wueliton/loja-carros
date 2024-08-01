@@ -44,21 +44,21 @@ class Motorcycle extends Model
 
     public function brand()
     {
-        return $this->belongsTo(Brands::class);
+        return $this->belongsTo(Brands::class, 'brand_id', 'id');
     }
 
     public function model()
     {
-        return $this->belongsTo(MotorcycleBrandModel::class);
+        return $this->belongsTo(MotorcycleBrandModel::class, 'model_id', 'id');
     }
 
     public function type()
     {
-        return $this->belongsTo(MotorcycleTypes::class);
+        return $this->belongsTo(MotorcycleTypes::class, 'type_id', 'id');
     }
 
     public function color()
     {
-        return $this->belongsTo(Color::class);
+        return $this->belongsTo(Color::class, 'color_id', 'id');
     }
 }

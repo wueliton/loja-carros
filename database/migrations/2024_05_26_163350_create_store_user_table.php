@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('store_user', function (Blueprint $table) {
+        Schema::create('store_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('store_id');
-            $table->unsignedInteger('user_id');
-            $table->foreign('store_id')->references('id')->on('stores')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('store_id')->constrained(table: 'stores');
+            $table->foreignId('user_id')->constrained(table: 'users');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users_stores');
+        Schema::dropIfExists('store_users');
     }
 };

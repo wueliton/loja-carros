@@ -39,22 +39,22 @@ class Car extends Model
 
     public function brand()
     {
-        return $this->belongsTo(Brands::class);
+        return $this->belongsTo(Brands::class, 'brand_id', 'id');
     }
 
     public function model()
     {
-        return $this->belongsTo(CarBrandModel::class);
+        return $this->belongsTo(CarBrandModel::class, 'model_id', 'id');
     }
 
     public function color()
     {
-        return $this->belongsTo(Color::class);
+        return $this->belongsTo(Color::class, 'color_id', 'id');
     }
 
     public function transmission()
     {
-        return $this->belongsTo(CarTransmission::class);
+        return $this->belongsTo(CarTransmission::class, 'transmission_id', 'id');
     }
 
     public function images()

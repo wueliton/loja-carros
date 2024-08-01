@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('motorcycle_images', function (Blueprint $table) {
             $table->id();
             $table->string('url');
-            $table->unsignedInteger('motorcycle_id');
-            $table->foreign('motorcycle_id')->references('id')->on('motorcycles')->onDelete('cascade');
+            $table->foreignId('motorcycle_id')->constrained(table: 'motorcycles');
             $table->timestamps();
         });
     }

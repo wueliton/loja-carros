@@ -12,6 +12,8 @@ class Brands extends Model
 {
     use HasFactory, LogsActivity, LogsActivityWithDescription;
 
+    protected $table = 'brands';
+
     public $displayName = 'Marca';
     public $displayProperty = 'name';
 

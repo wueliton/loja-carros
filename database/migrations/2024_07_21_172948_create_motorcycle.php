@@ -14,18 +14,14 @@ return new class extends Migration
         Schema::create('motorcycles', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->unsignedInteger('brand_id');
-            $table->foreign('brand_id')->references('id')->on('brands');
-            $table->unsignedInteger('model_id');
-            $table->foreign('model_id')->references('id')->on('motorcycle_brand_models');
-            $table->unsignedInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('motorcycle_types');
+            $table->foreignId('brand_id')->constrained(table: 'brands');
+            $table->foreignId('model_id')->constrained(table: 'motorcycle_brand_models');
+            $table->foreignId('type_id')->constrained(table: 'motorcycle_types');
             $table->integer('manufacturing_year');
             $table->integer('year');
             $table->integer('cylinder');
             $table->string('motor');
-            $table->unsignedInteger('color_id');
-            $table->foreign('color_id')->references('id')->on('colors');
+            $table->foreignId('color_id')->constrained(table: 'colors');
             $table->integer('km');
             $table->integer('fuel_capacity');
             $table->string('size')->nullable();

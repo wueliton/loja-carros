@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('car_brand_models', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->unsignedInteger('brand_id');
-            $table->foreign('brand_id')->references('id')->on('brands');
+            $table->foreignId('brand_id')->constrained(table: 'brands');
             $table->timestamps();
         });
     }
