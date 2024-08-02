@@ -48,4 +48,4 @@ jobs:
           password: ${{ secrets.DEPLOY_PASSWORD_LCW }}
           remoteDir: 'public_html/admin/'
           localDir: './public/'
-          options: '--delete'
+          options: '--delete --exclude storage/'

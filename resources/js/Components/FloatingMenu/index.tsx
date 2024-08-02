@@ -63,7 +63,7 @@ export const FloatingMenu: FC<FloatingMenuProps> = memo(
 
     useEffect(() => {
       if (opened) adjustPosition();
-    }, [opened]);
+    }, [opened, children]);
 
     useEffect(() => {
       window.addEventListener('scroll', adjustPosition);

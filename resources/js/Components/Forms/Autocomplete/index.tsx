@@ -208,6 +208,7 @@ export const Autocomplete = <
         label={label}
         onChange={debounceSearch}
         onFocus={handleOpendMenu}
+        onClick={handleOpendMenu}
         onKeyDown={handleTabPressed}
         disabled={disabled}
         hideInput={!moreThanOne && !!selected.length}
