@@ -157,6 +157,6 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], func
     });
 });
 
-Route::get('/files/{fileName}', [ImageController::class, 'getImage'])->where('fileName', '.*');
+Route::get('/files/{fileName}', [ImageController::class, 'getImage'])->where('fileName', '.*')->name('files');
 
 require __DIR__ . '/auth.php';

@@ -124,7 +124,7 @@ export const UploadFile = <InitialFile extends SavedFile>({
             >
               <div className={styles['header']}>
                 <span>
-                  <img src={`/files/${file.fileName}`} />
+                  <img src={route('files', { fileName: file.fileName })} />
                 </span>
                 <div>
                   <p>{file.fileName}</p>

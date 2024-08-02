@@ -22,7 +22,7 @@ const storeHeader: THeadProps<Store>[] = [
     title: 'logo',
     render: (data) => (
       <img
-        src={`/files/${data.logo_url}`}
+        src={route('files', { fileName: data.logo_url })}
         title={data.name}
         className="max-h-6 max-w-6"
       />
