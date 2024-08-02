@@ -22,7 +22,7 @@ const storeHeader: THeadProps<Store>[] = [
     title: 'logo',
     render: (data) => (
       <img
-        src={`/storage/uploads/${data.logo_url}`}
+        src={`storage/uploads/${data.logo_url}`}
         title={data.name}
         className="max-h-6 max-w-6"
       />
