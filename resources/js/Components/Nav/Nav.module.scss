@@ -12,13 +12,13 @@
     md:sticky
     flex-col
     w-64
-    bg-slate-700
+    bg-brand
     self-start
     transition-transform
     z-30;
 
     &::-webkit-scrollbar-track {
-        @apply bg-slate-700;
+        @apply bg-brand;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -35,7 +35,7 @@
 }
 
 .logo {
-    @apply block h-10 w-auto fill-current;
+    @apply block h-14 mx-auto w-auto fill-current;
 }
 
 .logo-link {

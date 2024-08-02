@@ -23,7 +23,7 @@ export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
   ({ opened }, ref) => {
     return (
       <nav ref={ref} className={`${styles.nav} ${opened ? styles.opened : ''}`}>
-        <Link href="/" className={styles['logo-link']}>
+        <Link href={route('dashboard')} className={styles['logo-link']}>
           <ApplicationLogo className={styles.logo} />
         </Link>
         <div className={styles.links}>
