@@ -114,7 +114,7 @@ export default function EditStore({
             fieldName="Logo da Empresa"
             handle={
               <img
-                src={`/storage/uploads/${store.logo_url}`}
+                src={`storage/uploads/${store.logo_url}`}
                 className="w-24 h-24 shadow rounded border border-gray-300 p-2 mb-4 object-contain"
                 title={data.name}
               />
