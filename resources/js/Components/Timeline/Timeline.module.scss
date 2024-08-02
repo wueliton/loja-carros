@@ -1,0 +1,27 @@
+.timeline {
+    @apply relative border-s border-gray-200 ml-4;
+
+    li {
+        @apply mb-6 ms-6 flex flex-col;
+
+        > span.avatar {
+            @apply rounded-full h-8 w-8 absolute -start-4 bg-slate-600 text-white flex items-center justify-center border-white border-4;
+        }
+
+        h3 {
+            @apply text-gray-500;
+
+            span.username {
+                @apply font-bold text-gray-900;
+            }
+
+            span.chip {
+                @apply border-gray-200 px-1 inline-block border rounded-md text-gray-900 font-bold;
+            }
+        }
+
+        time {
+            @apply text-sm text-gray-500;
+        }
+    }
+}

@@ -5,9 +5,15 @@ import styles from './Head.module.scss';
 export interface HeadProps extends PropsWithChildren {
   title: string;
   breadcrumb?: { title: string; url: string }[];
+  hideTitle?: boolean;
 }
 
-export const Head: FC<HeadProps> = ({ children, title, breadcrumb }) => {
+export const Head: FC<HeadProps> = ({
+  children,
+  title,
+  breadcrumb,
+  hideTitle,
+}) => {
   return (
     <header className={styles.header}>
       <InertiaHead title={title} />
@@ -22,7 +28,7 @@ export const Head: FC<HeadProps> = ({ children, title, breadcrumb }) => {
         </div>
       )}
 
-      <h2 className={styles.title}>{title}</h2>
+      {!hideTitle && <h2 className={styles.title}>{title}</h2>}
       <div className={styles.actions}>{children}</div>
     </header>
   );
