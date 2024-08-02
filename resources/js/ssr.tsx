@@ -6,7 +6,7 @@ import { RouteName } from 'ziggy-js';
 import { route } from '../../vendor/tightenco/ziggy';
 import { DialogProvider } from './Context/Dialog';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Auto Shopping Raposo';
 
 createServer((page) =>
   createInertiaApp({

@@ -1,10 +1,7 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
+import { Button } from '@/Components/Button';
+import { Input } from '@/Components/Forms/Input';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler, useEffect } from 'react';
 
 export default function Login({
@@ -34,7 +31,7 @@ export default function Login({
 
   return (
     <GuestLayout>
-      <Head title="Log in" />
+      <Head title="Entrar" />
 
       {status && (
         <div className="mb-4 font-medium text-sm text-green-600">{status}</div>
@@ -42,39 +39,27 @@ export default function Login({
 
       <form onSubmit={submit}>
         <div>
-          <InputLabel htmlFor="email" value="Email" />
-
-          <TextInput
-            id="email"
-            type="email"
+          <Input
+            label="E-mail"
             name="email"
-            value={data.email}
-            className="mt-1 block w-full"
+            type="email"
             autoComplete="username"
-            isFocused={true}
+            autoFocus
+            value={data.email}
             onChange={(e) => setData('email', e.target.value)}
+            error={errors.email}
           />
-
-          <InputError message={errors.email} className="mt-2" />
-        </div>
-
-        <div className="mt-4">
-          <InputLabel htmlFor="password" value="Password" />
-
-          <TextInput
-            id="password"
-            type="password"
+          <Input
+            label="Senha"
             name="password"
+            type="password"
             value={data.password}
-            className="mt-1 block w-full"
-            autoComplete="current-password"
             onChange={(e) => setData('password', e.target.value)}
+            error={errors.password}
           />
-
-          <InputError message={errors.password} className="mt-2" />
         </div>
 
-        <div className="block mt-4">
+        {/* <div className="block mt-4">
           <label className="flex items-center">
             <Checkbox
               name="remember"
@@ -83,21 +68,21 @@ export default function Login({
             />
             <span className="ms-2 text-sm text-gray-600">Remember me</span>
           </label>
-        </div>
+        </div> */}
 
         <div className="flex items-center justify-end mt-4">
-          {canResetPassword && (
+          {/* {canResetPassword && (
             <Link
               href={route('password.request')}
               className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Forgot your password?
             </Link>
-          )}
+          )} */}
 
-          <PrimaryButton className="ms-4" disabled={processing}>
+          <Button className="ms-4" disabled={processing}>
             Log in
-          </PrimaryButton>
+          </Button>
         </div>
       </form>
     </GuestLayout>

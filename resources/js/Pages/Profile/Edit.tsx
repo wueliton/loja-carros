@@ -1,7 +1,7 @@
+import { Card } from '@/Components/Card';
 import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 
@@ -13,25 +13,22 @@ export default function Edit({
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Profile" />
+      <div className="flex flex-col gap-4">
+        <Card>
+          <UpdateProfileInformationForm
+            mustVerifyEmail={mustVerifyEmail}
+            status={status}
+            className="max-w-xl"
+          />
+        </Card>
 
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-          <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <UpdateProfileInformationForm
-              mustVerifyEmail={mustVerifyEmail}
-              status={status}
-              className="max-w-xl"
-            />
-          </div>
+        <Card>
+          <UpdatePasswordForm className="max-w-xl" />
+        </Card>
 
-          <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <UpdatePasswordForm className="max-w-xl" />
-          </div>
-
-          <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <DeleteUserForm className="max-w-xl" />
-          </div>
-        </div>
+        {/* <Card>
+          <DeleteUserForm className="max-w-xl" />
+        </Card> */}
       </div>
     </AuthenticatedLayout>
   );

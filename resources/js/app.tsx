@@ -11,7 +11,7 @@ import { DialogProvider } from './Context/Dialog';
 
 moment.locale('pt-br');
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Auto Shopping Raposo';
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
