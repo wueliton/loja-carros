@@ -13,9 +13,9 @@ export class Logs {
 }
 
 export enum ACTION {
-  created = 'Criou',
-  updated = 'Atualizou',
-  deleted = 'Deletou',
+  created = 'criou',
+  updated = 'atualizou',
+  deleted = 'deletou',
 }
 
 export class CustomLog {
