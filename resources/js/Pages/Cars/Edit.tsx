@@ -7,14 +7,13 @@ import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Car } from '@/models/Car';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
 import { FormEvent, useMemo, useState } from 'react';
 
-export default function EditCarPage({ auth, car }: PageProps<{ car: Car }>) {
+export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { openDialog } = useDialog();
   const [currentFiles, setCurrentFiles] = useState<Car['images']>(car.images);
@@ -80,15 +79,11 @@ export default function EditCarPage({ auth, car }: PageProps<{ car: Car }>) {
   };
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head
-          title={`Editar ${car.title}`}
-          breadcrumb={[{ title: 'Carros', url: route(Car.GET_ROUTE()) }]}
-        />
-      }
-    >
+    <>
+      <Head
+        title={`Editar ${car.title}`}
+        breadcrumb={[{ title: 'Carros', url: route(Car.GET_ROUTE()) }]}
+      />
       <Card>
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-3"
@@ -335,6 +330,6 @@ export default function EditCarPage({ auth, car }: PageProps<{ car: Car }>) {
           </div>
         </form>
       </Card>
-    </AuthenticatedLayout>
+    </>
   );
 }

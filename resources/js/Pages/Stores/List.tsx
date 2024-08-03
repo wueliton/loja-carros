@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Store } from '@/models/Store';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -44,7 +43,6 @@ const storeHeader: THeadProps<Store>[] = [
 
 export default function ListStorePage({
   stores,
-  auth,
 }: PageProps<{ stores: Store[] }>) {
   const { openDialog } = useDialog();
 
@@ -68,26 +66,28 @@ export default function ListStorePage({
   };
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Lojas">
-          <Button
-            onClick={() => router.visit(route(Store.GET_ROUTE('create')))}
-          >
-            Adicionar
-          </Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Lojas">
+        <Button
+          onClick={() =>
+            router.visit(route(Store.GET_ROUTE('create')), {
+              preserveScroll: true,
+            })
+          }
+        >
+          Adicionar
+        </Button>
+      </Head>
       <Table
         data={stores}
         headers={storeHeader}
         onDelete={(item) => handleDelete(item)}
         onEdit={(item) =>
-          router.visit(route(Store.GET_ROUTE('edit'), { id: item.id }))
+          router.visit(route(Store.GET_ROUTE('edit'), { id: item.id }), {
+            preserveScroll: true,
+          })
         }
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

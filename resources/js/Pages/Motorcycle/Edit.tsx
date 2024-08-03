@@ -7,7 +7,6 @@ import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Color } from '@/models/Color';
 import { Motorcycle } from '@/models/Motorcycle';
 import { MotorcycleBrandModels } from '@/models/MotorcycleBrandModels';
@@ -19,7 +18,6 @@ import axios from 'axios';
 import { FormEvent, useMemo, useState } from 'react';
 
 export default function EditMotorcyclePage({
-  auth,
   motorcycle,
 }: PageProps<{ motorcycle: Motorcycle }>) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
@@ -82,15 +80,11 @@ export default function EditMotorcyclePage({
   };
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head
-          title={`Editar ${motorcycle.title}`}
-          breadcrumb={[{ title: 'Motos', url: route('motorcycle') }]}
-        />
-      }
-    >
+    <>
+      <Head
+        title={`Editar ${motorcycle.title}`}
+        breadcrumb={[{ title: 'Motos', url: route('motorcycle') }]}
+      />
       <Card>
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-3"
@@ -288,6 +282,6 @@ export default function EditMotorcyclePage({
           </div>
         </form>
       </Card>
-    </AuthenticatedLayout>
+    </>
   );
 }

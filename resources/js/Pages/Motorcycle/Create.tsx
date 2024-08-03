@@ -6,7 +6,6 @@ import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Color } from '@/models/Color';
 import { Motorcycle } from '@/models/Motorcycle';
 import { MotorcycleBrandModels } from '@/models/MotorcycleBrandModels';
@@ -16,7 +15,7 @@ import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEvent, useMemo } from 'react';
 
-export default function CreateMotorcyclePage({ auth }: PageProps) {
+export default function CreateMotorcyclePage({}: PageProps) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { data, setData, errors, post, isDirty } = useForm<{
     title?: string;
@@ -48,15 +47,11 @@ export default function CreateMotorcyclePage({ auth }: PageProps) {
   useDiscardUnsaved(isDirty);
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head
-          title="Adicionar Moto"
-          breadcrumb={[{ title: 'Motos', url: route('motorcycle') }]}
-        />
-      }
-    >
+    <>
+      <Head
+        title="Adicionar Moto"
+        breadcrumb={[{ title: 'Motos', url: route('motorcycle') }]}
+      />
       <Card>
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-3"
@@ -249,6 +244,6 @@ export default function CreateMotorcyclePage({ auth }: PageProps) {
           </div>
         </form>
       </Card>
-    </AuthenticatedLayout>
+    </>
   );
 }

@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Motorcycle } from '@/models/Motorcycle';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -44,7 +43,6 @@ const motorcycleHeader: THeadProps<Motorcycle>[] = [
 ];
 
 export default function MotorcyclePage({
-  auth,
   motorcycles,
 }: PageProps<{ motorcycles: Motorcycle[] }>) {
   const { openDialog } = useDialog();
@@ -69,29 +67,27 @@ export default function MotorcyclePage({
 
   return (
     <>
-      <AuthenticatedLayout
-        user={auth.user}
-        head={
-          <Head title="Motos">
-            <Button
-              onClick={() =>
-                router.visit(route(Motorcycle.GET_ROUTE('createView')))
-              }
-            >
-              Adicionar
-            </Button>
-          </Head>
-        }
-      >
-        <Table
-          data={motorcycles}
-          headers={motorcycleHeader}
-          onDelete={handleDeleteMotorcycle}
-          onEdit={(item) =>
-            router.visit(route(Motorcycle.GET_ROUTE('get'), { id: item.id }))
+      <Head title="Motos">
+        <Button
+          onClick={() =>
+            router.visit(route(Motorcycle.GET_ROUTE('createView')), {
+              preserveScroll: true,
+            })
           }
-        />
-      </AuthenticatedLayout>
+        >
+          Adicionar
+        </Button>
+      </Head>
+      <Table
+        data={motorcycles}
+        headers={motorcycleHeader}
+        onDelete={handleDeleteMotorcycle}
+        onEdit={(item) =>
+          router.visit(route(Motorcycle.GET_ROUTE('get'), { id: item.id }), {
+            preserveScroll: true,
+          })
+        }
+      />
       <Tooltip id="created_at" />
     </>
   );

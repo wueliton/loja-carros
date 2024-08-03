@@ -4,7 +4,6 @@ import { Input } from '@/Components/Forms/Input';
 import { Select } from '@/Components/Forms/Select';
 import { Head } from '@/Components/Head';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Role } from '@/models/Role';
 import { PageProps, User } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -13,7 +12,6 @@ import { FormEvent } from 'react';
 export default function EditUserPage({
   user,
   roles,
-  auth,
 }: PageProps<{
   user: User;
   roles: Role[];
@@ -33,15 +31,11 @@ export default function EditUserPage({
   useDiscardUnsaved(isDirty);
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head
-          title={`Editar Usuário ${user.name}`}
-          breadcrumb={[{ title: 'Usuários', url: route('users') }]}
-        />
-      }
-    >
+    <>
+      <Head
+        title={`Editar Usuário ${user.name}`}
+        breadcrumb={[{ title: 'Usuários', url: route('users') }]}
+      />
       <Card>
         <form
           onSubmit={handleSubmit}
@@ -81,6 +75,6 @@ export default function EditUserPage({
           </div>
         </form>
       </Card>
-    </AuthenticatedLayout>
+    </>
   );
 }

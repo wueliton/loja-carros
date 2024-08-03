@@ -1,4 +1,5 @@
 import { Role } from '@/models/Role';
+import { ReactElement } from 'react';
 import { Config } from 'ziggy-js';
 
 export interface User {
@@ -16,5 +17,6 @@ export type PageProps<
   auth: {
     user: User;
   };
+  head: () => ReactElement;
   ziggy: Config & { location: string };
 };

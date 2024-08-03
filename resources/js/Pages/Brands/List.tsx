@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Brand } from '@/models/Brand';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -17,7 +16,6 @@ const brandsHeader: THeadProps<Brand>[] = [
 ];
 
 export default function ListFuelTypesPage({
-  auth,
   brands,
 }: PageProps<{ brands: Brand[] }>) {
   const { openDialog } = useDialog();
@@ -49,20 +47,17 @@ export default function ListFuelTypesPage({
     });
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Marcas">
-          <Button onClick={() => handlePutBrand()}>Adicionar</Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Marcas">
+        <Button onClick={() => handlePutBrand()}>Adicionar</Button>
+      </Head>
+
       <Table
         data={brands}
         headers={brandsHeader}
         onEdit={(color) => handlePutBrand(color)}
         onDelete={handleDeleteBrand}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

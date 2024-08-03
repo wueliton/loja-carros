@@ -3,7 +3,7 @@
 }
 
 .header {
-    @apply flex justify-start items-center;
+    @apply flex justify-start items-center mb-5 min-h-12;
 
     button {
         @apply ml-5;

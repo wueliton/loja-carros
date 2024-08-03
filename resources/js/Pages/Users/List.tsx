@@ -4,7 +4,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { PageProps, User } from '@/types';
 import { router } from '@inertiajs/react';
 
@@ -30,10 +29,7 @@ const usersHeader: THeadProps<User>[] = [
   },
 ];
 
-export default function ListUserPage({
-  users,
-  auth,
-}: PageProps<{ users: User[] }>) {
+export default function ListUserPage({ users }: PageProps<{ users: User[] }>) {
   const { openDialog } = useDialog();
 
   const handleDelete = (item: User) => {
@@ -56,22 +52,26 @@ export default function ListUserPage({
   };
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Usuários">
-          <Button onClick={() => router.visit(route('users.createView'))}>
-            Adicionar
-          </Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Usuários">
+        <Button
+          onClick={() =>
+            router.visit(route('users.createView'), { preserveScroll: true })
+          }
+        >
+          Adicionar
+        </Button>
+      </Head>
       <Table
         data={users}
         headers={usersHeader}
         onDelete={handleDelete}
-        onEdit={(item) => router.visit(route('users.get', { id: item.id }))}
+        onEdit={(item) =>
+          router.visit(route('users.get', { id: item.id }), {
+            preserveScroll: true,
+          })
+        }
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

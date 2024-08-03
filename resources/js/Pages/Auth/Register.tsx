@@ -4,9 +4,9 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { FormEventHandler, useEffect } from 'react';
+import { FormEventHandler, ReactElement, useEffect } from 'react';
 
-export default function Register() {
+const register = function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     email: '',
@@ -27,7 +27,7 @@ export default function Register() {
   };
 
   return (
-    <GuestLayout>
+    <>
       <Head title="Register" />
 
       <form onSubmit={submit}>
@@ -115,6 +115,10 @@ export default function Register() {
           </PrimaryButton>
         </div>
       </form>
-    </GuestLayout>
+    </>
   );
-}
+};
+
+register.layout = (page: ReactElement) => <GuestLayout>{page}</GuestLayout>;
+
+export default register;

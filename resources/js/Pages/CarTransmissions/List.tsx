@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Transmission } from '@/models/Transmission';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -17,7 +16,6 @@ const TransmissionsHeader: THeadProps<Transmission>[] = [
 ];
 
 export default function ListTransmissionsPage({
-  auth,
   transmissions,
 }: PageProps<{ transmissions: Transmission[] }>) {
   const { openDialog } = useDialog();
@@ -52,20 +50,16 @@ export default function ListTransmissionsPage({
     });
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Tipos de Câmbios">
-          <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Tipos de Câmbios">
+        <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
+      </Head>
       <Table
         data={transmissions}
         headers={TransmissionsHeader}
         onEdit={(color) => handleAddFuelType(color)}
         onDelete={handleDeleteFuelType}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

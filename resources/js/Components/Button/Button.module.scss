@@ -4,8 +4,10 @@
     py-2
     px-4
     rounded
-    hover:brightness-105
-    active:brightness-90
+    hover:enabled:brightness-105
+    active:enabled:brightness-90
+    disabled:bg-gray-200
+    disabled:text-gray-400
     bg-white;
 
     &.only-icon {
@@ -15,6 +17,8 @@
     &.outline {
         @apply border
             border-gray-400
+            disabled:border-transparent
+            disabled:shadow-none
             shadow
 
             transition-colors;

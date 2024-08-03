@@ -2,9 +2,9 @@ import { Button } from '@/Components/Button';
 import { Input } from '@/Components/Forms/Input';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
-import { FormEventHandler, useEffect } from 'react';
+import { FormEventHandler, ReactElement, useEffect } from 'react';
 
-export default function Login({
+const login = function Login({
   status,
   canResetPassword,
 }: {
@@ -30,7 +30,7 @@ export default function Login({
   };
 
   return (
-    <GuestLayout>
+    <>
       <Head title="Entrar" />
 
       {status && (
@@ -85,6 +85,10 @@ export default function Login({
           </Button>
         </div>
       </form>
-    </GuestLayout>
+    </>
   );
-}
+};
+
+login.layout = (page: ReactElement) => <GuestLayout>{page}</GuestLayout>;
+
+export default login;

@@ -4,9 +4,9 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
-import { FormEventHandler, useEffect } from 'react';
+import { FormEventHandler, ReactElement, useEffect } from 'react';
 
-export default function ConfirmPassword() {
+const confirmPassword = function ConfirmPassword() {
   const { data, setData, post, processing, errors, reset } = useForm({
     password: '',
   });
@@ -24,7 +24,7 @@ export default function ConfirmPassword() {
   };
 
   return (
-    <GuestLayout>
+    <>
       <Head title="Confirm Password" />
 
       <div className="mb-4 text-sm text-gray-600">
@@ -55,6 +55,12 @@ export default function ConfirmPassword() {
           </PrimaryButton>
         </div>
       </form>
-    </GuestLayout>
+    </>
   );
-}
+};
+
+confirmPassword.layout = (page: ReactElement) => (
+  <GuestLayout>{page}</GuestLayout>
+);
+
+export default confirmPassword;
