@@ -4,6 +4,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { MotorcycleTypes } from '@/models/MotorcycleTypes';
+import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import { PutMotorcycleTypeModal } from './PutMotorcycleTypesModal';
@@ -17,7 +18,7 @@ const motorcycleTypesHeader: THeadProps<MotorcycleTypes>[] = [
 
 export default function MotorcycleTypesPage({
   types,
-}: PageProps<{ types: MotorcycleTypes[] }>) {
+}: PageProps<{ types: Paginated<MotorcycleTypes> }>) {
   const { openDialog } = useDialog();
 
   const handlePutType = (optional?: MotorcycleTypes) =>

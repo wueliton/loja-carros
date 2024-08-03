@@ -18,7 +18,7 @@ class MotorcycleOptionalController extends Controller
 
     public function list(): Response
     {
-        $optional = MotorcycleOptional::all();
+        $optional = MotorcycleOptional::latest()->paginate(10);
         return Inertia::render('MotorcycleOptional/List', [
             'optionals' => $optional
         ]);

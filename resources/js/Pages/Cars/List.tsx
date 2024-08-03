@@ -4,6 +4,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { Car } from '@/models/Car';
+import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import moment from 'moment';
@@ -42,7 +43,9 @@ const carHeader: THeadProps<Car>[] = [
   },
 ];
 
-export default function ListVehiclesPage({ cars }: PageProps<{ cars: Car[] }>) {
+export default function ListVehiclesPage({
+  cars,
+}: PageProps<{ cars: Paginated<Car> }>) {
   const { openDialog } = useDialog();
   const handleDelete = (car: Car) =>
     openDialog({

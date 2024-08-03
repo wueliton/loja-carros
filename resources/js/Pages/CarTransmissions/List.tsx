@@ -3,6 +3,7 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
+import { Paginated } from '@/models/Paginated';
 import { Transmission } from '@/models/Transmission';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -17,7 +18,7 @@ const TransmissionsHeader: THeadProps<Transmission>[] = [
 
 export default function ListTransmissionsPage({
   transmissions,
-}: PageProps<{ transmissions: Transmission[] }>) {
+}: PageProps<{ transmissions: Paginated<Transmission> }>) {
   const { openDialog } = useDialog();
 
   const handleAddFuelType = (transmission?: Transmission) =>

@@ -4,6 +4,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { FuelType } from '@/models/FuelType';
+import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import { PutFuelTypeModal } from './PutFuelTypeModal';
@@ -17,7 +18,7 @@ const fuelTypesHeader: THeadProps<FuelType>[] = [
 
 export default function ListFuelTypesPage({
   fuelTypes,
-}: PageProps<{ fuelTypes: FuelType[] }>) {
+}: PageProps<{ fuelTypes: Paginated<FuelType> }>) {
   const { openDialog } = useDialog();
 
   const handleAddFuelType = (fuelType?: FuelType) =>

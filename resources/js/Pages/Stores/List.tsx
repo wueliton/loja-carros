@@ -3,6 +3,7 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
+import { Paginated } from '@/models/Paginated';
 import { Store } from '@/models/Store';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -43,7 +44,7 @@ const storeHeader: THeadProps<Store>[] = [
 
 export default function ListStorePage({
   stores,
-}: PageProps<{ stores: Store[] }>) {
+}: PageProps<{ stores: Paginated<Store> }>) {
   const { openDialog } = useDialog();
 
   const handleDelete = (item: Store) => {

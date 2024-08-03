@@ -4,6 +4,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { MotorcycleOptional } from '@/models/MotorcycleOptional';
+import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import { PutMotorcycleOptionalModal } from './PutMotorcycleOptionalModal';
@@ -17,7 +18,7 @@ const motorcycleOptionalHeader: THeadProps<MotorcycleOptional>[] = [
 
 export default function MotorcycleOptionalsPage({
   optionals,
-}: PageProps<{ optionals: MotorcycleOptional[] }>) {
+}: PageProps<{ optionals: Paginated<MotorcycleOptional> }>) {
   const { openDialog } = useDialog();
 
   const handlePutOptional = (optional?: MotorcycleOptional) =>

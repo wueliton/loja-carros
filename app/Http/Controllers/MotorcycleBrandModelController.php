@@ -18,7 +18,7 @@ class MotorcycleBrandModelController extends Controller
 
     public function list(Request $request): Response
     {
-        $models = MotorcycleBrandModel::with('brand')->get();
+        $models = MotorcycleBrandModel::with('brand')->latest()->paginate(10);
         return Inertia::render('MotorcycleBrandModels/List', [
             'models' => $models
         ]);

@@ -21,7 +21,7 @@ class MotorcycleController extends Controller
 
     public function list(): Response
     {
-        $motorcycles = Motorcycle::with('brand:id,name', 'model:id,name', 'images')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->orderBy('created_at', 'desc')->get();
+        $motorcycles = Motorcycle::with('brand:id,name', 'model:id,name', 'images')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->latest()->paginate(10);
 
         return Inertia::render('Motorcycle/List', [
             'motorcycles' => $motorcycles

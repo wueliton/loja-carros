@@ -18,7 +18,7 @@ class CarTransmissionController extends Controller
 
     public function list(Request $request): Response
     {
-        $transmissions = CarTransmission::all();
+        $transmissions = CarTransmission::latest()->paginate(10);
 
         return Inertia::render('CarTransmissions/List', [
             'transmissions' => $transmissions

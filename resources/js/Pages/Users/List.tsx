@@ -4,6 +4,7 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
+import { Paginated } from '@/models/Paginated';
 import { PageProps, User } from '@/types';
 import { router } from '@inertiajs/react';
 
@@ -29,7 +30,9 @@ const usersHeader: THeadProps<User>[] = [
   },
 ];
 
-export default function ListUserPage({ users }: PageProps<{ users: User[] }>) {
+export default function ListUserPage({
+  users,
+}: PageProps<{ users: Paginated<User> }>) {
   const { openDialog } = useDialog();
 
   const handleDelete = (item: User) => {

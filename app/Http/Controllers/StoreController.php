@@ -22,7 +22,7 @@ class StoreController extends Controller
 
     public function index(Request $request): Response
     {
-        $stores = Store::all();
+        $stores = Store::latest()->paginate(10);
 
         return Inertia::render('Stores/List', [
             'stores' => $stores,

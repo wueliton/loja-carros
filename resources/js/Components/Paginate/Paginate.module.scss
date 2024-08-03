@@ -1,0 +1,7 @@
+.paginator {
+    @apply w-full flex flex-row justify-end items-center gap-5;
+
+    span {
+        @apply font-bold;
+    }
+}
