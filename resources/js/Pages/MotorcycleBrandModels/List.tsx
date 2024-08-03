@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { MotorcycleBrandModels } from '@/models/MotorcycleBrandModels';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -22,7 +21,6 @@ const motorcycleBrandModelsHeader: THeadProps<MotorcycleBrandModels>[] = [
 ];
 
 export default function ListFuelTypesPage({
-  auth,
   models,
 }: PageProps<{ models: MotorcycleBrandModels[] }>) {
   const { openDialog } = useDialog();
@@ -56,20 +54,16 @@ export default function ListFuelTypesPage({
     });
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Modelos">
-          <Button onClick={() => handlePutBrandModel()}>Adicionar</Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Modelos">
+        <Button onClick={() => handlePutBrandModel()}>Adicionar</Button>
+      </Head>
       <Table
         data={models}
         headers={motorcycleBrandModelsHeader}
         onEdit={(brandModel) => handlePutBrandModel(brandModel)}
         onDelete={handleDeleteBrandModel}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

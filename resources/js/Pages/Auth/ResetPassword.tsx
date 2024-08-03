@@ -4,9 +4,9 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
-import { FormEventHandler, useEffect } from 'react';
+import { FormEventHandler, ReactElement, useEffect } from 'react';
 
-export default function ResetPassword({
+const resetPassword = function ResetPassword({
   token,
   email,
 }: {
@@ -33,7 +33,7 @@ export default function ResetPassword({
   };
 
   return (
-    <GuestLayout>
+    <>
       <Head title="Reset Password" />
 
       <form onSubmit={submit}>
@@ -94,6 +94,12 @@ export default function ResetPassword({
           </PrimaryButton>
         </div>
       </form>
-    </GuestLayout>
+    </>
   );
-}
+};
+
+resetPassword.layout = (page: ReactElement) => (
+  <GuestLayout>{page}</GuestLayout>
+);
+
+export default resetPassword;

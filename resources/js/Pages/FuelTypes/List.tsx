@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { FuelType } from '@/models/FuelType';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -17,7 +16,6 @@ const fuelTypesHeader: THeadProps<FuelType>[] = [
 ];
 
 export default function ListFuelTypesPage({
-  auth,
   fuelTypes,
 }: PageProps<{ fuelTypes: FuelType[] }>) {
   const { openDialog } = useDialog();
@@ -52,20 +50,16 @@ export default function ListFuelTypesPage({
     });
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Tipos de Combustíveis">
-          <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Tipos de Combustíveis">
+        <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
+      </Head>
       <Table
         data={fuelTypes}
         headers={fuelTypesHeader}
         onEdit={(color) => handleAddFuelType(color)}
         onDelete={handleDeleteFuelType}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

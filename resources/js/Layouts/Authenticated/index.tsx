@@ -4,19 +4,13 @@ import { MenuIcon } from '@/Components/Icons/Menu';
 import { NavComponent } from '@/Components/Nav';
 import { User } from '@/types';
 import { Link } from '@inertiajs/react';
-import {
-  FC,
-  PropsWithChildren,
-  ReactElement,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { FC, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import styles from './Authenticated.module.scss';
 
-export const AuthenticatedLayout: FC<
-  PropsWithChildren & { user?: User; head?: ReactElement }
-> = ({ children, head, user }) => {
+export const AuthenticatedLayout: FC<PropsWithChildren & { user?: User }> = ({
+  children,
+  user,
+}) => {
   const [navOpened, setNavOpened] = useState(false);
   const [menuOpened, setMenuOpened] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -51,11 +45,10 @@ export const AuthenticatedLayout: FC<
   }, []);
 
   return (
-    <div className={styles.layout}>
+    <div className={styles.layout} scroll-region="true">
       <NavComponent ref={navRef} opened={navOpened} />
-      <main>
+      <main scroll-region="true">
         <div className={styles.head}>
-          <div className={styles.content}>{head}</div>
           <div className={styles.profile}>
             <button
               className={styles.avatar}

@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Car } from '@/models/Car';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -43,10 +42,7 @@ const carHeader: THeadProps<Car>[] = [
   },
 ];
 
-export default function ListVehiclesPage({
-  auth,
-  cars,
-}: PageProps<{ cars: Car[] }>) {
+export default function ListVehiclesPage({ cars }: PageProps<{ cars: Car[] }>) {
   const { openDialog } = useDialog();
   const handleDelete = (car: Car) =>
     openDialog({
@@ -65,27 +61,29 @@ export default function ListVehiclesPage({
 
   return (
     <>
-      <AuthenticatedLayout
-        user={auth.user}
-        head={
-          <Head title="Carros">
-            <Button
-              onClick={() => router.visit(route(Car.GET_ROUTE('createView')))}
-            >
-              Adicionar
-            </Button>
-          </Head>
-        }
-      >
+      <>
+        <Head title="Carros">
+          <Button
+            onClick={() =>
+              router.visit(route(Car.GET_ROUTE('createView')), {
+                preserveScroll: true,
+              })
+            }
+          >
+            Adicionar
+          </Button>
+        </Head>
         <Table
           data={cars}
           headers={carHeader}
           onDelete={handleDelete}
           onEdit={(item) =>
-            router.visit(route(Car.GET_ROUTE('get'), { id: item.id }))
+            router.visit(route(Car.GET_ROUTE('get'), { id: item.id }), {
+              preserveScroll: true,
+            })
           }
         />
-      </AuthenticatedLayout>
+      </>
       <Tooltip id="created_at" />
     </>
   );

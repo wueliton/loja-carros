@@ -4,7 +4,6 @@ import { Input } from '@/Components/Forms/Input';
 import { Select } from '@/Components/Forms/Select';
 import { Head } from '@/Components/Head';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Role } from '@/models/Role';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -12,7 +11,6 @@ import { FormEvent } from 'react';
 
 export default function CreateUserPage({
   roles,
-  auth,
 }: PageProps<{ roles: Role[] }>) {
   const { data, setData, errors, isDirty, post } = useForm<{
     name?: string;
@@ -34,15 +32,11 @@ export default function CreateUserPage({
   useDiscardUnsaved(isDirty);
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head
-          title="Adicionar Usuário"
-          breadcrumb={[{ title: 'Usuários', url: route('users') }]}
-        />
-      }
-    >
+    <>
+      <Head
+        title="Adicionar Usuário"
+        breadcrumb={[{ title: 'Usuários', url: route('users') }]}
+      />
       <Card>
         <form
           onSubmit={handleSubmit}
@@ -82,6 +76,6 @@ export default function CreateUserPage({
           </div>
         </form>
       </Card>
-    </AuthenticatedLayout>
+    </>
   );
 }

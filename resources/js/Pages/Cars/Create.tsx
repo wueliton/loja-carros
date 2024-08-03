@@ -5,13 +5,12 @@ import { Editor } from '@/Components/Forms/Editor';
 import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Car } from '@/models/Car';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEvent, useMemo } from 'react';
 
-export default function CreateVehiclePage({ auth }: PageProps) {
+export default function CreateVehiclePage({}: PageProps) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { data, setData, errors, post } = useForm<{
     title?: string;
@@ -46,15 +45,11 @@ export default function CreateVehiclePage({ auth }: PageProps) {
   };
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head
-          title="Adicionar Veículo"
-          breadcrumb={[{ title: 'Veículos', url: route('cars') }]}
-        />
-      }
-    >
+    <>
+      <Head
+        title="Adicionar Veículo"
+        breadcrumb={[{ title: 'Veículos', url: route('cars') }]}
+      />
       <Card>
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-3"
@@ -296,6 +291,6 @@ export default function CreateVehiclePage({ auth }: PageProps) {
           </div>
         </form>
       </Card>
-    </AuthenticatedLayout>
+    </>
   );
 }

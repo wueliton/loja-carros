@@ -70,10 +70,13 @@ export const DialogProvider: FC<PropsWithChildren> = ({ children }) => {
   const handleClose = (data?: unknown) => {
     dialogOnClose?.(data);
     setOpened(false);
-    setActiveComponent(null);
-    setContent(null);
-    dialogOnClose = null;
     document.removeEventListener('keydown', handleEscPressed);
+
+    setTimeout(() => {
+      setActiveComponent(null);
+      setContent(null);
+      dialogOnClose = null;
+    }, 300);
   };
 
   return (

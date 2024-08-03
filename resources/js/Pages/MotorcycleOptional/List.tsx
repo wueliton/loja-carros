@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { MotorcycleOptional } from '@/models/MotorcycleOptional';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -17,7 +16,6 @@ const motorcycleOptionalHeader: THeadProps<MotorcycleOptional>[] = [
 ];
 
 export default function MotorcycleOptionalsPage({
-  auth,
   optionals,
 }: PageProps<{ optionals: MotorcycleOptional[] }>) {
   const { openDialog } = useDialog();
@@ -51,20 +49,16 @@ export default function MotorcycleOptionalsPage({
     });
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Opcionais">
-          <Button onClick={() => handlePutOptional()}>Adicionar</Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Opcionais">
+        <Button onClick={() => handlePutOptional()}>Adicionar</Button>
+      </Head>
       <Table
         data={optionals}
         headers={motorcycleOptionalHeader}
         onEdit={(optional) => handlePutOptional(optional)}
         onDelete={handleDeleteOptional}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

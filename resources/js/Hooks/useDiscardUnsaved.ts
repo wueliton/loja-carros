@@ -35,7 +35,7 @@ export const useDiscardUnsaved = (
           isDirtyRef.current = false;
           onConfirm?.();
           setTimeout(() => {
-            router.visit(event.detail.visit.url);
+            router.visit(event.detail.visit.url, { preserveScroll: true });
           }, 10);
         },
       });

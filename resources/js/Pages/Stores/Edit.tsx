@@ -5,7 +5,6 @@ import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Store } from '@/models/Store';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -13,7 +12,6 @@ import { FormEvent } from 'react';
 
 export default function EditStore({
   store,
-  auth,
 }: PageProps<{ store: Store & { users_ids: number[] } }>) {
   const { data, setData, errors, isDirty, post, transform } = useForm<
     Omit<Store, 'logo_url' | 'phone' | 'whatsapp'> & {
@@ -47,15 +45,11 @@ export default function EditStore({
   useDiscardUnsaved(isDirty);
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head
-          title={`Editar ${store.name}`}
-          breadcrumb={[{ title: 'Lojas', url: route(Store.GET_ROUTE()) }]}
-        />
-      }
-    >
+    <>
+      <Head
+        title={`Editar ${store.name}`}
+        breadcrumb={[{ title: 'Lojas', url: route(Store.GET_ROUTE()) }]}
+      />
       <Card>
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-3"
@@ -141,6 +135,6 @@ export default function EditStore({
           </div>
         </form>
       </Card>
-    </AuthenticatedLayout>
+    </>
   );
 }

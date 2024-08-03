@@ -19,7 +19,9 @@
 
     .head {
         @apply grid
-            md:grid-cols-2
+            md:absolute
+            md:right-0
+            md:min-w-56
             items-center
             min-h-11
             pt-20

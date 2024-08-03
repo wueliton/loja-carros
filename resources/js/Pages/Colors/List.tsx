@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { Color } from '@/models/Color';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -17,7 +16,6 @@ const colorsHeader: THeadProps<Color>[] = [
 ];
 
 export default function ListColorsPage({
-  auth,
   colors,
 }: PageProps<{ colors: Color[] }>) {
   const { openDialog } = useDialog();
@@ -49,20 +47,16 @@ export default function ListColorsPage({
     });
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Cores">
-          <Button onClick={() => handleAddColor()}>Adicionar</Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Cores">
+        <Button onClick={() => handleAddColor()}>Adicionar</Button>
+      </Head>
       <Table
         data={colors}
         headers={colorsHeader}
         onEdit={(color) => handleAddColor(color)}
         onDelete={handleDeleteColor}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

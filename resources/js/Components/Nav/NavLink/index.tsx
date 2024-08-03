@@ -20,6 +20,8 @@ export const NavLink: FC<InertiaLinkProps> = ({
       href={link}
       {...props}
       className={`${className} ${styles.link} ${active() ? styles.active : ''}`}
+      preserveScroll
+      preserveState
     >
       {children}
     </Link>

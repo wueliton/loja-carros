@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { CarOptional } from '@/models/VehicleOptional';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -17,7 +16,6 @@ const OptionalHeader: THeadProps<CarOptional>[] = [
 ];
 
 export default function ListOptionalPage({
-  auth,
   optional,
 }: PageProps<{ optional: CarOptional[] }>) {
   const { openDialog } = useDialog();
@@ -49,20 +47,16 @@ export default function ListOptionalPage({
     });
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Opcionais">
-          <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Opcionais">
+        <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
+      </Head>
       <Table
         data={optional}
         headers={OptionalHeader}
         onEdit={(color) => handleAddFuelType(color)}
         onDelete={handleDeleteOptional}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

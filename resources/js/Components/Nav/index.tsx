@@ -22,7 +22,11 @@ import { NavLink } from './NavLink';
 export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
   ({ opened }, ref) => {
     return (
-      <nav ref={ref} className={`${styles.nav} ${opened ? styles.opened : ''}`}>
+      <nav
+        ref={ref}
+        className={`${styles.nav} ${opened ? styles.opened : ''}`}
+        scroll-region="true"
+      >
         <Link href={route('dashboard')} className={styles['logo-link']}>
           <ApplicationLogo className={styles.logo} />
         </Link>

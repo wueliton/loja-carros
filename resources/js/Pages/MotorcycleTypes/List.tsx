@@ -3,7 +3,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { MotorcycleTypes } from '@/models/MotorcycleTypes';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -17,7 +16,6 @@ const motorcycleTypesHeader: THeadProps<MotorcycleTypes>[] = [
 ];
 
 export default function MotorcycleTypesPage({
-  auth,
   types,
 }: PageProps<{ types: MotorcycleTypes[] }>) {
   const { openDialog } = useDialog();
@@ -51,20 +49,16 @@ export default function MotorcycleTypesPage({
     });
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={
-        <Head title="Tipos">
-          <Button onClick={() => handlePutType()}>Adicionar</Button>
-        </Head>
-      }
-    >
+    <>
+      <Head title="Tipos">
+        <Button onClick={() => handlePutType()}>Adicionar</Button>
+      </Head>
       <Table
         data={types}
         headers={motorcycleTypesHeader}
         onEdit={(optional) => handlePutType(optional)}
         onDelete={handleDeleteType}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

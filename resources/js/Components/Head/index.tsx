@@ -21,7 +21,9 @@ export const Head: FC<HeadProps> = ({
         <div className={styles.breadcrumb}>
           {breadcrumb?.map((item, index) => (
             <Fragment key={`breadcrumb_link_${index}`}>
-              <Link href={item.url}>{item.title}</Link>
+              <Link href={item.url} preserveScroll>
+                {item.title}
+              </Link>
               <span>{'>'}</span>
             </Fragment>
           ))}

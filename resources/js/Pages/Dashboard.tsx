@@ -1,7 +1,5 @@
 import { Card } from '@/Components/Card';
-import { Head } from '@/Components/Head';
 import { Timeline } from '@/Components/Timeline';
-import { AuthenticatedLayout } from '@/Layouts/Authenticated';
 import { CustomLog, Logs } from '@/models/Logs';
 import { PageProps } from '@/types';
 import { useMemo } from 'react';
@@ -12,11 +10,8 @@ export default function Dashboard({ auth, logs }: PageProps<{ logs: Logs[] }>) {
   }, [logs]);
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      head={<Head title="Dashboard" hideTitle />}
-    >
-      <div className="p-2 pt-0 pl-4 mb-10">
+    <>
+      <div className="p-2 pt-0 pl-4 mb-10 mt-4">
         <h2 className="text-3xl font-bold">Olá, {auth.user.name}</h2>
         <p className="text-slate-500">
           Gerencie os veículos anunciados em sua loja.
@@ -48,6 +43,6 @@ export default function Dashboard({ auth, logs }: PageProps<{ logs: Logs[] }>) {
         <h2 className="text-xl font-bold mb-4">Minhas Atividades</h2>
         <Timeline logs={parsedLogs} />
       </Card>
-    </AuthenticatedLayout>
+    </>
   );
 }
