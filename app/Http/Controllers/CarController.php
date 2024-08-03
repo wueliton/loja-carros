@@ -20,7 +20,7 @@ class CarController extends Controller
 
     public function list(Request $request): Response
     {
-        $cars = Car::with('brand:id,name', 'model:id,name')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->orderBy('created_at', 'desc')->get();
+        $cars = Car::with('brand:id,name', 'model:id,name')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->latest()->paginate(10);
 
         return Inertia::render('Cars/List', [
             'cars' => $cars

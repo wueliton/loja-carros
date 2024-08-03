@@ -12,7 +12,9 @@ export const NavLink: FC<InertiaLinkProps> = ({
   const link = useMemo(() => route(href), [href]);
   const active = useCallback(() => {
     const pathName = new URL(link).pathname;
-    return url.endsWith(pathName) || url.includes(`${pathName}/`);
+    const parsedURL = url.split('?')[0];
+    console.log(parsedURL);
+    return parsedURL.endsWith(pathName) || parsedURL.includes(`${pathName}/`);
   }, [url]);
 
   return (

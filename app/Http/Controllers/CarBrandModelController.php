@@ -18,7 +18,7 @@ class CarBrandModelController extends Controller
 
     public function list(Request $request): Response
     {
-        $models = CarBrandModel::with('brand')->get();
+        $models = CarBrandModel::with('brand')->latest()->paginate(10);
         return Inertia::render('CarBrandModels/List', [
             'models' => $models
         ]);

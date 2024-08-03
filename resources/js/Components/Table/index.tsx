@@ -1,11 +1,13 @@
+import { Paginated } from '@/models/Paginated';
 import { ReactNode } from 'react';
 import { Button } from '../Button';
 import { EmptyIcon } from '../Icons/Empty';
 import { TrashIcon } from '../Icons/Trash';
+import { Paginate } from '../Paginate';
 import styles from './Table.module.scss';
 
 export interface TableProps<T> {
-  data: T[];
+  data: Paginated<T>;
   onEdit?: (item: T) => unknown;
   headers: THeadProps<T>[];
   onDelete?: (item: T) => void;
@@ -52,7 +54,7 @@ export const Table = <T,>({
           </tr>
         </thead>
         <tbody>
-          {!data.length && (
+          {!data.data.length && (
             <tr className={styles['empty']}>
               <td colSpan={headers.length + (onDelete ? 1 : 0)}>
                 <div className={styles['empty-list']}>
@@ -63,7 +65,7 @@ export const Table = <T,>({
               </td>
             </tr>
           )}
-          {data.map((item, index) => (
+          {data.data.map((item, index) => (
             <tr
               key={`table-line-${index}`}
               className={`${onEdit ? 'cursor-pointer' : ''}`}
@@ -85,6 +87,11 @@ export const Table = <T,>({
               )}
             </tr>
           ))}
+          <tr className={styles['empty']}>
+            <td colSpan={headers.length + (onDelete ? 1 : 0)}>
+              <Paginate {...data} />
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

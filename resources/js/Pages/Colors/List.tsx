@@ -4,6 +4,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { Color } from '@/models/Color';
+import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import { PutColorModal } from './PutColorModal';
@@ -17,7 +18,7 @@ const colorsHeader: THeadProps<Color>[] = [
 
 export default function ListColorsPage({
   colors,
-}: PageProps<{ colors: Color[] }>) {
+}: PageProps<{ colors: Paginated<Color> }>) {
   const { openDialog } = useDialog();
 
   const handleAddColor = (color?: Color) =>
@@ -45,6 +46,8 @@ export default function ListColorsPage({
         });
       },
     });
+
+  console.log(colors);
 
   return (
     <>

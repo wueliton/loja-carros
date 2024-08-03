@@ -4,6 +4,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { MotorcycleBrandModels } from '@/models/MotorcycleBrandModels';
+import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import { PutMotorcycleBrandModelModal } from './PutMotorcycleBrandModelModal';
@@ -22,7 +23,7 @@ const motorcycleBrandModelsHeader: THeadProps<MotorcycleBrandModels>[] = [
 
 export default function ListFuelTypesPage({
   models,
-}: PageProps<{ models: MotorcycleBrandModels[] }>) {
+}: PageProps<{ models: Paginated<MotorcycleBrandModels> }>) {
   const { openDialog } = useDialog();
 
   const handlePutBrandModel = (brandModel?: MotorcycleBrandModels) =>

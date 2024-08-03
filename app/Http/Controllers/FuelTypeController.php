@@ -18,7 +18,7 @@ class FuelTypeController extends Controller
 
     public function list(): Response
     {
-        $fuelTypes = FuelType::all();
+        $fuelTypes = FuelType::latest()->paginate(10);
         return Inertia::render('FuelTypes/List', [
             'fuelTypes' => $fuelTypes
         ]);

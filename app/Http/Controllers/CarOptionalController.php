@@ -18,7 +18,7 @@ class CarOptionalController extends Controller
 
     public function list(): Response
     {
-        $optional = CarOptional::all();
+        $optional = CarOptional::latest()->paginate(10);
         return Inertia::render('CarOptional/List', [
             'optional' => $optional
         ]);

@@ -3,6 +3,7 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
+import { Paginated } from '@/models/Paginated';
 import { CarOptional } from '@/models/VehicleOptional';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
@@ -17,7 +18,7 @@ const OptionalHeader: THeadProps<CarOptional>[] = [
 
 export default function ListOptionalPage({
   optional,
-}: PageProps<{ optional: CarOptional[] }>) {
+}: PageProps<{ optional: Paginated<CarOptional> }>) {
   const { openDialog } = useDialog();
 
   const handleAddFuelType = (optional?: CarOptional) =>

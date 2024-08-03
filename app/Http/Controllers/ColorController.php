@@ -19,7 +19,7 @@ class ColorController extends Controller
 
     public function list(Request $request): Response
     {
-        $colors = Color::all();
+        $colors = Color::latest()->paginate(10);
         return Inertia::render('Colors/List', [
             'colors' => $colors
         ]);

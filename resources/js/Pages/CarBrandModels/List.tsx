@@ -4,6 +4,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { CarBrandModel } from '@/models/BrandModels';
+import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import { PutBrandModelModal } from './PutCarBrandModelModal';
@@ -22,7 +23,7 @@ const brandModelsHeader: THeadProps<CarBrandModel>[] = [
 
 export default function ListFuelTypesPage({
   models,
-}: PageProps<{ models: CarBrandModel[] }>) {
+}: PageProps<{ models: Paginated<CarBrandModel> }>) {
   const { openDialog } = useDialog();
 
   const handlePutBrandModel = (brandModel?: CarBrandModel) =>

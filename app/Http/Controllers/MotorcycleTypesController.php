@@ -18,7 +18,7 @@ class MotorcycleTypesController extends Controller
 
     public function list(): Response
     {
-        $motorcycleTypes = MotorcycleTypes::all();
+        $motorcycleTypes = MotorcycleTypes::latest()->paginate(10);
         return Inertia::render('MotorcycleTypes/List', [
             'types' => $motorcycleTypes
         ]);

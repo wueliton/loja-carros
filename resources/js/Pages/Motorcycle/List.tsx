@@ -4,6 +4,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { Motorcycle } from '@/models/Motorcycle';
+import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
 import moment from 'moment';
@@ -44,7 +45,7 @@ const motorcycleHeader: THeadProps<Motorcycle>[] = [
 
 export default function MotorcyclePage({
   motorcycles,
-}: PageProps<{ motorcycles: Motorcycle[] }>) {
+}: PageProps<{ motorcycles: Paginated<Motorcycle> }>) {
   const { openDialog } = useDialog();
 
   const handleDeleteMotorcycle = (motorcycle: Motorcycle) =>

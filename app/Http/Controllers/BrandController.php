@@ -21,7 +21,7 @@ class BrandController extends Controller
 
     public function list(): Response
     {
-        $brands = Brands::all();
+        $brands = Brands::latest()->paginate(10);
         return Inertia::render('Brands/List', [
             'brands' => $brands
         ]);
