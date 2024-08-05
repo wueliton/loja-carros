@@ -6,7 +6,7 @@ use App\Models\CarBrandModel;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,7 +18,11 @@ class CarBrandModelController extends Controller
 
     public function list(Request $request): Response
     {
-        $models = CarBrandModel::with('brand')->latest()->paginate(10);
+        $models = CarBrandModel::with('brand')->where(function ($query) use ($request) {
+            if (!$request->user()->hasRole('admin')) {
+                $query->where('created_by', Auth::id());
+            }
+        })->latest()->paginate(10);
         return Inertia::render('CarBrandModels/List', [
             'models' => $models
         ]);
@@ -38,7 +42,7 @@ class CarBrandModelController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|unique:car_brand_models|string',
+            'name' => 'required|string',
             'brand' => 'required|exists:brands,id'
         ]);
 
@@ -47,13 +51,13 @@ class CarBrandModelController extends Controller
             'brand_id' => $request->brand
         ]);
 
-        return Redirect::route('brandModels');
+        return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
     public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|unique:car_brand_models|string',
+            'name' => 'required|string',
             'brand' => 'required|exists:brands,id'
         ]);
 
@@ -62,7 +66,7 @@ class CarBrandModelController extends Controller
         $brandModel->brand_id = $request->brand;
         $brandModel->save();
 
-        return Redirect::route('brandModels');
+        return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
 
     public function delete(Request $request, $id): RedirectResponse
@@ -70,6 +74,6 @@ class CarBrandModelController extends Controller
         $brandModel = CarBrandModel::findOrFail($id);
         $brandModel->delete();
 
-        return Redirect::route('brandModels');
+        return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 }

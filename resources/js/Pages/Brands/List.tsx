@@ -12,7 +12,7 @@ import { PutBrandModal } from './PutBrandModal';
 const brandsHeader: THeadProps<Brand>[] = [
   {
     key: 'name',
-    title: 'Tipo de Combustível',
+    title: 'Marca',
   },
 ];
 
@@ -41,7 +41,7 @@ export default function ListFuelTypesPage({
         router.delete(route(Brand.GET_ROUTE('delete'), { id: brand.id }), {
           preserveScroll: true,
           onSuccess: () => {
-            console.log('excluído com sucesso');
+            router.reload();
           },
         });
       },

@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\CreatedBy;
 use App\Traits\LogsActivityWithDescription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Car extends Model
 {
-    use HasFactory, LogsActivity, LogsActivityWithDescription;
+    use HasFactory, LogsActivity, LogsActivityWithDescription, SoftDeletes, CreatedBy;
 
     public $displayName = 'Carro';
     public $displayProperty = 'title';
@@ -19,6 +20,7 @@ class Car extends Model
         'title',
         'brand_id',
         'model_id',
+        'store_id',
         'manufacturing_year',
         'year',
         'version',

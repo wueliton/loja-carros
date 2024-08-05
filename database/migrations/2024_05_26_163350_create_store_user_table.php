@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('store_id')->constrained(table: 'stores');
             $table->foreignId('user_id')->constrained(table: 'users');
+            $table->foreignId('created_by')->nullable()->constrained(table: 'users');
             $table->timestamps();
         });
     }

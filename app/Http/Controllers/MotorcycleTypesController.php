@@ -6,6 +6,7 @@ use App\Models\MotorcycleTypes;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,9 +17,13 @@ class MotorcycleTypesController extends Controller
     {
     }
 
-    public function list(): Response
+    public function list(Request $request): Response
     {
-        $motorcycleTypes = MotorcycleTypes::latest()->paginate(10);
+        $motorcycleTypes = MotorcycleTypes::latest()->where(function ($query) use ($request) {
+            if (!$request->user()->hasRole('admin')) {
+                $query->where('created_by', Auth::id());
+            }
+        })->paginate(10);
         return Inertia::render('MotorcycleTypes/List', [
             'types' => $motorcycleTypes
         ]);
@@ -38,27 +43,27 @@ class MotorcycleTypesController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|unique:motorcycle_types'
+            'name' => 'required|string'
         ]);
 
         MotorcycleTypes::create([
             'name' => $request->name
         ]);
 
-        return Redirect::route('motorcycleTypes');
+        return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
     public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|unique:motorcycle_types'
+            'name' => 'required|string'
         ]);
 
         $motorcycleTypes = MotorcycleTypes::findOrFail($id);
         $motorcycleTypes->name = $request->name;
         $motorcycleTypes->save();
 
-        return Redirect::route('motorcycleTypes');
+        return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
 
     public function delete(Request $request, $id): RedirectResponse
@@ -66,6 +71,6 @@ class MotorcycleTypesController extends Controller
         $motorcycleTypes = MotorcycleTypes::findOrFail($id);
         $motorcycleTypes->delete();
 
-        return Redirect::route('motorcycleTypes');
+        return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 }

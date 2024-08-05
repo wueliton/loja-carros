@@ -20,6 +20,7 @@ export default function ListColorsPage({
   colors,
 }: PageProps<{ colors: Paginated<Color> }>) {
   const { openDialog } = useDialog();
+  console.log(colors);
 
   const handleAddColor = (color?: Color) =>
     openDialog({

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('brand_id')->constrained(table: 'brands');
             $table->foreignId('model_id')->constrained(table: 'car_brand_models');
+            $table->foreignId('store_id')->constrained(table: 'stores');
             $table->integer('manufacturing_year');
             $table->integer('year');
             $table->string('version')->nullable();
@@ -32,7 +33,9 @@ return new class extends Migration
             $table->string('size')->nullable();
             $table->integer('fuel_capacity');
             $table->string('axis_length')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained(table: 'users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -78,7 +78,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return to_route('users');
+        return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 
     public function getUser(Request $request, $id): Response

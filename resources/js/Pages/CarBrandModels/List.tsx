@@ -12,7 +12,7 @@ import { PutBrandModelModal } from './PutCarBrandModelModal';
 const brandModelsHeader: THeadProps<CarBrandModel>[] = [
   {
     key: 'name',
-    title: 'Tipo de Combustível',
+    title: 'Modelo',
   },
   {
     key: 'brand',

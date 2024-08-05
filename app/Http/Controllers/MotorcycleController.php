@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Motorcycle;
 use App\Models\MotorcycleImages;
+use App\Models\Store;
 use App\Services\ImageUploadService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -19,9 +21,14 @@ class MotorcycleController extends Controller
     {
     }
 
-    public function list(): Response
+    public function list(Request $request): Response
     {
-        $motorcycles = Motorcycle::with('brand:id,name', 'model:id,name', 'images')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->latest()->paginate(10);
+        $motorcycles = Motorcycle::with('brand:id,name', 'model:id,name', 'images')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->where(function ($query) use ($request) {
+            if (!$request->user()->hasRole('admin')) {
+                $userStores = Store::whereIn('user_id', [Auth::id()])->pluck('id');
+                $query->whereIn('store_id', $userStores);
+            }
+        })->latest()->paginate(10);
 
         return Inertia::render('Motorcycle/List', [
             'motorcycles' => $motorcycles
@@ -167,7 +174,7 @@ class MotorcycleController extends Controller
         $motorcycle = Motorcycle::findOrFail($id);
         $motorcycle->delete();
 
-        return Redirect::route('motorcycle');
+        return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 
     public function deleteImage(Request $request, $id)

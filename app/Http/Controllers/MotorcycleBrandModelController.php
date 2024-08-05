@@ -6,6 +6,7 @@ use App\Models\MotorcycleBrandModel;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,7 +19,11 @@ class MotorcycleBrandModelController extends Controller
 
     public function list(Request $request): Response
     {
-        $models = MotorcycleBrandModel::with('brand')->latest()->paginate(10);
+        $models = MotorcycleBrandModel::with('brand')->where(function ($query) use ($request) {
+            if (!$request->user()->hasRole('admin')) {
+                $query->where('created_by', Auth::id());
+            }
+        })->latest()->paginate(10);
         return Inertia::render('MotorcycleBrandModels/List', [
             'models' => $models
         ]);
@@ -38,7 +43,7 @@ class MotorcycleBrandModelController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|unique:motorcycle_brand_models|string',
+            'name' => 'required|string',
             'brand' => 'required|exists:brands,id'
         ]);
 
@@ -47,13 +52,13 @@ class MotorcycleBrandModelController extends Controller
             'brand_id' => $request->brand
         ]);
 
-        return Redirect::route('motorcycleBrandModel');
+        return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
     public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|unique:motorcycle_brand_models|string',
+            'name' => 'required|string',
             'brand' => 'required|exists:brands,id'
         ]);
 
@@ -62,7 +67,7 @@ class MotorcycleBrandModelController extends Controller
         $brandModel->brand_id = $request->brand;
         $brandModel->save();
 
-        return Redirect::route('motorcycleBrandModel');
+        return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
 
     public function delete(Request $request, $id): RedirectResponse
@@ -70,6 +75,6 @@ class MotorcycleBrandModelController extends Controller
         $brandModel = MotorcycleBrandModel::findOrFail($id);
         $brandModel->delete();
 
-        return Redirect::route('motorcycleBrandModel');
+        return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 }

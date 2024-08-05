@@ -27,6 +27,7 @@ export default function EditMotorcyclePage({
   );
   const { data, setData, errors, post } = useForm<{
     title?: string;
+    store?: number;
     brand?: number;
     model?: number;
     type?: number;
@@ -96,6 +97,21 @@ export default function EditMotorcyclePage({
             value={data.title}
             onChange={(e) => setData('title', e.target.value)}
             error={errors.title}
+            required
+          />
+          <Autocomplete
+            label="Loja"
+            propertyToDisplay="name"
+            propertyValue="id"
+            url={route('stores.list')}
+            searchProperties={['name']}
+            value={data.store}
+            onChange={(e) => {
+              setData('store', e);
+            }}
+            className="md:col-span-2"
+            name="store"
+            error={errors.store}
             required
           />
           <h2 className="md:col-span-2 text-lg font-bold">Dados gerais</h2>
