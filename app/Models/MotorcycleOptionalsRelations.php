@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CreatedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -9,7 +10,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class MotorcycleOptionalsRelations extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, CreatedBy;
 
     protected $fillable = [
         'motorcycle_id',

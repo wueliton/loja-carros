@@ -1,8 +1,10 @@
 import { Button } from '@/Components/Button';
+import { HasRole } from '@/Components/HasRole';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
+import { useUser } from '@/Context/User';
 import { Paginated } from '@/models/Paginated';
 import { Store } from '@/models/Store';
 import { PageProps } from '@/types';
@@ -46,6 +48,7 @@ export default function ListStorePage({
   stores,
 }: PageProps<{ stores: Paginated<Store> }>) {
   const { openDialog } = useDialog();
+  const { hasRole } = useUser();
 
   const handleDelete = (item: Store) => {
     openDialog({
@@ -69,20 +72,22 @@ export default function ListStorePage({
   return (
     <>
       <Head title="Lojas">
-        <Button
-          onClick={() =>
-            router.visit(route(Store.GET_ROUTE('create')), {
-              preserveScroll: true,
-            })
-          }
-        >
-          Adicionar
-        </Button>
+        <HasRole role="admin">
+          <Button
+            onClick={() =>
+              router.visit(route(Store.GET_ROUTE('create')), {
+                preserveScroll: true,
+              })
+            }
+          >
+            Adicionar
+          </Button>
+        </HasRole>
       </Head>
       <Table
         data={stores}
         headers={storeHeader}
-        onDelete={(item) => handleDelete(item)}
+        onDelete={hasRole('admin') ? (item) => handleDelete(item) : undefined}
         onEdit={(item) =>
           router.visit(route(Store.GET_ROUTE('edit'), { id: item.id }), {
             preserveScroll: true,

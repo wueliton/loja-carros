@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\CarImages;
+use App\Models\Store;
 use App\Services\ImageUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -20,7 +22,12 @@ class CarController extends Controller
 
     public function list(Request $request): Response
     {
-        $cars = Car::with('brand:id,name', 'model:id,name')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->latest()->paginate(10);
+        $cars = Car::with('brand:id,name', 'model:id,name')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->where(function ($query) use ($request) {
+            if (!$request->user()->hasRole('admin')) {
+                $userStores = Store::whereIn('user_id', [Auth::id()])->pluck('id');
+                $query->whereIn('store_id', $userStores);
+            }
+        })->latest()->paginate(10);
 
         return Inertia::render('Cars/List', [
             'cars' => $cars
@@ -33,6 +40,7 @@ class CarController extends Controller
             'title' => 'required|string',
             'brand' => 'required|numeric|exists:brands,id',
             'model' => 'required|numeric|exists:car_brand_models,id',
+            'store' => 'required|numeric|exists:stores,id',
             'manufacturingYear' => 'required|numeric|digits:4',
             'year' => 'required|numeric|digits:4',
             'version' => 'string|nullable',
@@ -69,6 +77,7 @@ class CarController extends Controller
             'title' => $request->title,
             'brand_id' => $request->brand,
             'model_id' => $request->model,
+            'store_id' => $request->store,
             'manufacturing_year' => $request->manufacturingYear,
             'year' => $request->year,
             'version' => $request->version,
@@ -102,6 +111,7 @@ class CarController extends Controller
             'title' => 'required|string',
             'brand' => 'required|numeric|exists:brands,id',
             'model' => 'required|numeric|exists:car_brand_models,id',
+            'store' => 'required|numeric|exists:stores,id',
             'manufacturingYear' => 'required|numeric|digits:4',
             'year' => 'required|numeric|digits:4',
             'version' => 'string|nullable',
@@ -139,6 +149,7 @@ class CarController extends Controller
         $car->title = $request->title;
         $car->brand_id = $request->brand;
         $car->model_id = $request->model;
+        $car->store_id = $request->store;
         $car->manufacturing_year = $request->manufacturingYear;
         $car->year = $request->year;
         $car->version = $request->version;
@@ -182,7 +193,7 @@ class CarController extends Controller
         $car = Car::findOrFail($id);
         $car->delete();
 
-        return Redirect::route('cars');
+        return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 
     public function deleteImage(Request $request, $id)

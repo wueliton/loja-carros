@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('colors', function (Blueprint $table) {
             $table->id();
-            $table->string('color')->unique();
+            $table->string('color');
+            $table->foreignId('created_by')->nullable()->constrained(table: 'users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

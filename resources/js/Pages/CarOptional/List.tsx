@@ -12,7 +12,7 @@ import { PutOptionalModal } from './PutCarOptionalModal';
 const OptionalHeader: THeadProps<CarOptional>[] = [
   {
     key: 'name',
-    title: 'Nome',
+    title: 'Opcional',
   },
 ];
 

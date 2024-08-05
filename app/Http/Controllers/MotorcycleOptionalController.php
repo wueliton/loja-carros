@@ -6,6 +6,7 @@ use App\Models\MotorcycleOptional;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,9 +17,13 @@ class MotorcycleOptionalController extends Controller
     {
     }
 
-    public function list(): Response
+    public function list(Request $request): Response
     {
-        $optional = MotorcycleOptional::latest()->paginate(10);
+        $optional = MotorcycleOptional::latest()->where(function ($query) use ($request) {
+            if (!$request->user()->hasRole('admin')) {
+                $query->where('created_by', Auth::id());
+            }
+        })->paginate(10);
         return Inertia::render('MotorcycleOptional/List', [
             'optionals' => $optional
         ]);
@@ -45,7 +50,7 @@ class MotorcycleOptionalController extends Controller
             'name' => $request->name
         ]);
 
-        return Redirect::route('motorcycleOptional');
+        return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
     public function update(Request $request, $id): RedirectResponse
@@ -58,7 +63,7 @@ class MotorcycleOptionalController extends Controller
         $fuelType->name = $request->name;
         $fuelType->save();
 
-        return Redirect::route('motorcycleOptional');
+        return redirect()->back()->with('success', 'Item editado com sucesso.');
     }
 
     public function delete(Request $request, $id): RedirectResponse
@@ -66,6 +71,6 @@ class MotorcycleOptionalController extends Controller
         $fuelType = MotorcycleOptional::findOrFail($id);
         $fuelType->delete();
 
-        return Redirect::route('motorcycleOptional');
+        return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 }

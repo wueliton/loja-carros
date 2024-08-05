@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('brand_id')->constrained(table: 'brands');
             $table->foreignId('model_id')->constrained(table: 'motorcycle_brand_models');
+            $table->foreignId('store_id')->constrained(table: 'stores');
             $table->foreignId('type_id')->constrained(table: 'motorcycle_types');
             $table->integer('manufacturing_year');
             $table->integer('year');
@@ -27,7 +28,9 @@ return new class extends Migration
             $table->string('size')->nullable();
             $table->string('axis_length')->nullable();
             $table->string('details')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained(table: 'users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

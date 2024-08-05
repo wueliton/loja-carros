@@ -26,7 +26,10 @@ createInertiaApp({
     page.default.layout =
       page.default.layout ||
       ((page: ReactElement) => (
-        <AuthenticatedLayout user={page.props.auth.user}>
+        <AuthenticatedLayout
+          user={page.props.auth.user}
+          roles={page.props.auth.roles}
+        >
           <DialogProvider>{page}</DialogProvider>
         </AuthenticatedLayout>
       ));

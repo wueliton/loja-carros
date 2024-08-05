@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('motorcycle_id')->constrained(table: 'motorcycles');
             $table->foreignId('motorcycle_optionals_id')->constrained(table: 'motorcycle_optionals');
+            $table->foreignId('created_by')->nullable()->constrained(table: 'users');
             $table->timestamps();
         });
     }

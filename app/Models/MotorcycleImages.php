@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CreatedBy;
 use App\Traits\LogsActivityWithDescription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class MotorcycleImages extends Model
 {
-    use HasFactory, LogsActivity, LogsActivityWithDescription;
+    use HasFactory, LogsActivity, LogsActivityWithDescription, CreatedBy;
 
     public $displayName = 'Imagem de Moto';
 

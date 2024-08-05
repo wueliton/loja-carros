@@ -19,6 +19,7 @@ export default function CreateMotorcyclePage({}: PageProps) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { data, setData, errors, post, isDirty } = useForm<{
     title?: string;
+    store?: number;
     brand?: number;
     model?: number;
     type?: number;
@@ -63,6 +64,21 @@ export default function CreateMotorcyclePage({}: PageProps) {
             value={data.title}
             onChange={(e) => setData('title', e.target.value)}
             error={errors.title}
+            required
+          />
+          <Autocomplete
+            label="Loja"
+            propertyToDisplay="name"
+            propertyValue="id"
+            url={route('stores.list')}
+            searchProperties={['name']}
+            value={data.store}
+            onChange={(e) => {
+              setData('store', e);
+            }}
+            className="md:col-span-2"
+            name="store"
+            error={errors.store}
             required
           />
           <h2 className="md:col-span-2 text-lg font-bold">Dados gerais</h2>

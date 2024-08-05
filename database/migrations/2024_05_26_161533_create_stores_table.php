@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('email');
             $table->integer('phone');
             $table->integer('whatsapp');
+            $table->foreignId('created_by')->nullable()->constrained(table: 'users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

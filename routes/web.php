@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], function () {
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::group(['prefix' => 'users'], function () {
         Route::get('', [UserController::class, 'list'])->name('users');
         Route::get('create', [UserController::class, 'createView'])->name('users.createView');
@@ -47,12 +47,19 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], func
     });
 
     Route::group(['prefix' => 'stores'], function () {
-        Route::get('', [StoreController::class, 'index'])->name('stores');
         Route::inertia('create', 'Stores/Create');
+        Route::delete('{id}', [StoreController::class, 'delete'])->name('stores.delete')->where('id', '[0-9]+');
+    });
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['prefix' => 'stores'], function () {
+        Route::get('', [StoreController::class, 'index'])->name('stores');
+
         Route::get('{id}', [StoreController::class, 'getStore'])->name('stores.get')->where('id', '[0-9]+');
         Route::post('create', [StoreController::class, 'create'])->name('stores.create');
-        Route::delete('{id}', [StoreController::class, 'delete'])->name('stores.delete')->where('id', '[0-9]+');
         Route::post('{id}', [StoreController::class, 'edit'])->name('stores.edit')->where('id', '[0-9]+');
+        Route::get('list', [StoreController::class, 'get'])->name('stores.list');
     });
 
     Route::group(['prefix' => 'colors'], function () {
