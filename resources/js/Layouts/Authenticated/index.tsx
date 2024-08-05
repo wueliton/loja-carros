@@ -47,7 +47,7 @@ export const AuthenticatedLayout: FC<
   return (
     <UserProvider user={user} roles={roles}>
       <div className={styles.layout} scroll-region="true">
-        <NavComponent ref={navRef} opened={navOpened} roles={roles} />
+        <NavComponent ref={navRef} opened={navOpened} />
         <main scroll-region="true">
           <div className={styles.head}>
             <div className={styles.profile}>
