@@ -13,7 +13,6 @@ export const NavLink: FC<InertiaLinkProps> = ({
   const active = useCallback(() => {
     const pathName = new URL(link).pathname;
     const parsedURL = url.split('?')[0];
-    console.log(parsedURL);
     return parsedURL.endsWith(pathName) || parsedURL.includes(`${pathName}/`);
   }, [url]);
 

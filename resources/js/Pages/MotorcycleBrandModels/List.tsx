@@ -12,7 +12,7 @@ import { PutMotorcycleBrandModelModal } from './PutMotorcycleBrandModelModal';
 const motorcycleBrandModelsHeader: THeadProps<MotorcycleBrandModels>[] = [
   {
     key: 'name',
-    title: 'Tipo de Combustível',
+    title: 'Modelo',
   },
   {
     key: 'brand',

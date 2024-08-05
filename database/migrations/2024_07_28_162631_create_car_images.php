@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('url');
             $table->foreignId('car_id')->constrained(table: 'cars')->onDelete('cascade');
+            $table->foreignId('created_by')->nullable()->constrained(table: 'users');
             $table->timestamps();
         });
     }

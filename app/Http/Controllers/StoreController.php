@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use App\Services\FilterService;
 use App\Services\ImageUploadService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -16,17 +18,41 @@ use Inertia\Response;
 class StoreController extends Controller
 {
 
-    public function __construct(protected ImageUploadService $imageUploadService)
+    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService)
     {
     }
 
     public function index(Request $request): Response
     {
-        $stores = Store::latest()->paginate(10);
+
+        $stores = Store::latest()->where(function ($query) use ($request) {
+            if (!$request->user()->hasRole('admin')) {
+                $loggedUserId = Auth::id();
+
+                $query->whereHas('users', function ($query) use ($loggedUserId) {
+                    $query->whereIn('user_id', [$loggedUserId]);
+                });
+            }
+        })->paginate(10);
 
         return Inertia::render('Stores/List', [
             'stores' => $stores,
         ]);
+    }
+
+    public function get(Request $request)
+    {
+        $loggedUserId = Auth::id();
+        $stores = Store::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->whereHas('users', function ($query) use ($loggedUserId) {
+            $query->whereIn('user_id', [$loggedUserId]);
+        })->get();
+
+        return $stores;
     }
 
     public function delete(Request $request, $id): RedirectResponse
@@ -34,7 +60,7 @@ class StoreController extends Controller
         $store = Store::findOrFail($id);
         $store->users()->detach();
         $store->delete();
-        return Redirect::route('stores');
+        return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 
     public function create(Request $request): RedirectResponse
