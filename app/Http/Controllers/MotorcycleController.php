@@ -25,7 +25,9 @@ class MotorcycleController extends Controller
     {
         $motorcycles = Motorcycle::with('brand:id,name', 'model:id,name', 'images')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->where(function ($query) use ($request) {
             if (!$request->user()->hasRole('admin')) {
-                $userStores = Store::whereIn('user_id', [Auth::id()])->pluck('id');
+                $userStores = Store::whereHas('users', function ($query) {
+                    $query->whereIn('user_id', [Auth::id()]);
+                })->pluck('id');
                 $query->whereIn('store_id', $userStores);
             }
         })->latest()->paginate(10);
