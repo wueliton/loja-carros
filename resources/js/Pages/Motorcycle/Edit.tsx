@@ -31,6 +31,7 @@ export default function EditMotorcyclePage({
     brand?: number;
     model?: number;
     type?: number;
+    price?: string;
     manufacturingYear?: number;
     year?: number;
     cylinder?: string;
@@ -47,6 +48,7 @@ export default function EditMotorcyclePage({
     ...motorcycle,
     brand: motorcycle.brand_id,
     model: motorcycle.model_id,
+    store: motorcycle.store_id,
     type: motorcycle.type_id,
     color: motorcycle.color_id,
     optionals: motorcycle.optionals?.map((optional) => optional.id),
@@ -164,6 +166,24 @@ export default function EditMotorcyclePage({
             value={data.type}
             error={errors.type}
             required
+          />
+          <Input
+            label="Valor"
+            value={data.price}
+            unmaskedValueChange={(e) => setData('price', e)}
+            error={errors.price}
+            required
+            prefix={
+              <span className="p-2 min-w-10 text-center bg-gray-50">R$</span>
+            }
+            mask={Number}
+            maskOptions={{
+              radix: ',',
+              scale: 2,
+              thousandsSeparator: '.',
+              padFractionalZeros: true,
+              normalizeZeros: true,
+            }}
           />
           <Input
             label="Ano de Fabricação"

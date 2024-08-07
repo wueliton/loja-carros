@@ -4,6 +4,7 @@ import { Autocomplete } from '@/Components/Forms/Autocomplete';
 import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
+import { useUser } from '@/Context/User';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { Store } from '@/models/Store';
 import { PageProps } from '@/types';
@@ -13,6 +14,7 @@ import { FormEvent } from 'react';
 export default function EditStore({
   store,
 }: PageProps<{ store: Store & { users_ids: number[] } }>) {
+  const { hasRole } = useUser();
   const { data, setData, errors, isDirty, post, transform } = useForm<
     Omit<Store, 'logo_url' | 'phone' | 'whatsapp'> & {
       phone?: string | number;
@@ -127,6 +129,7 @@ export default function EditStore({
               name="administradores-conta"
               value={data.users}
               onChange={(e) => setData('users', e)}
+              disabled={!hasRole('admin')}
               moreThanOne
             />
           </div>

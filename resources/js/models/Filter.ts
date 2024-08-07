@@ -1,6 +1,7 @@
-export interface Filter<T> {
+export type Filter<T> = {
   where?: Where<T>[];
-}
+  global?: boolean;
+};
 
 export type Where<T, Value extends keyof T = keyof T> = {
   fieldName: Value;

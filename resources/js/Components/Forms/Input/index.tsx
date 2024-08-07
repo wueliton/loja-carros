@@ -27,7 +27,9 @@ export interface InputProps
   mask?:
     | string
     | (ReactMaskOpts['mask'] &
-        { comparison?: (value: string) => boolean; mask: string }[]);
+        { comparison?: (value: string) => boolean; mask: string }[])
+    | unknown;
+  maskOptions?: { [k in string]: unknown };
   unmaskedValueChange?: (value: string) => void;
 }
 
@@ -46,6 +48,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       hideInput,
       disabled,
       className,
+      maskOptions,
       unmaskedValueChange,
       ...props
     },
@@ -60,6 +63,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       value: maskValue,
     } = useMask({
       mask: mask,
+      maskOptions,
     });
 
     useEffect(() => {
@@ -83,7 +87,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
           )}
         </label>
         <div className={styles['field']}>
-          {prefix && <div className={styles.prefix}>{prefix}</div>}
+          {prefix && <>{prefix}</>}
           {!hideInput && (
             <input
               {...props}
