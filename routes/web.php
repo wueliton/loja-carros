@@ -42,8 +42,6 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
         Route::delete('{id}', [UserController::class, 'delete'])->name('users.delete')->where('id', '[0-9]+');
         Route::get('{id}', [UserController::class, 'getUser'])->name('users.get')->where('id', '[0-9]+');
         Route::patch('{id}', [UserController::class, 'edit'])->name('users.edit')->where('id', '[0-9]+');
-
-        Route::get('list', [UserController::class, 'get'])->name('users.list');
     });
 
     Route::group(['prefix' => 'stores'], function () {
@@ -53,6 +51,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('list', [UserController::class, 'get'])->name('users.list');
+    });
+
     Route::group(['prefix' => 'stores'], function () {
         Route::get('', [StoreController::class, 'index'])->name('stores');
 

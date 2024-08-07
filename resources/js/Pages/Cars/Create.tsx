@@ -19,6 +19,7 @@ export default function CreateVehiclePage({}: PageProps) {
     manufacturingYear?: number;
     year?: number;
     version?: string;
+    price?: string;
     color?: number;
     fuelType?: number;
     store?: number;
@@ -117,6 +118,24 @@ export default function CreateVehiclePage({}: PageProps) {
             value={data.model}
             error={errors.model}
             required
+          />
+          <Input
+            label="Valor"
+            value={data.price}
+            unmaskedValueChange={(e) => setData('price', e)}
+            error={errors.price}
+            required
+            prefix={
+              <span className="p-2 min-w-10 text-center bg-gray-50">R$</span>
+            }
+            mask={Number}
+            maskOptions={{
+              radix: ',',
+              scale: 2,
+              thousandsSeparator: '.',
+              padFractionalZeros: true,
+              normalizeZeros: true,
+            }}
           />
           <Input
             label="Ano de Fabricação"

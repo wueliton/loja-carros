@@ -3,6 +3,7 @@ import { Color } from './Color';
 import { DefaultModel } from './DefaultModel';
 import { FuelType } from './FuelType';
 import { Model } from './Model';
+import { Store } from './Store';
 import { Transmission } from './Transmission';
 import { CarOptional } from './VehicleOptional';
 
@@ -12,6 +13,8 @@ export class Car extends DefaultModel {
   title?: string;
   brand_id?: number;
   brand?: Brand;
+  store_id?: number;
+  store?: Store;
   model_id?: number;
   model?: Model;
   manufacturing_year?: number;

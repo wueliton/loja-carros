@@ -42,6 +42,7 @@ class CarController extends Controller
             'title' => 'required|string',
             'brand' => 'required|numeric|exists:brands,id',
             'model' => 'required|numeric|exists:car_brand_models,id',
+            'price' => 'required|numeric',
             'store' => 'required|numeric|exists:stores,id',
             'manufacturingYear' => 'required|numeric|digits:4',
             'year' => 'required|numeric|digits:4',
@@ -79,6 +80,7 @@ class CarController extends Controller
             'title' => $request->title,
             'brand_id' => $request->brand,
             'model_id' => $request->model,
+            'price' => $request->price,
             'store_id' => $request->store,
             'manufacturing_year' => $request->manufacturingYear,
             'year' => $request->year,
@@ -113,6 +115,7 @@ class CarController extends Controller
             'title' => 'required|string',
             'brand' => 'required|numeric|exists:brands,id',
             'model' => 'required|numeric|exists:car_brand_models,id',
+            'price' => 'required|numeric',
             'store' => 'required|numeric|exists:stores,id',
             'manufacturingYear' => 'required|numeric|digits:4',
             'year' => 'required|numeric|digits:4',
@@ -151,6 +154,7 @@ class CarController extends Controller
         $car->title = $request->title;
         $car->brand_id = $request->brand;
         $car->model_id = $request->model;
+        $car->price = $request->price;
         $car->store_id = $request->store;
         $car->manufacturing_year = $request->manufacturingYear;
         $car->year = $request->year;

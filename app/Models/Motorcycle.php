@@ -20,6 +20,7 @@ class Motorcycle extends Model
         'title',
         'brand_id',
         'model_id',
+        'price',
         'store_id',
         'type_id',
         'manufacturing_year',

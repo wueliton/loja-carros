@@ -22,6 +22,7 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
     store?: number;
     brand?: number;
     model?: number;
+    price?: string;
     manufacturingYear?: number;
     year?: number;
     version?: string;
@@ -45,6 +46,7 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
     brand: car.brand_id,
     model: car.model_id,
     color: car.color_id,
+    store: car.store_id,
     fuelType: car.fuel_type_id,
     transmission: car.transmission_id,
     optionals: car.optionals?.map((optional) => optional.id),
@@ -151,6 +153,24 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
             value={data.model}
             error={errors.model}
             required
+          />
+          <Input
+            label="Valor"
+            value={data.price}
+            unmaskedValueChange={(e) => setData('price', e)}
+            error={errors.price}
+            required
+            prefix={
+              <span className="p-2 min-w-10 text-center bg-gray-50">R$</span>
+            }
+            mask={Number}
+            maskOptions={{
+              radix: ',',
+              scale: 2,
+              thousandsSeparator: '.',
+              padFractionalZeros: true,
+              normalizeZeros: true,
+            }}
           />
           <Input
             label="Ano de Fabricação"

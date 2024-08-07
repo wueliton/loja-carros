@@ -56,6 +56,8 @@ class MotorcycleController extends Controller
             'title' => 'required|string',
             'brand' => 'required|numeric|exists:brands,id',
             'model' => 'required|numeric|exists:motorcycle_brand_models,id',
+            'store' => 'required|numeric|exists:stores,id',
+            'price' => 'required|numeric',
             'type' => 'required|numeric|exists:motorcycle_types,id',
             'manufacturingYear' => 'required|numeric|digits:4',
             'year' => 'required|numeric|digits:4',
@@ -87,6 +89,8 @@ class MotorcycleController extends Controller
             'title' => $request->title,
             'brand_id' => $request->brand,
             'model_id' => $request->model,
+            'store_id' => $request->store,
+            'price' => $request->price,
             'type_id' => $request->type,
             'manufacturing_year' => $request->manufacturingYear,
             'year' => $request->year,
@@ -115,6 +119,8 @@ class MotorcycleController extends Controller
             'title' => 'required|string',
             'brand' => 'required|numeric|exists:brands,id',
             'model' => 'required|numeric|exists:motorcycle_brand_models,id',
+            'store' => 'required|numeric|exists:stores,id',
+            'price' => 'required|numeric',
             'type' => 'required|numeric|exists:motorcycle_types,id',
             'manufacturingYear' => 'required|numeric|digits:4',
             'year' => 'required|numeric|digits:4',
@@ -147,6 +153,8 @@ class MotorcycleController extends Controller
         $motorcycle->title = $request->title;
         $motorcycle->brand_id = $request->brand;
         $motorcycle->model_id = $request->model;
+        $motorcycle->price = $request->price;
+        $motorcycle->store_id = $request->store;
         $motorcycle->type_id = $request->type;
         $motorcycle->manufacturing_year = $request->manufacturingYear;
         $motorcycle->year = $request->year;

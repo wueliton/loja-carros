@@ -4,6 +4,7 @@ import { DefaultModel } from './DefaultModel';
 import { MotorcycleBrandModels } from './MotorcycleBrandModels';
 import { MotorcycleOptional } from './MotorcycleOptional';
 import { MotorcycleTypes } from './MotorcycleTypes';
+import { Store } from './Store';
 
 export class Motorcycle extends DefaultModel {
   static ROUTE = 'motorcycle';
@@ -11,6 +12,8 @@ export class Motorcycle extends DefaultModel {
   title?: string;
   brand_id?: number;
   brand?: Brand;
+  store_id?: number;
+  store?: Store;
   model_id?: number;
   model?: MotorcycleBrandModels;
   type_id?: number;

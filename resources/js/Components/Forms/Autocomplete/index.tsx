@@ -113,6 +113,7 @@ export const Autocomplete = <
           value: value,
         } as Where<T>,
       ],
+      global: true,
     });
 
     setSelected(data);
@@ -214,13 +215,15 @@ export const Autocomplete = <
         hideInput={!moreThanOne && !!selected.length}
         prefix={
           !moreThanOne && selected.length ? (
-            <Chip
-              key="chip-selected"
-              canRemove
-              onRemove={() => handleRemoveOption(selected[0])}
-            >
-              <>{selected[0][propertyToDisplay]}</>
-            </Chip>
+            <div className={styles.prefix}>
+              <Chip
+                key="chip-selected"
+                canRemove
+                onRemove={() => handleRemoveOption(selected[0])}
+              >
+                <>{selected[0][propertyToDisplay]}</>
+              </Chip>
+            </div>
           ) : undefined
         }
         autoComplete="off"
@@ -240,7 +243,7 @@ export const Autocomplete = <
           {selected.map((item, index) => (
             <Chip
               key={`chip-${index}`}
-              canRemove
+              canRemove={!disabled}
               onRemove={() => handleRemoveOption(item)}
             >
               <>{item[propertyToDisplay]}</>
