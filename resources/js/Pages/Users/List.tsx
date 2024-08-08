@@ -1,4 +1,5 @@
 import { Button } from '@/Components/Button';
+import { Filter } from '@/Components/Filter';
 import { Chip } from '@/Components/Forms/Chip';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
@@ -46,9 +47,7 @@ export default function ListUserPage({
         if (!data) return;
         router.delete(route('users.delete', { id: item.id }), {
           preserveScroll: true,
-          onSuccess: () => {
-            console.log('excluído com sucesso');
-          },
+          onSuccess: () => {},
         });
       },
     });
@@ -65,6 +64,8 @@ export default function ListUserPage({
           Adicionar
         </Button>
       </Head>
+
+      <Filter searchProperties={['name', 'email']} />
       <Table
         data={users}
         headers={usersHeader}

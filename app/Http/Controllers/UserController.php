@@ -21,7 +21,12 @@ class UserController extends Controller
     public function list(Request $request): Response
     {
         $loggedUserId = Auth::id();
-        $users = User::where('id', '!=', $loggedUserId)->with('roles')->latest()->paginate(10);
+        $users = User::where('id', '!=', $loggedUserId)->with('roles')->where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->latest()->paginate(10);
 
         return Inertia::render('Users/List', [
             'users' => $users

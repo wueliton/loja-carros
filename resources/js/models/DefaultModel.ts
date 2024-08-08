@@ -5,4 +5,5 @@ export class DefaultModel {
       .filter((path) => !!path)
       .join('.');
   }
+  created_by?: number;
 }

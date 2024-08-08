@@ -1,4 +1,5 @@
 import { Button } from '@/Components/Button';
+import { Filter } from '@/Components/Filter';
 import { HasRole } from '@/Components/HasRole';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
@@ -61,9 +62,7 @@ export default function ListStorePage({
         if (!data) return;
         router.delete(route(Store.GET_ROUTE('delete'), { id: item.id }), {
           preserveScroll: true,
-          onSuccess: () => {
-            console.log('excluído com sucesso');
-          },
+          onSuccess: () => {},
         });
       },
     });
@@ -84,6 +83,8 @@ export default function ListStorePage({
           </Button>
         </HasRole>
       </Head>
+
+      <Filter searchProperties={['name']} />
       <Table
         data={stores}
         headers={storeHeader}

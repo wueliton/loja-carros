@@ -114,38 +114,44 @@ const Menu: (MenuItem | MenuCategory)[] = [
   },
 ];
 
-export const NavComponent = forwardRef<HTMLElement, { opened: boolean }>(
-  ({ opened }, ref) => {
-    return (
-      <nav
-        ref={ref}
-        className={`${styles.nav} ${opened ? styles.opened : ''}`}
-        scroll-region="true"
-      >
-        <Link href={route('dashboard')} className={styles['logo-link']}>
-          <ApplicationLogo className={styles.logo} />
-        </Link>
-        <div className={styles.links}>
-          {Menu.map((item, key) => {
-            if ((item as MenuCategory).category)
-              return (
-                <div className={styles.category} key={key}>
-                  {(item as MenuCategory).category}
-                </div>
-              );
-            item = item as MenuItem;
-            if (route().has(item.url))
-              return (
-                <HasRole role={item.hasRole}>
-                  <NavLink href={item.url} preserveScroll key={key}>
-                    {item.icon} {item.title}
-                  </NavLink>
-                </HasRole>
-              );
-            return <Fragment key={key}></Fragment>;
-          })}
-        </div>
-      </nav>
-    );
-  },
-);
+export const NavComponent = forwardRef<
+  HTMLElement,
+  { opened: boolean; setOpened: (opened: boolean) => void }
+>(({ opened, setOpened }, ref) => {
+  return (
+    <nav
+      ref={ref}
+      className={`${styles.nav} ${opened ? styles.opened : ''}`}
+      scroll-region="true"
+    >
+      <Link href={route('dashboard')} className={styles['logo-link']}>
+        <ApplicationLogo className={styles.logo} />
+      </Link>
+      <div className={styles.links}>
+        {Menu.map((item, key) => {
+          if ((item as MenuCategory).category)
+            return (
+              <div className={styles.category} key={key}>
+                {(item as MenuCategory).category}
+              </div>
+            );
+          item = item as MenuItem;
+          if (route().has(item.url))
+            return (
+              <HasRole role={item.hasRole}>
+                <NavLink
+                  href={item.url}
+                  preserveScroll
+                  key={key}
+                  onClick={() => setOpened(false)}
+                >
+                  {item.icon} {item.title}
+                </NavLink>
+              </HasRole>
+            );
+          return <Fragment key={key}></Fragment>;
+        })}
+      </div>
+    </nav>
+  );
+});

@@ -19,9 +19,13 @@ class CarBrandModelController extends Controller
     public function list(Request $request): Response
     {
         $models = CarBrandModel::with('brand')->where(function ($query) use ($request) {
-            if (!$request->user()->hasRole('admin')) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            if ($request->has('showAll') && $request->showAll === "false") {
                 $query->where('created_by', Auth::id());
             }
+            return $query;
         })->latest()->paginate(10);
         return Inertia::render('CarBrandModels/List', [
             'models' => $models

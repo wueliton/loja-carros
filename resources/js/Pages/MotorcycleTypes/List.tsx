@@ -1,8 +1,11 @@
 import { Button } from '@/Components/Button';
+import { Filter } from '@/Components/Filter';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
+import { ToggleTab, ToggleTabs } from '@/Components/ToggleTabs';
 import { useDialog } from '@/Context/Dialog';
+import { useUser } from '@/Context/User';
 import { MotorcycleTypes } from '@/models/MotorcycleTypes';
 import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
@@ -18,8 +21,10 @@ const motorcycleTypesHeader: THeadProps<MotorcycleTypes>[] = [
 
 export default function MotorcycleTypesPage({
   types,
+  auth,
 }: PageProps<{ types: Paginated<MotorcycleTypes> }>) {
   const { openDialog } = useDialog();
+  const { hasRole } = useUser();
 
   const handlePutType = (optional?: MotorcycleTypes) =>
     openDialog({
@@ -54,11 +59,22 @@ export default function MotorcycleTypesPage({
       <Head title="Tipos">
         <Button onClick={() => handlePutType()}>Adicionar</Button>
       </Head>
+
+      <Filter searchProperties={['name']}>
+        <ToggleTabs fieldName="showAll">
+          <ToggleTab>Todos os tipos</ToggleTab>
+          <ToggleTab value={false}>Meus tipos</ToggleTab>
+        </ToggleTabs>
+      </Filter>
       <Table
         data={types}
         headers={motorcycleTypesHeader}
         onEdit={(optional) => handlePutType(optional)}
         onDelete={handleDeleteType}
+        canDelete={(item) =>
+          hasRole('admin') || item.created_by === auth.user.id
+        }
+        canEdit={(item) => hasRole('admin') || item.created_by === auth.user.id}
       />
     </>
   );

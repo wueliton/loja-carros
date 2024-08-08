@@ -19,9 +19,13 @@ class FuelTypeController extends Controller
     public function list(Request $request): Response
     {
         $fuelTypes = FuelType::latest()->where(function ($query) use ($request) {
-            if (!$request->user()->hasRole('admin')) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            if ($request->has('showAll') && $request->showAll === "false") {
                 $query->where('created_by', Auth::id());
             }
+            return $query;
         })->paginate(10);
         return Inertia::render('FuelTypes/List', [
             'fuelTypes' => $fuelTypes

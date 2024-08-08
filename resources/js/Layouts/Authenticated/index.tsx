@@ -47,7 +47,11 @@ export const AuthenticatedLayout: FC<
   return (
     <UserProvider user={user} roles={roles}>
       <div className={styles.layout} scroll-region="true">
-        <NavComponent ref={navRef} opened={navOpened} />
+        <NavComponent
+          ref={navRef}
+          opened={navOpened}
+          setOpened={(opened: boolean) => setNavOpened(opened)}
+        />
         <main scroll-region="true">
           <div className={styles.head}>
             <div className={styles.profile}>
@@ -66,10 +70,19 @@ export const AuthenticatedLayout: FC<
                 parent={avatarRef}
                 onClose={() => setMenuOpened(false)}
               >
-                <Link href={route('profile.edit')} as="button">
+                <Link
+                  href={route('profile.edit')}
+                  onClick={() => setMenuOpened(false)}
+                  as="button"
+                >
                   Meu Perfil
                 </Link>
-                <Link href={route('logout')} method="post" as="button">
+                <Link
+                  href={route('logout')}
+                  onClick={() => setMenuOpened(false)}
+                  method="post"
+                  as="button"
+                >
                   Sair
                 </Link>
               </FloatingMenu>

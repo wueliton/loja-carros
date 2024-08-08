@@ -29,10 +29,13 @@
             @apply border-b;
 
             td {
-                @apply px-6 py-4 bg-white;
+                @apply px-6 py-4 bg-white h-full;
+                min-height: 70px;
             }
 
-            &:not(.empty) {
+            &.canEdit:not(.empty) {
+                cursor: pointer;
+
                 &:hover td {
                     @apply bg-gray-50;
                 }
@@ -44,7 +47,7 @@
         }
 
         .actions {
-            @apply flex justify-end;
+            @apply flex justify-end gap-3;
         }
     }
 }

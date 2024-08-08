@@ -67,11 +67,11 @@ export const FloatingMenu: FC<FloatingMenuProps> = memo(
 
     useEffect(() => {
       window.addEventListener('scroll', adjustPosition);
-      document.addEventListener('click', clickedOutside);
+      document.addEventListener('mousedown', clickedOutside);
       document.addEventListener('keydown', keyboardOptionSelect);
 
       return () => {
-        document.removeEventListener('click', clickedOutside);
+        document.removeEventListener('mousedown', clickedOutside);
         window.removeEventListener('scroll', adjustPosition);
         document.removeEventListener('keydown', keyboardOptionSelect);
       };

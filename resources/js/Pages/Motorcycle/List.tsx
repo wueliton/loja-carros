@@ -1,4 +1,5 @@
 import { Button } from '@/Components/Button';
+import { Filter } from '@/Components/Filter';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
@@ -79,6 +80,8 @@ export default function MotorcyclePage({
           Adicionar
         </Button>
       </Head>
+
+      <Filter searchProperties={['title', 'brand.name', 'model.name']} />
       <Table
         data={motorcycles}
         headers={motorcycleHeader}
