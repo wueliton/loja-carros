@@ -7,6 +7,7 @@ import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { useDialog } from '@/Context/Dialog';
+import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { Car } from '@/models/Car';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -17,7 +18,7 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { openDialog } = useDialog();
   const [currentFiles, setCurrentFiles] = useState<Car['images']>(car.images);
-  const { data, setData, errors, post } = useForm<{
+  const { data, setData, errors, post, isDirty } = useForm<{
     title?: string;
     store?: number;
     brand?: number;
@@ -49,7 +50,7 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
     store: car.store_id,
     fuelType: car.fuel_type_id,
     transmission: car.transmission_id,
-    optionals: car.optionals?.map((optional) => optional.id),
+    optionals: car.optionals?.map((optional) => optional.id) ?? [],
     manufacturingYear: car.manufacturing_year,
     lastDigit: car.last_digit,
     fuelCapacity: car.fuel_capacity,
@@ -80,6 +81,8 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
       },
     });
   };
+
+  useDiscardUnsaved(isDirty);
 
   return (
     <>

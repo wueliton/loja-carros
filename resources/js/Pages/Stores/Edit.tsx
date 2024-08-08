@@ -9,13 +9,13 @@ import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { Store } from '@/models/Store';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+import { FormEvent, useEffect } from 'react';
 
 export default function EditStore({
   store,
 }: PageProps<{ store: Store & { users_ids: number[] } }>) {
   const { hasRole } = useUser();
-  const { data, setData, errors, isDirty, post, transform } = useForm<
+  const { data, setData, errors, isDirty, post, transform, reset } = useForm<
     Omit<Store, 'logo_url' | 'phone' | 'whatsapp'> & {
       phone?: string | number;
       whatsapp?: string | number;
@@ -45,6 +45,10 @@ export default function EditStore({
   };
 
   useDiscardUnsaved(isDirty);
+
+  useEffect(() => {
+    reset();
+  }, []);
 
   return (
     <>

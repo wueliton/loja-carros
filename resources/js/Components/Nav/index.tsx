@@ -138,11 +138,10 @@ export const NavComponent = forwardRef<
           item = item as MenuItem;
           if (route().has(item.url))
             return (
-              <HasRole role={item.hasRole}>
+              <HasRole key={key} role={item.hasRole}>
                 <NavLink
                   href={item.url}
                   preserveScroll
-                  key={key}
                   onClick={() => setOpened(false)}
                 >
                   {item.icon} {item.title}

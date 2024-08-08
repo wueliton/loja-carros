@@ -93,7 +93,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
               {...props}
               id={id}
               ref={inputRef as LegacyRef<HTMLInputElement>}
-              value={maskValue}
+              defaultValue={maskValue}
               type={showPass ? 'text' : type}
               disabled={disabled}
             />

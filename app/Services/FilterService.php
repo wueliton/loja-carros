@@ -46,7 +46,7 @@ class FilterService
         } else if ($condition['comparison'] === 'ninq' && array_key_exists('value', $condition)) {
             $query->whereNotIn($fieldName, $condition['value']);
         } else if ($condition['comparison'] === 'inq' && array_key_exists('value', $condition)) {
-            $query->whereNotIn($fieldName, $condition['value']);
+            $query->whereIn($fieldName, $condition['value']);
         }
     }
 }
