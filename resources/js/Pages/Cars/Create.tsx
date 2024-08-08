@@ -5,6 +5,7 @@ import { Editor } from '@/Components/Forms/Editor';
 import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
+import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { Car } from '@/models/Car';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -12,7 +13,7 @@ import { FormEvent, useMemo } from 'react';
 
 export default function CreateVehiclePage({}: PageProps) {
   const currentYear = useMemo(() => new Date().getFullYear(), []);
-  const { data, setData, errors, post } = useForm<{
+  const { data, setData, errors, post, isDirty } = useForm<{
     title?: string;
     brand?: number;
     model?: number;
@@ -39,12 +40,16 @@ export default function CreateVehiclePage({}: PageProps) {
   }>({
     year: currentYear,
     manufacturingYear: currentYear,
+    optionals: [],
+    transmission: undefined,
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     post(route(Car.GET_ROUTE('create')));
   };
+
+  useDiscardUnsaved(isDirty);
 
   return (
     <>

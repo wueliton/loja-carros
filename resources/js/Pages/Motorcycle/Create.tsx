@@ -39,6 +39,8 @@ export default function CreateMotorcyclePage({}: PageProps) {
   }>({
     year: currentYear,
     manufacturingYear: currentYear,
+    optionals: [],
+    color: undefined,
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
