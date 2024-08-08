@@ -128,7 +128,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('image/{id}', [CarController::class, 'deleteImage'])->name('cars.deleteImage')->where('id', '[0-9]+');
     });
 
-    Route::group(['prefix' => 'motorcycle-brand-model'], function () {
+    Route::group(['prefix' => 'motorcycleBrandModel'], function () {
         Route::get('', [MotorcycleBrandModelController::class, 'list'])->name('motorcycleBrandModel');
         Route::post('create', [MotorcycleBrandModelController::class, 'create'])->name('motorcycleBrandModel.create');
         Route::put('{id}', [MotorcycleBrandModelController::class, 'update'])->name('motorcycleBrandModel.update')->where('id', '[0-9]+');
@@ -137,7 +137,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('list', [MotorcycleBrandModelController::class, 'get'])->name('motorcycleBrandModel.list');
     });
 
-    Route::group(['prefix' => 'motorcycle-optional'], function () {
+    Route::group(['prefix' => 'motorcycleOptional'], function () {
         Route::get('', [MotorcycleOptionalController::class, 'list'])->name('motorcycleOptional');
         Route::post('create', [MotorcycleOptionalController::class, 'create'])->name('motorcycleOptional.create');
         Route::put('{id}', [MotorcycleOptionalController::class, 'update'])->name('motorcycleOptional.update')->where('id', '[0-9]+');
@@ -146,7 +146,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('list', [MotorcycleOptionalController::class, 'get'])->name('motorcycleOptional.list');
     });
 
-    Route::group(['prefix' => 'motorcycle-types'], function () {
+    Route::group(['prefix' => 'motorcycleTypes'], function () {
         Route::get('', [MotorcycleTypesController::class, 'list'])->name('motorcycleTypes');
         Route::post('create', [MotorcycleTypesController::class, 'create'])->name('motorcycleTypes.create');
         Route::put('{id}', [MotorcycleTypesController::class, 'update'])->name('motorcycleTypes.update')->where('id', '[0-9]+');

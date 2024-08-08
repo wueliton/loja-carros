@@ -1,0 +1,7 @@
+.tab {
+    @apply p-1 py-2 relative text-gray-400;
+
+    &.active {
+        @apply text-gray-900 font-bold before:content-[''] before:absolute before:left-0 before:right-0 before:bottom-0 before:h-1 before:bg-brand before:rounded-t-lg pointer-events-none;
+    }
+}

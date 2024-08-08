@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Motorcycle;
 use App\Models\MotorcycleImages;
 use App\Models\Store;
+use App\Services\FilterService;
 use App\Services\ImageUploadService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
@@ -17,7 +18,7 @@ use Inertia\Response;
 
 class MotorcycleController extends Controller
 {
-    public function __construct(protected ImageUploadService $imageUploadService)
+    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService)
     {
     }
 
@@ -30,6 +31,10 @@ class MotorcycleController extends Controller
                 })->pluck('id');
                 $query->whereIn('store_id', $userStores);
             }
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
         })->latest()->paginate(10);
 
         return Inertia::render('Motorcycle/List', [

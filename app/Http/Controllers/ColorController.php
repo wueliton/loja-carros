@@ -19,13 +19,18 @@ class ColorController extends Controller
     public function list(Request $request): Response
     {
         $colors = Color::latest()->where(function ($query) use ($request) {
-            if (!$request->user()->hasRole('admin')) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            if ($request->has('showAll') && $request->showAll === "false") {
                 $query->where('created_by', Auth::id());
             }
+            return $query;
         })->paginate(10);
 
         return Inertia::render('Colors/List', [
-            'colors' => $colors
+            'colors' => $colors,
+            'showAll' => $request->showAll
         ]);
     }
 

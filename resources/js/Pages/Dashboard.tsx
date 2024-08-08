@@ -9,8 +9,6 @@ export default function Dashboard({ auth, logs }: PageProps<{ logs: Logs[] }>) {
     return logs.map((log) => JSON.parse(log.description ?? ''));
   }, [logs]);
 
-  console.log(auth);
-
   return (
     <>
       <div className="p-2 pt-0 pl-4 mb-10 mt-4">

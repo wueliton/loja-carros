@@ -2,6 +2,7 @@ import { Paginated } from '@/models/Paginated';
 import { ReactNode } from 'react';
 import { Button } from '../Button';
 import { EmptyIcon } from '../Icons/Empty';
+import { PencilIcon } from '../Icons/Pencil';
 import { TrashIcon } from '../Icons/Trash';
 import { Paginate } from '../Paginate';
 import styles from './Table.module.scss';
@@ -11,6 +12,8 @@ export interface TableProps<T> {
   onEdit?: (item: T) => unknown;
   headers: THeadProps<T>[];
   onDelete?: (item: T) => void;
+  canDelete?: (item: T) => boolean;
+  canEdit?: (item: T) => boolean;
 }
 
 export interface THeadProps<T> {
@@ -24,6 +27,8 @@ export const Table = <T,>({
   headers,
   onDelete,
   onEdit,
+  canEdit,
+  canDelete,
 }: TableProps<T>) => {
   const handleDelete = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -50,7 +55,9 @@ export const Table = <T,>({
             {headers.map((item) => (
               <th key={`table-head-${String(item.key)}`}>{item.title}</th>
             ))}
-            {onDelete && <th className={styles['fixed-column']}></th>}
+            {(onDelete || onEdit) && (
+              <th className={styles['fixed-column']}></th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -68,21 +75,28 @@ export const Table = <T,>({
           {data.data.map((item, index) => (
             <tr
               key={`table-line-${index}`}
-              className={`${onEdit ? 'cursor-pointer' : ''}`}
-              onClick={(e) => handleEdit(e, item)}
+              className={`${onEdit && (canEdit?.(item) ?? true) ? styles.canEdit : ''}`}
+              onClick={(e) =>
+                canEdit?.(item) ?? true ? handleEdit(e, item) : {}
+              }
             >
               {headers.map(({ key, render }) => (
                 <td key={`table-column-${String(key)}-${index}`}>
                   {render ? render(item) : <>{item[key]}</>}
                 </td>
               ))}
-              {onDelete && (
+              {(onDelete || onEdit) && (
                 <td className={`${styles.actions} ${styles['fixed-column']}`}>
-                  <Button
-                    onClick={(e) => handleDelete(e, item)}
-                    color="warn"
-                    icon={<TrashIcon />}
-                  />
+                  {onEdit && (canEdit?.(item) ?? true) && (
+                    <Button icon={<PencilIcon />} />
+                  )}
+                  {onDelete && (canDelete?.(item) ?? true) && (
+                    <Button
+                      onClick={(e) => handleDelete(e, item)}
+                      color="warn"
+                      icon={<TrashIcon />}
+                    />
+                  )}
                 </td>
               )}
             </tr>

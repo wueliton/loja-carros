@@ -37,10 +37,10 @@ export const Dialog: FC<DialogProps> = ({ children, open, closeClicked }) => {
         >
           <HDialog.Panel
             className={
-              'mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full mx-auto p-4 w-full max-w-md'
+              'mb-6 bg-white rounded-lg shadow-xl transform transition-all sm:w-full mx-auto p-4 w-full max-w-md'
             }
           >
-            {children}
+            <div>{children}</div>
           </HDialog.Panel>
         </Transition.Child>
       </HDialog>

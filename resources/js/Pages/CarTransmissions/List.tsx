@@ -1,8 +1,11 @@
 import { Button } from '@/Components/Button';
+import { Filter } from '@/Components/Filter';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
+import { ToggleTab, ToggleTabs } from '@/Components/ToggleTabs';
 import { useDialog } from '@/Context/Dialog';
+import { useUser } from '@/Context/User';
 import { Paginated } from '@/models/Paginated';
 import { Transmission } from '@/models/Transmission';
 import { PageProps } from '@/types';
@@ -18,8 +21,10 @@ const TransmissionsHeader: THeadProps<Transmission>[] = [
 
 export default function ListTransmissionsPage({
   transmissions,
+  auth,
 }: PageProps<{ transmissions: Paginated<Transmission> }>) {
   const { openDialog } = useDialog();
+  const { hasRole } = useUser();
 
   const handleAddFuelType = (transmission?: Transmission) =>
     openDialog({
@@ -42,9 +47,7 @@ export default function ListTransmissionsPage({
           route(Transmission.GET_ROUTE('delete'), { id: transmission.id }),
           {
             preserveScroll: true,
-            onSuccess: () => {
-              console.log('excluído com sucesso');
-            },
+            onSuccess: () => {},
           },
         );
       },
@@ -55,11 +58,22 @@ export default function ListTransmissionsPage({
       <Head title="Tipos de Câmbios">
         <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
       </Head>
+
+      <Filter searchProperties={['name']}>
+        <ToggleTabs fieldName="showAll">
+          <ToggleTab>Todos os tipos</ToggleTab>
+          <ToggleTab value={false}>Meus tipos</ToggleTab>
+        </ToggleTabs>
+      </Filter>
       <Table
         data={transmissions}
         headers={TransmissionsHeader}
         onEdit={(color) => handleAddFuelType(color)}
         onDelete={handleDeleteFuelType}
+        canDelete={(item) =>
+          hasRole('admin') || item.created_by === auth.user.id
+        }
+        canEdit={(item) => hasRole('admin') || item.created_by === auth.user.id}
       />
     </>
   );

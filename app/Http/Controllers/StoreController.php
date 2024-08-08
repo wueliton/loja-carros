@@ -33,6 +33,10 @@ class StoreController extends Controller
                     $query->whereIn('user_id', [$loggedUserId]);
                 });
             }
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
         })->paginate(10);
 
         return Inertia::render('Stores/List', [

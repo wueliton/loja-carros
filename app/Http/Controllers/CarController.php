@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\CarImages;
 use App\Models\Store;
+use App\Services\FilterService;
 use App\Services\ImageUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use Inertia\Response;
 
 class CarController extends Controller
 {
-    public function __construct(protected ImageUploadService $imageUploadService)
+    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService)
     {
     }
 
@@ -29,6 +30,10 @@ class CarController extends Controller
                 })->pluck('id');
                 $query->whereIn('store_id', $userStores);
             }
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
         })->latest()->paginate(10);
 
         return Inertia::render('Cars/List', [
