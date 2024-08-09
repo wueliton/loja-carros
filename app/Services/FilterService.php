@@ -9,26 +9,30 @@ class FilterService
     public function apply(Builder $query, array $where)
     {
         $query->where(function ($query) use ($where) {
-            foreach ($where as $index => $condition) {
-                if (strpos($condition['fieldName'], '.') !== false) {
-                    $path = explode('.', $condition['fieldName']);
+            foreach ($where as $operator => $conditions) {
+                $logicalOperator = $operator === 'and' ? 'where' : 'orWhere';
+                $logicalRelationOperator = $operator === 'and' ? 'whereHas' : 'orWhereHas';
+                foreach ($conditions as $index => $condition) {
+                    if (strpos($condition['fieldName'], '.') !== false) {
+                        $path = explode('.', $condition['fieldName']);
 
-                    if ($index === 0) {
-                        $query->whereHas($path[0], function ($query) use ($path, $condition) {
-                            $this->addCondition($query, $condition, $path[1]);
-                        });
+                        if ($index === 0) {
+                            $query->whereHas($path[0], function ($query) use ($path, $condition) {
+                                $this->addCondition($query, $condition, $path[1]);
+                            });
+                        } else {
+                            $query->$logicalRelationOperator($path[0], function ($query) use ($path, $condition) {
+                                $this->addCondition($query, $condition, $path[1]);
+                            });
+                        }
                     } else {
-                        $query->orWhereHas($path[0], function ($query) use ($path, $condition) {
-                            $this->addCondition($query, $condition, $path[1]);
-                        });
-                    }
-                } else {
-                    if ($index === 0) {
-                        $this->addCondition($query, $condition, $condition['fieldName']);
-                    } else {
-                        $query->orWhere(function ($query) use ($condition) {
+                        if ($index === 0) {
                             $this->addCondition($query, $condition, $condition['fieldName']);
-                        });
+                        } else {
+                            $query->$logicalOperator(function ($query) use ($condition) {
+                                $this->addCondition($query, $condition, $condition['fieldName']);
+                            });
+                        }
                     }
                 }
             }

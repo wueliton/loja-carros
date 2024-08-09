@@ -1,5 +1,7 @@
 export type Filter<T> = {
-  where?: Where<T>[];
+  where?: {
+    [k in 'and' | 'or']?: Where<T>[];
+  };
   global?: boolean;
 };
 
