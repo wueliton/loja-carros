@@ -79,21 +79,23 @@ export const Autocomplete = <
 
   const loadResults = async (inputSearch: string) => {
     const data = await fetchResult({
-      where: [
-        ...(searchProperties.map((prop) => ({
-          fieldName: prop,
-          comparison: 'contains',
-          value: inputSearch,
-        })) as unknown as Where<T>[]),
-        {
-          fieldName: propertyValue,
-          comparison: 'ninq',
-          value: selected.map((item) => item[propertyValue]),
-        } as Where<T>,
-        ...(filter?.filter(
-          (cond) => cond.comparison && cond.fieldName && cond.value,
-        ) ?? []),
-      ],
+      where: {
+        and: [
+          {
+            fieldName: propertyValue,
+            comparison: 'ninq',
+            value: selected.map((item) => item[propertyValue]),
+          } as Where<T>,
+          ...(searchProperties.map((prop) => ({
+            fieldName: prop,
+            comparison: 'contains',
+            value: inputSearch,
+          })) as unknown as Where<T>[]),
+          ...(filter?.filter(
+            (cond) => cond.comparison && cond.fieldName && cond.value,
+          ) ?? []),
+        ],
+      },
     });
     setLoading(false);
     setOptions(data);
@@ -106,13 +108,15 @@ export const Autocomplete = <
     }
 
     const data = await fetchResult({
-      where: [
-        {
-          fieldName: propertyValue,
-          comparison: 'inq',
-          value: value,
-        } as Where<T>,
-      ],
+      where: {
+        and: [
+          {
+            fieldName: propertyValue,
+            comparison: 'inq',
+            value: value,
+          } as Where<T>,
+        ],
+      },
       global: true,
     });
 
