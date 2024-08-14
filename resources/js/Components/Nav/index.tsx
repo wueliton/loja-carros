@@ -52,9 +52,9 @@ const Menu: (MenuItem | MenuCategory)[] = [
     category: 'Config. Gerais',
   },
   {
-    title: 'Cores',
-    url: 'colors',
-    icon: <ColorsIcon />,
+    title: 'Marcas',
+    url: 'brands',
+    icon: <CarIcon />,
   },
   {
     title: 'Tipos de Combustível',
@@ -62,9 +62,9 @@ const Menu: (MenuItem | MenuCategory)[] = [
     icon: <FuelPumpIcon />,
   },
   {
-    title: 'Marcas',
-    url: 'brands',
-    icon: <CarIcon />,
+    title: 'Cores',
+    url: 'colors',
+    icon: <ColorsIcon />,
   },
   {
     category: 'Carros',
