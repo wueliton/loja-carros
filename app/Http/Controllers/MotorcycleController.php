@@ -18,18 +18,14 @@ use Inertia\Response;
 
 class MotorcycleController extends Controller
 {
-    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService)
-    {
-    }
+    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService) {}
 
     public function list(Request $request): Response
     {
         $motorcycles = Motorcycle::with('brand:id,name', 'model:id,name', 'images')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->where(function ($query) use ($request) {
-            if (!$request->user()->hasRole('admin')) {
-                $userStores = Store::whereHas('users', function ($query) {
-                    $query->whereIn('user_id', [Auth::id()]);
-                })->pluck('id');
-                $query->whereIn('store_id', $userStores);
+            if (!$request->user()->hasRole('super')) {
+                $userStore = $request->user()->lastStore()->pluck('store_id');
+                $query->where('store_id', $userStore);
             }
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
@@ -72,7 +68,7 @@ class MotorcycleController extends Controller
             'km' => 'required|numeric',
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
-            'images' => 'nullable|array|max:5',
+            'images' => 'nullable|array|max:10|min:2',
             'images.*' => 'image',
             'details' => 'nullable|string'
         ]);
@@ -129,7 +125,7 @@ class MotorcycleController extends Controller
             'km' => 'required|numeric',
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
-            'images' => 'nullable|array|max:5',
+            'images' => 'nullable|array|max:10|min:2',
             'images.*' => 'image',
             'details' => 'nullable|string'
         ]);

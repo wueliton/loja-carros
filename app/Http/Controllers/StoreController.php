@@ -18,9 +18,7 @@ use Inertia\Response;
 class StoreController extends Controller
 {
 
-    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService)
-    {
-    }
+    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService) {}
 
     public function index(Request $request): Response
     {
@@ -42,6 +40,17 @@ class StoreController extends Controller
         return Inertia::render('Stores/List', [
             'stores' => $stores,
         ]);
+    }
+
+    public function changeUserStore(Request $request, $storeId)
+    {
+        $user = $request->user();
+        $user->lastStore()->updateOrCreate(
+            ['user_id' => $user->id],
+            ['store_id' => $storeId]
+        );
+
+        return redirect('dashboard');
     }
 
     public function get(Request $request)

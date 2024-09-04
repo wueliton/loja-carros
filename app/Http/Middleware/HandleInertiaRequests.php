@@ -30,16 +30,26 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
         $roles = [];
-        if ($request->user()) $roles = $request->user()->getRoleNames();
+        $stores = [];
+        $lastStore = null;
+
+        if ($user) {
+            $roles = $user->getRoleNames();
+            $stores = $user->stores()->select('stores.id', 'name', 'logo_url')->get();
+            $lastStore = $user->lastStore()->pluck('store_id');
+        }
 
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
-                'roles' => $roles
+                'roles' => $roles,
+                'stores' => $stores,
+                'lastStore' => $lastStore
             ],
-            'ziggy' => fn () => [
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],

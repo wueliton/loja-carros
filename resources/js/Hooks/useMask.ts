@@ -21,8 +21,7 @@ export const useMask = ({
     };
 
     useEffect(() => {
-      if (!inputRef.current) return;
-      inputRef.current.addEventListener('input', handleChangeValue);
+      inputRef.current?.addEventListener('input', handleChangeValue);
 
       return () =>
         inputRef.current?.removeEventListener('input', handleChangeValue);

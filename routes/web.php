@@ -60,6 +60,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'stores'], function () {
         Route::get('', [StoreController::class, 'index'])->name('stores');
 
+        Route::post('user-store/{storeId}', [StoreController::class, 'changeUserStore'])->name('stores.changeUserStore')->where('storeId', '[0-9]+');
+
         Route::get('{id}', [StoreController::class, 'getStore'])->name('stores.get')->where('id', '[0-9]+');
         Route::post('{id}', [StoreController::class, 'edit'])->name('stores.edit')->where('id', '[0-9]+');
         Route::get('list', [StoreController::class, 'get'])->name('stores.list');

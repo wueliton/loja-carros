@@ -5,6 +5,13 @@
     w-full
     text-gray-400;
 
+  &.active label {
+    @apply bg-blue-50
+        text-blue-500
+        border-blue-300
+        bg-blue-50;
+  }
+
   label {
     @apply flex
         flex-col
@@ -42,37 +49,37 @@
 }
 
 .list {
-    @apply grid md:auto-cols-[minmax(400px,auto)] mt-3 gap-1;
+  @apply grid md:auto-cols-[minmax(400px,auto)] mt-3 gap-1;
 
-    > p {
-        @apply col-span-full font-bold;
-    }
+  > p {
+    @apply col-span-full font-bold;
+  }
 }
 
 .list-item {
-    @apply p-3 bg-gray-100 rounded-md text-sm;
+  @apply p-3 bg-gray-100 rounded-md text-sm;
 
-    .header {
-        @apply flex gap-3;
+  .header {
+    @apply flex gap-3;
 
-        span {
-            @apply bg-white shadow-sm w-10 h-10 rounded-md overflow-hidden;
+    span {
+      @apply bg-white shadow-sm w-10 h-10 rounded-md overflow-hidden;
 
-            > img {
-                @apply h-full w-full object-cover;
-            }
-        }
-
-        > div p:last-child {
-            @apply text-gray-400;
-        }
-
-        > :last-child {
-            @apply ml-auto;
-        }
+      > img {
+        @apply h-full w-full object-cover;
+      }
     }
+
+    > div p:last-child {
+      @apply text-gray-400;
+    }
+
+    > :last-child {
+      @apply ml-auto;
+    }
+  }
 }
 
 .list-existing-file {
-    @apply bg-blue-100;
+  @apply bg-blue-100;
 }

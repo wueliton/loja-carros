@@ -93,7 +93,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
               {...props}
               id={id}
               ref={inputRef as LegacyRef<HTMLInputElement>}
-              defaultValue={maskValue}
+              value={maskValue}
               type={showPass ? 'text' : type}
               disabled={disabled}
             />
@@ -107,9 +107,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
             suffix && <>{suffix}</>
           )}
         </div>
-        <p>
-          {error ? <ErrorLabel error={error} fieldName={label} /> : hint ?? ''}
-        </p>
+        <p>{error ? <ErrorLabel error={error} /> : hint ?? ''}</p>
       </div>
     );
   },

@@ -15,7 +15,8 @@
     bg-brand
     self-start
     transition-transform
-    z-30;
+    z-30
+    text-white;
 
     &::-webkit-scrollbar-track {
         @apply bg-brand;

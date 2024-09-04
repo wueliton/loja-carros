@@ -96,21 +96,6 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
             error={errors.title}
             required
           />
-          <Autocomplete
-            label="Loja"
-            propertyToDisplay="name"
-            propertyValue="id"
-            url={route('stores.list')}
-            searchProperties={['name']}
-            value={data.store}
-            onChange={(e) => {
-              setData('store', e);
-            }}
-            className="md:col-span-2"
-            name="store"
-            error={errors.store}
-            required
-          />
           <h2 className="md:col-span-2 text-lg font-bold">Dados gerais</h2>
           <Autocomplete
             label="Marca"
@@ -277,7 +262,7 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
             hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
             fieldName="Logo da Empresa"
             accept="image/png, image/jpg, image/webp, image/jpeg"
-            maxFiles={5}
+            maxFiles={10}
             className="md:col-span-2"
             onChange={(files) => setData('images', files)}
             error={errors.images}

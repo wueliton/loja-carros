@@ -1,9 +1,11 @@
+import { useUser } from '@/Context/User';
 import { MotorcycleBrandModels } from '@/models/MotorcycleBrandModels';
 import { MotorcycleOptional } from '@/models/MotorcycleOptional';
 import { MotorcycleTypes } from '@/models/MotorcycleTypes';
 import { Link } from '@inertiajs/react';
 import { Fragment, ReactNode, forwardRef } from 'react';
 import ApplicationLogo from '../ApplicationLogo';
+import { Divider } from '../Divider';
 import { HasRole } from '../HasRole';
 import { BisIcon } from '../Icons/Bis';
 import { CambioIcon } from '../Icons/Cambio';
@@ -19,6 +21,7 @@ import { StoreIcon } from '../Icons/Store';
 import { UsersIcon } from '../Icons/Users';
 import styles from './Nav.module.scss';
 import { NavLink } from './NavLink';
+import { StoreSelection } from './StoreSelection';
 
 export type MenuCategory = {
   category: string;
@@ -31,7 +34,7 @@ export type MenuItem = {
   hasRole?: string;
 };
 
-const Menu: (MenuItem | MenuCategory)[] = [
+const getMenu = (): (MenuItem | MenuCategory)[] => [
   {
     title: 'Dashboard',
     url: 'dashboard',
@@ -47,6 +50,13 @@ const Menu: (MenuItem | MenuCategory)[] = [
     title: 'Lojas',
     url: 'stores',
     icon: <StoreIcon />,
+    hasRole: 'super',
+  },
+  {
+    title: 'Loja',
+    url: 'admin.store',
+    icon: <StoreIcon />,
+    hasRole: 'admin',
   },
   {
     category: 'Config. Gerais',
@@ -116,8 +126,13 @@ const Menu: (MenuItem | MenuCategory)[] = [
 
 export const NavComponent = forwardRef<
   HTMLElement,
-  { opened: boolean; setOpened: (opened: boolean) => void }
+  {
+    opened: boolean;
+    setOpened: (opened: boolean) => void;
+  }
 >(({ opened, setOpened }, ref) => {
+  const { stores, lastStore } = useUser();
+
   return (
     <nav
       ref={ref}
@@ -127,30 +142,39 @@ export const NavComponent = forwardRef<
       <Link href={route('dashboard')} className={styles['logo-link']}>
         <ApplicationLogo className={styles.logo} />
       </Link>
-      <div className={styles.links}>
-        {Menu.map((item, key) => {
-          if ((item as MenuCategory).category)
-            return (
-              <div className={styles.category} key={key}>
-                {(item as MenuCategory).category}
-              </div>
-            );
-          item = item as MenuItem;
-          if (route().has(item.url))
-            return (
-              <HasRole key={key} role={item.hasRole}>
-                <NavLink
-                  href={item.url}
-                  preserveScroll
-                  onClick={() => setOpened(false)}
-                >
-                  {item.icon} {item.title}
-                </NavLink>
-              </HasRole>
-            );
-          return <Fragment key={key}></Fragment>;
-        })}
-      </div>
+
+      <StoreSelection />
+
+      {!!stores?.length && lastStore && (
+        <>
+          <Divider />
+
+          <div className={styles.links}>
+            {getMenu().map((item, key) => {
+              if ((item as MenuCategory).category)
+                return (
+                  <div className={styles.category} key={key}>
+                    {(item as MenuCategory).category}
+                  </div>
+                );
+              item = item as MenuItem;
+              if (route().has(item.url))
+                return (
+                  <HasRole key={key} role={item.hasRole}>
+                    <NavLink
+                      href={item.url}
+                      preserveScroll
+                      onClick={() => setOpened(false)}
+                    >
+                      {item.icon} {item.title}
+                    </NavLink>
+                  </HasRole>
+                );
+              return <Fragment key={key}></Fragment>;
+            })}
+          </div>
+        </>
+      )}
     </nav>
   );
 });

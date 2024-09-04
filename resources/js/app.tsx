@@ -29,6 +29,8 @@ createInertiaApp({
         <AuthenticatedLayout
           user={page.props.auth.user}
           roles={page.props.auth.roles}
+          stores={page.props.auth.stores}
+          lastStore={page.props.auth.lastStore}
         >
           <DialogProvider>{page}</DialogProvider>
         </AuthenticatedLayout>

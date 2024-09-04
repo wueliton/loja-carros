@@ -4,6 +4,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { UploadIcon } from '@/Components/Icons/Upload';
 import {
   ChangeEvent,
+  DragEvent,
   HTMLAttributes,
   ReactElement,
   useCallback,
@@ -47,21 +48,40 @@ export const UploadFile = <InitialFile extends SavedFile>({
 }: UploadFileProps<InitialFile>) => {
   const [files, setFiles] = useState<File[]>();
   const [currentFiles, setCurrentFiles] = useState<InitialFile[]>();
+  const [hoverActive, setHoverActive] = useState(false);
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newFiles = Array.from(e.target.files ?? []);
+  const handleFilesChanges = useCallback((files?: FileList | null) => {
+    const newFiles = Array.from(files ?? []);
     setFiles((prev) => [...(prev ?? []), ...newFiles].slice(0, maxFiles));
     if (inputRef.current) inputRef.current.value = '';
-  };
+  }, []);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    handleFilesChanges(e.target.files);
 
   const handleRemoveFile = (index: number) => {
     setFiles((prev) => prev?.filter((_, fileIndex) => fileIndex !== index));
   };
 
+  const handleDropFiles = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    handleFilesChanges(e.dataTransfer.files);
+    setHoverActive(false);
+  };
+
   const handleDeleteFile = (file: InitialFile) => {
     onDelete?.(file);
+  };
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setHoverActive(true);
+  };
+
+  const handleDragLeave = () => {
+    setHoverActive(false);
   };
 
   const calculateSize = useCallback(
@@ -79,7 +99,7 @@ export const UploadFile = <InitialFile extends SavedFile>({
   }, [initialFiles]);
 
   return (
-    <div className={className}>
+    <div className={className} aria-label={fieldName}>
       {(files?.length || 0) + (initialFiles?.length ?? 0) < (maxFiles || 1) && (
         <>
           {handle && (
@@ -88,7 +108,12 @@ export const UploadFile = <InitialFile extends SavedFile>({
             </label>
           )}
           <div className={handle ? 'hidden' : ''}>
-            <div className={`${styles['file-upload']}`}>
+            <div
+              className={`${styles['file-upload']} ${hoverActive ? styles.active : ''}`}
+              onDrop={handleDropFiles}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+            >
               <label htmlFor={id}>
                 <UploadIcon />
                 <p>
@@ -156,7 +181,7 @@ export const UploadFile = <InitialFile extends SavedFile>({
           ))}
         </div>
       )}
-      <ErrorLabel error={error} fieldName={fieldName} />
+      <ErrorLabel error={error} />
     </div>
   );
 };

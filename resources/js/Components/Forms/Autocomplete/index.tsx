@@ -222,7 +222,7 @@ export const Autocomplete = <
             <div className={styles.prefix}>
               <Chip
                 key="chip-selected"
-                canRemove
+                canRemove={!disabled}
                 onRemove={() => handleRemoveOption(selected[0])}
               >
                 <>{selected[0][propertyToDisplay]}</>

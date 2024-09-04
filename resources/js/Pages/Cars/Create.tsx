@@ -5,6 +5,7 @@ import { Editor } from '@/Components/Forms/Editor';
 import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
+import { useUser } from '@/Context/User';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { Car } from '@/models/Car';
 import { PageProps } from '@/types';
@@ -12,6 +13,7 @@ import { useForm } from '@inertiajs/react';
 import { FormEvent, useMemo } from 'react';
 
 export default function CreateVehiclePage({}: PageProps) {
+  const { lastStore } = useUser();
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { data, setData, errors, post, isDirty } = useForm<{
     title?: string;
@@ -37,6 +39,7 @@ export default function CreateVehiclePage({}: PageProps) {
     manufacturingYear: currentYear,
     optionals: [],
     transmission: undefined,
+    store: lastStore,
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -63,21 +66,6 @@ export default function CreateVehiclePage({}: PageProps) {
             value={data.title}
             onChange={(e) => setData('title', e.target.value)}
             error={errors.title}
-            required
-          />
-          <Autocomplete
-            label="Loja"
-            propertyToDisplay="name"
-            propertyValue="id"
-            url={route('stores.list')}
-            searchProperties={['name']}
-            value={data.store}
-            onChange={(e) => {
-              setData('store', e);
-            }}
-            className="md:col-span-2"
-            name="store"
-            error={errors.store}
             required
           />
           <h2 className="md:col-span-2 text-lg font-bold">Dados gerais</h2>
@@ -246,7 +234,7 @@ export default function CreateVehiclePage({}: PageProps) {
             hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
             fieldName="Logo da Empresa"
             accept="image/png, image/jpg, image/webp, image/jpeg"
-            maxFiles={5}
+            maxFiles={10}
             className="md:col-span-2"
             onChange={(files) => setData('images', files)}
             error={errors.images}
