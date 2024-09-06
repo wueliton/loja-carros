@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 
 Route::get('/site/loja', function () {
-    return view('lojas');
+    return response()->json(['teste' => 'teste'], 200);
 });
 
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');

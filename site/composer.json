@@ -1,0 +1,12 @@
+{
+    "name": "paulowueliton/site",
+    "require": {
+        "guzzlehttp/guzzle": "^7.9"
+    },
+    "authors": [
+        {
+            "name": "wueliton",
+            "email": "paulo.wueliton@hotmail.com"
+        }
+    ]
+}

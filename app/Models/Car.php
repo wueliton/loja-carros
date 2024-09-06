@@ -60,9 +60,24 @@ class Car extends Model
         return $this->belongsTo(CarTransmission::class, 'transmission_id', 'id');
     }
 
+    public function fuelType()
+    {
+        return $this->belongsTo(FuelType::class, 'fuel_type_id', 'id');
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class, 'store_id', 'id');
+    }
+
     public function images()
     {
         return $this->hasMany(CarImages::class, 'car_id', 'id');
+    }
+
+    public function singleImage()
+    {
+        return $this->hasMany(CarImages::class, 'car_id', 'id')->limit(1);
     }
 
     public function optionals()
