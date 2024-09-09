@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
+use \Illuminate\Support\Str;
 
 class Car extends Model
 {
@@ -37,7 +38,8 @@ class Car extends Model
         'power',
         'size',
         'fuel_capacity',
-        'axis_length'
+        'axis_length',
+        'slug'
     ];
 
     public function brand()
@@ -77,11 +79,34 @@ class Car extends Model
 
     public function singleImage()
     {
-        return $this->hasMany(CarImages::class, 'car_id', 'id')->limit(1);
+        return $this->hasOne(CarImages::class, 'car_id', 'id');
     }
 
     public function optionals()
     {
         return $this->belongsToMany(CarOptional::class, 'car_optionals_relations', 'car_id', 'car_optional_id');
+    }
+
+    public function generateUniqueSlug($title)
+    {
+        $slug = Str::slug($title);
+
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (self::where('slug', $slug)->exists()) {
+            $slug = "{$originalSlug}-" . $count++;
+        }
+
+        return $slug;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->slug = $model->generateUniqueSlug($model->title);
+        });
     }
 }

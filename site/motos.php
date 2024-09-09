@@ -4,7 +4,7 @@ include "resources/api.php";
 
 $slug = isset($_GET['slug']) ? $_GET['slug'] : null;
 
-$car = api("GET", "cars/" . $slug);
+$car = api("GET", "motorcycles/" . $slug);
 
 $title = $car['title'];
 $description = '';
@@ -35,7 +35,6 @@ include "includes/head.php";
                 <div>
                     <h2>
                         <?= $car['brand']['name'] ?> | <?= $car['model']['name'] ?>
-                        <?php if ($car['version']): ?>     <?= $car['version'] ?><?php endif; ?>
                     </h2>
                     <h3 class="price"><?= toBRL($car['price']) ?></h3>
                 </div>
@@ -51,11 +50,11 @@ include "includes/head.php";
             <div>
                 <h3>Características</h3>
                 <div class="row">
-                    <?= renderCarAttributes($car) ?>
+                    <?= renderMotorcycleAttributes($car) ?>
                 </div>
                 <div class="row pt-4">
                     <div class="col-12">
-                        <?= renderCarAttributesTable($car) ?>
+                        <?= renderMotorcycleAttributesTable($car) ?>
                     </div>
                 </div>
             </div>
@@ -79,7 +78,6 @@ include "includes/head.php";
                 <div>
                     <h2>
                         <?= $car['brand']['name'] ?> | <?= $car['model']['name'] ?>
-                        <?php if ($car['version']): ?>     <?= $car['version'] ?><?php endif; ?>
                     </h2>
                     <h3 class="price"><?= toBRL($car['price']) ?></h3>
                 </div>

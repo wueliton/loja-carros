@@ -10,11 +10,13 @@ use Illuminate\Http\Request;
 
 class ApiCarController extends Controller
 {
-    public function __construct(protected FilterService $filterService) {}
+    public function __construct(protected FilterService $filterService)
+    {
+    }
 
     public function highlights()
     {
-        $lastCars = Car::latest()->select('id', 'title', 'brand_id', 'created_at')->with('singleImage', 'brand')->take(3)->get();
+        $lastCars = Car::latest()->select('id', 'title', 'brand_id', 'created_at', 'slug')->with('singleImage', 'brand')->take(3)->get();
         return response()->json($lastCars);
     }
 
@@ -29,9 +31,20 @@ class ApiCarController extends Controller
         return response()->json($brandModels);
     }
 
-    public function getById(Request $request, $id)
+    public function getBySlug(Request $request, $slug)
     {
-        $car = Car::with('brand', 'model', 'color', 'transmission', 'images', 'optionals', 'fuelType', 'store')->findOrFail($id);
+        $car = Car::with('brand', 'model', 'color', 'transmission', 'images', 'optionals', 'fuelType', 'store')->where('slug', $slug)->first();
         return response()->json($car);
+    }
+
+    public function find(Request $request)
+    {
+        $cars = Car::latest()->where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+        })->with('brand', 'singleImage', 'color')->select('id', 'title', 'brand_id', 'price', 'year', 'km', 'color_id', 'slug')->paginate(10);
+
+        return response()->json($cars);
     }
 }

@@ -12,7 +12,19 @@ RewriteEngine On
 RewriteRule ^index.php$ / [r=301,NC,L]
 
 # Página de Veículos
-RewriteRule ^carros/([0-9]+)$ /carros.php?id=$1 [L,QSA]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^carros/([^/]+)$ /carros.php?slug=$1 [L,QSA]
+
+# Página de Veículos
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^motos/([^/]+)$ /motos.php?slug=$1 [L,QSA]
+
+# Página de Loja
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^lojas/([^/]+)$ /loja.php?slug=$1 [L,QSA]
 
 # Remove a barra no final da URL, se houver
 RewriteCond %{REQUEST_FILENAME} !-d
