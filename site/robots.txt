@@ -1,0 +1,8 @@
+User-agent: AdsBot-Google
+User-agent: *
+
+Disallow: /includes/
+Disallow: /php/
+Disallow: /assinatura/
+
+Sitemap: https://www.site.com.br/sitemap.xml

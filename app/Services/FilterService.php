@@ -51,6 +51,12 @@ class FilterService
             $query->whereNotIn($fieldName, $condition['value']);
         } else if ($condition['comparison'] === 'inq' && array_key_exists('value', $condition)) {
             $query->whereIn($fieldName, $condition['value']);
+        } else if ($condition['comparison'] === 'gte') {
+            $query->where($fieldName, '>=', $condition['value']);
+        } else if ($condition['comparison'] === 'lte') {
+            $query->where($fieldName, '<=', $condition['value']);
+        } else if ($condition['comparison'] === 'between') {
+            $query->whereBetween($fieldName, $condition['value']);
         }
     }
 }
