@@ -1,6 +1,6 @@
 <footer>
     <div class="container py-4 d-flex justify-content-between">
-        <img src="./assets/img/logo.png" alt="" class="img-fluid logo-footer">
+        <img src="<?= $url ?>assets/img/logo.png" alt="" class="img-fluid logo-footer">
 
         <div class="d-flex  flex-column">
 
@@ -23,13 +23,16 @@
 
 <div class="icone-conceito">
     <a href="https://www.conceitopublicidade.com.br/" target="_blank" rel="nofollow">
-        <img src="<?= $url ?>/assets/img/conceito.png" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>" class="img-fluid">
+        <img src="<?= $url ?>/assets/img/conceito.png" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>"
+            class="img-fluid">
     </a>
     <a href="<?= $linkNavSecurity ?>" target="_blank" rel="nofollow">
-        <img src="<?= $url ?>/assets/img/cadeado.png" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>" class="img-fluid">
+        <img src="<?= $url ?>/assets/img/cadeado.png" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>"
+            class="img-fluid">
     </a>
     <a href="<?= $linkResponsinator ?>" target="_blank" rel="nofollow">
-        <img src="<?= $url ?>/assets/img/celular.png" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>" class="img-fluid">
+        <img src="<?= $url ?>/assets/img/celular.png" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>"
+            class="img-fluid">
     </a>
 </div>
 
@@ -41,7 +44,8 @@
                 <h2>Cookies</h2>
             </div>
             <div class="cookieDesc">
-                <p>Ao usar este site, você aceita automaticamente o uso de cookies. <a href="<?= $url; ?>politica-privacidade" target="_blank">Acessar Política de privacidade</a></p>
+                <p>Ao usar este site, você aceita automaticamente o uso de cookies. <a
+                        href="<?= $url; ?>politica-privacidade" target="_blank">Acessar Política de privacidade</a></p>
             </div>
             <div class="cookieButton"><a onclick="mouseOn();">Entendido</a></div>
         </div>
@@ -56,6 +60,7 @@ echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script
 
 <script>
 let form = document.querySelector("#orcamento-formulary");
+if(form) {
 form.addEventListener("submit", e => {
     e.preventDefault();
     $("#orcamento-formulary :input").each(function(index, el) {
@@ -94,11 +99,13 @@ form.addEventListener("submit", e => {
                                 });
 
                             }
+}
                             </script>';
 
 
 ?>
 
 <script src="<?= $url ?>/assets/js/script15.js"></script>
+<script src="<?= $url ?>/assets/js/script.js"></script>
 <?php include("includes/schema.php"); ?>
 <script src="<?= $url; ?>assets/js/popup.js" defer></script>

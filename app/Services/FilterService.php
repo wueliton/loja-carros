@@ -17,6 +17,7 @@ class FilterService
                         $path = explode('.', $condition['fieldName']);
 
                         if ($index === 0) {
+                            print_r($condition);
                             $query->whereHas($path[0], function ($query) use ($path, $condition) {
                                 $this->addCondition($query, $condition, $path[1]);
                             });

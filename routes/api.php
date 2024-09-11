@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => '/api'], function () {
     Route::group(['prefix' => '/cars'], function () {
         Route::get('/highlights', [ApiCarController::class, 'highlights']);
+        Route::get('/latest', [ApiCarController::class, 'latest']);
         Route::get('/brand-models', [ApiCarController::class, 'getBrandModels']);
         Route::get('{slug}', [ApiCarController::class, 'getBySlug']);
         Route::get('', [ApiCarController::class, 'find']);
@@ -22,6 +23,7 @@ Route::group(['prefix' => '/api'], function () {
 
     Route::group(['prefix' => '/search'], function () {
         Route::get('/quick/options', [ApiQuickSearchParams::class, 'quickSearchOptions']);
+        Route::get('/advanced/options', [ApiQuickSearchParams::class, 'advancedSearchOptions']);
     });
 
     Route::group(['prefix' => 'stores'], function () {

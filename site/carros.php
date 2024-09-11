@@ -19,35 +19,38 @@ include "includes/head.php";
             <h1><?= $car['title'] ?></h1>
         </div>
         <div class="col-lg-8 pb-5 pb-lg-0">
-            <div class="mb-4 adv-images">
-                <div class="image-slides owl-carousel">
-                    <?php foreach ($car['images'] as $image): ?>
-                        <img src="<?= $apiImagesPath . $image['url'] ?>" title="" class="img-fluid" />
-                    <?php endforeach; ?>
-                </div>
-                <div class="image-slides-thumbs owl-carousel">
-                    <?php foreach ($car['images'] as $image): ?>
-                        <img src="<?= $apiImagesPath . $image['url'] ?>" title="" class="img-fluid" />
-                    <?php endforeach; ?>
-                </div>
-            </div>
-            <div class="contact-card price-card d-flex d-lg-none">
-                <div>
-                    <h2>
-                        <?= $car['brand']['name'] ?> | <?= $car['model']['name'] ?>
-                        <?php if ($car['version']): ?>     <?= $car['version'] ?><?php endif; ?>
-                    </h2>
-                    <h3 class="price"><?= toBRL($car['price']) ?></h3>
-                </div>
-                <?php if ($car['store']['whatsapp']): ?>
-                    <div>
-                        <a href="" class="button whatsapp-btn"><i class="fa-brands fa-whatsapp"></i>
-                            Whatsapp</a>
+            <?php if (count($car['images']) > 0): ?>
+                <div class="mb-4 adv-images">
+                    <div class="image-slides owl-carousel">
+                        <?php foreach ($car['images'] as $image): ?>
+                            <img src="<?= $apiImagesPath . $image['url'] ?>" title="" class="img-fluid" />
+                        <?php endforeach; ?>
                     </div>
-                <?php endif; ?>
-                <?= renderStore($car['store'], $url) ?>
-            </div>
-            <div class="divider"></div>
+                    <div class="image-slides-thumbs owl-carousel">
+                        <?php foreach ($car['images'] as $image): ?>
+                            <img src="<?= $apiImagesPath . $image['url'] ?>" title="" class="img-fluid" />
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="contact-card price-card d-flex d-lg-none">
+                    <div>
+                        <h2>
+                            <?= $car['brand']['name'] ?> | <?= $car['model']['name'] ?>
+                            <?php if ($car['version']): ?>         <?= $car['version'] ?>     <?php endif; ?>
+                        </h2>
+                        <h3 class="price"><?= toBRL($car['price']) ?></h3>
+                    </div>
+                    <?php if ($car['store']['whatsapp']): ?>
+                        <div>
+                            <a href="https://api.whatsapp.com/send?phone=55<?= $car['store']['whatsapp'] ?>&text=Ol%C3%A1,%20tudo%20bem?"
+                                class="button whatsapp-btn"><i class="fa-brands fa-whatsapp"></i>
+                                Whatsapp</a>
+                        </div>
+                    <?php endif; ?>
+                    <?= renderStore($car['store'], $url) ?>
+                </div>
+                <div class="divider"></div>
+            <?php endif; ?>
             <div>
                 <h3>Características</h3>
                 <div class="row">
@@ -85,7 +88,8 @@ include "includes/head.php";
                 </div>
                 <?php if ($car['store']['whatsapp']): ?>
                     <div>
-                        <a href="" class="button whatsapp-btn"><i class="fa-brands fa-whatsapp"></i>
+                        <a href="https://api.whatsapp.com/send?phone=55<?= $car['store']['whatsapp'] ?>&text=Ol%C3%A1,%20tudo%20bem?"
+                            class="button whatsapp-btn"><i class="fa-brands fa-whatsapp"></i>
                             Whatsapp</a>
                     </div>
                 <?php endif; ?>
