@@ -33,7 +33,7 @@ $brands = $quickSearchOptions['brands'];
                 <div class="form-field">
                     <label for="brand">Marca</label>
                     <div class="field">
-                        <select name="brand" id="brand" onchange="onModelChange()">
+                        <select name="brand_id" id="brand" onchange="onModelChange()">
                             <option value="">Selecione uma opção</option>
                             <?php foreach ($brands as $brand): ?>
                                 <option value="<?= $brand['id'] ?>"><?= $brand['name'] ?></option>
@@ -47,7 +47,7 @@ $brands = $quickSearchOptions['brands'];
                 <div class="form-field">
                     <label for="brand_model">Modelo</label>
                     <div class="field">
-                        <select name="brand_model" id="brand_model" disabled>
+                        <select name="model_id" id="brand_model" disabled>
                             <option value="">Selecione uma opção</option>
                             <option>Volkswagen</option>
                         </select>
@@ -95,65 +95,8 @@ $brands = $quickSearchOptions['brands'];
             </div>
         </div>
         <div class="d-flex justify-content-end gap-4">
+            <a href="busca-avancada" class="button secondary">Busca Avançada</a>
             <button type="submit">Buscar</button>
         </div>
     </form>
 </div>
-
-<script>
-    const toggles = document.querySelectorAll('.btn-toggle button');
-    toggles.forEach((toggle) => {
-        toggle.addEventListener('click', (event) => {
-            const input = toggle.closest('.btn-toggle').querySelector('input');
-            input.value = toggle.value;
-            const changeEvent = new Event('change', {
-                bubbles: true,
-                cancelable: true
-            });
-            input.dispatchEvent(changeEvent);
-            if (toggle.classList.contains('active')) return;
-            toggles.forEach((toggle) => toggle.classList.remove('active'));
-            toggle.classList.add('active');
-        });
-    });
-
-    function onSearchTypeChange() {
-        const searchType = document.querySelector('#search_type').value;
-        const brandModelField = document.querySelector('#brand_model');
-        brandModelField.value = "";
-        getBrandModels(searchType);
-    }
-
-    function onModelChange() {
-        const searchType = document.querySelector('#search_type').value;
-        const brandId = document.querySelector('#brand').value;
-        const brandModelField = document.querySelector('#brand_model');
-        brandModelField.disabled = brandId === "";
-        brandModelField.value = "";
-        getBrandModels(searchType);
-    }
-
-    function renderOptions(element, options) {
-        element.innerHTML = "";
-        [{
-            name: 'Selecione uma opção',
-            id: ''
-        }, ...options].forEach((option) => {
-            const optionEl = document.createElement('option');
-            optionEl.textContent = option.name;
-            optionEl.value = option.id;
-            element.appendChild(optionEl);
-        });
-        if (document.querySelector('#brand').value)
-            element.disabled = false;
-    }
-
-    function getBrandModels(type) {
-        const brandModelsField = document.querySelector("#brand_model");
-        const brandId = document.querySelector("#brand");
-        brandModelsField.disabled = true;
-        fetch(`<?= $apiPath ?>${type ?? 'cars'}/brand-models?${new URLSearchParams(JSON.stringify({ where: [{ brand_id: brandId }] }))}`)
-            .then((res) => res.json())
-            .then((brandModels) => renderOptions(brandModelsField, brandModels));
-    }
-</script>

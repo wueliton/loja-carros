@@ -176,7 +176,7 @@ function convertSearchFilter($formSearch)
         $filter['where']['and'][] = [
             'fieldName' => $key,
             'value' => $value,
-            'comparison' => 'eq'
+            'comparison' => 'equals'
         ];
     }
 
@@ -211,7 +211,8 @@ function renderAds($vehicle, $url, $type)
     ?>
     <a href="<?= $url ?><?= isset($vehicle['type']) ? ($vehicle['type'] === 'motorcycles' ? 'motos' : 'carros') : $type ?>/<?= $vehicle['slug'] ?>"
         class="adv-details">
-        <div class="head"><img src="<?= $apiImagesPath . $vehicle['single_image']['url'] ?>"
+        <div class="head"><img
+                src="<?= empty($vehicle['single_image']) ? $url . 'assets/img/logo.png' : $apiImagesPath . $vehicle['single_image']['url'] ?>"
                 title="<?= $vehicle['title'] ?>" class="img-fluid" /></div>
         <div class="content">
             <p class="title"><strong><?= $vehicle['title'] ?></strong></p>
@@ -246,7 +247,7 @@ function paginatedStores($results, $url)
         <div class="col-12">
             <div class="row">
                 <?php foreach ($results['data'] as $store): ?>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mb-4">
                         <?= renderStore($store, $url); ?>
                     </div>
                 <?php endforeach; ?>
@@ -271,15 +272,15 @@ function paginatedAds($results, $url, $type = 'cars')
     <?php elseif ($results['total'] === 0): ?>
         <div class="py-5 empty-search mb-5">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <p class="subtitle"><strong>Desculpe, não encontramos nenhuma correspondência para a busca.</strong></p>
-            <p>Não encontramos nenhum resultado para os filtros utilizados.</p>
+            <p class="subtitle"><strong>Nenhum veículo cadastrado.</strong></p>
+            <p>Não existem veículos para serem listados.</p>
         </div>
         <div></div>
     <?php else: ?>
         <div class="col-12">
             <div class="row">
                 <?php foreach ($results['data'] as $vehicles): ?>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mb-2">
                         <?= renderAds($vehicles, $url, $type); ?>
                     </div>
                 <?php endforeach; ?>

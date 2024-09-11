@@ -34,7 +34,8 @@ class Motorcycle extends Model
         'size',
         'axis_length',
         'details',
-        'slug'
+        'slug',
+        'visits'
     ];
 
     public function optionals()

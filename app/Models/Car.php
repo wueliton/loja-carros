@@ -39,7 +39,8 @@ class Car extends Model
         'size',
         'fuel_capacity',
         'axis_length',
-        'slug'
+        'slug',
+        'visits'
     ];
 
     public function brand()

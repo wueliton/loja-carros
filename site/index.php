@@ -6,7 +6,6 @@ include "resources/api.php";
 include "includes/head.php";
 ?>
 
-
 <section class="section-video">
     <div class="container">
         <video poster="assets/img/video-home.jpg" autoplay loop muted>
@@ -15,28 +14,29 @@ include "includes/head.php";
     </div>
 </section>
 
-<div class="container pb-4 pt-5">
+<?php include "./resources/latest.php"; ?>
+
+<section class="container">
     <div class="row">
-        <div class="col-lg-8 pb-4 pb-lg-0">
-            <?php include "./resources/destaques.php"; ?>
-        </div>
-        <div class="col-lg-4">
-            <?php include "./resources/search-form.php"; ?>
-        </div>
+        <?php include "./resources/highlights.php"; ?>
     </div>
-</div>
+</section>
 
 <section class="section-about">
     <div class="container">
         <div class="row info">
             <div class="col-12 col-lg-8">
                 <h2>Descubra o <strong>maior endereço automotivo da América</strong> </h2>
-                <p><strong>Explore o Auto Shopping Raposo, seu destino exclusivo no maior centro automotivo da América.</strong> </p>
-                <p>Oferecemos um espaço de 100.000m² com variedade de lojas de veículos novos, semi novos e motos. Encontre suas marcas favoritas e aproveite a facilidade de tudo estar em um só lugar.</p>
-                <p>Entregamos praticidade e diversidade de serviços. Venha viver a paixão por automóveis no Raposo Auto Shopping, onde cada visita é uma experiência única!</p>
+                <p><strong>Explore o Auto Shopping Raposo, seu destino exclusivo no maior centro automotivo da
+                        América.</strong> </p>
+                <p>Oferecemos um espaço de 100.000m² com variedade de lojas de veículos novos, semi novos e motos.
+                    Encontre suas marcas favoritas e aproveite a facilidade de tudo estar em um só lugar.</p>
+                <p>Entregamos praticidade e diversidade de serviços. Venha viver a paixão por automóveis no Raposo Auto
+                    Shopping, onde cada visita é uma experiência única!</p>
             </div>
             <div class="col-12 col-lg-4 d-flex">
-                <img src="./assets/img/gigantesco.png" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>" class="img-fluid img-gigantesco">
+                <img src="./assets/img/gigantesco.png" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>"
+                    class="img-fluid img-gigantesco">
             </div>
         </div>
     </div>
@@ -44,12 +44,16 @@ include "includes/head.php";
 
 <section class="section-location">
     <div>
-        <img src="./assets/img/localizacao.jpg" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>" class="img-fluid img-localizacao">
+        <img src="./assets/img/localizacao.jpg" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>"
+            class="img-fluid img-localizacao">
     </div>
     <div class="container">
         <h2> Rodovia Raposo Tavares, km 18,5 <br> <span>(Em frente ao posto rodoviário)</span> </h2>
         <h3> Descubra seu novo destino em uma das regiões de maior crescimento na Grande São Paulo!</h3>
-        <p> Localizado próximo ao Rodoanel e entre as marginais dos rios Pinheiros e Tietê, o Auto Shopping Raposo abrange uma extensa área. Com uma variedade de lojas e um completo Centro Automotivo, atrai clientes não apenas da cidade de São Paulo e Região Metropolitana, mas também das cidades vizinhas servidas pelas rodovias que cruzam o Rodoanel. </p>
+        <p> Localizado próximo ao Rodoanel e entre as marginais dos rios Pinheiros e Tietê, o Auto Shopping Raposo
+            abrange uma extensa área. Com uma variedade de lojas e um completo Centro Automotivo, atrai clientes não
+            apenas da cidade de São Paulo e Região Metropolitana, mas também das cidades vizinhas servidas pelas
+            rodovias que cruzam o Rodoanel. </p>
     </div>
 </section>
 
@@ -193,19 +197,38 @@ include "includes/head.php";
             <div class="col-12 col-lg-5 info-form">
                 <h2>Ficou com alguma dúvida?</h2>
                 <h3> Nos envie agora mesmo uma mensagem!</h3>
-                <form id="orcamento-formulary" method="post" action="<?= $url; ?>">
-                    <input type="text" id="nome" name="value" placeholder="Nome Completo">
-
-                    <input type="email" name="email" id="email" placeholder="exemplo@email.com.br">
-
-                    <input type="text" id="telefone" name="telefone" placeholder="Telefone">
-
-                    <textarea name="mensagem" id="mensagem" rows="300" placeholder="Mensagem"></textarea>
-
-                    <div id='recaptcha' class="g-recaptcha" data-sitekey="6LdZXBcqAAAAAEp-L0K0bG2jVA8VuBajnwwELjOG" data-callback="sendForm" data-size="invisible"></div>
-
+                <form id="orcamento-formulary" method="post" action="<?= $url; ?>" class="mt-2">
+                    <div class="form-field">
+                        <label for="nome">Nome Completo</label>
+                        <div class="field">
+                            <input name="nome" id="nome" />
+                        </div>
+                        <div class="error"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Email</label>
+                        <div class="field">
+                            <input name="email" id="email" placeholder="exemplo@email.com.br" />
+                        </div>
+                        <div class="error"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="telefone">Telefone</label>
+                        <div class="field">
+                            <input name="telefone" id="telefone" />
+                        </div>
+                        <div class="error"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="mensagem">Mensagem</label>
+                        <div class="field">
+                            <textarea rows="4" name="mensagem" id="mensagem"></textarea>
+                        </div>
+                        <div class="error"></div>
+                    </div>
+                    <div id='recaptcha' class="g-recaptcha" data-sitekey="6LdZXBcqAAAAAEp-L0K0bG2jVA8VuBajnwwELjOG"
+                        data-callback="sendForm" data-size="invisible"></div>
                     <button>Enviar</button>
-
                 </form>
 
             </div>

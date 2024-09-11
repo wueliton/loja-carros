@@ -31,7 +31,7 @@ class ApiMotorcycleController extends Controller
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }
-        })->with('brand', 'singleImage', 'color')->select('id', 'title', 'brand_id', 'price', 'km', 'color_id', 'slug')->paginate(10);
+        })->with('brand', 'singleImage', 'color', 'model')->select('id', 'title', 'brand_id', 'price', 'km', 'color_id', 'slug', 'model_id')->paginate(10);
 
         return response()->json($motorcycles);
     }
@@ -39,6 +39,7 @@ class ApiMotorcycleController extends Controller
     public function getBySlug(Request $request, $slug)
     {
         $motorcycle = Motorcycle::with('brand', 'model', 'color', 'images', 'optionals', 'store')->where('slug', $slug)->first();
+        $motorcycle->increment('visits');
         return response()->json($motorcycle);
     }
 }
