@@ -2,7 +2,7 @@
 $title = 'Busca'; //20-70 CARATERES
 $description = 'Visite o Auto Shopping Raposo, o maior centro automotivo da América, com lojas e serviços para apaixonados por veículos.'; //70 - 160 CARACTERES
 $keywords = $title;
-include "includes/head.php";
+include "includes/head-2.php";
 include "resources/api.php";
 
 $searchParams = convertSearchFilter($_POST);

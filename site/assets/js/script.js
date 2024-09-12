@@ -1,28 +1,30 @@
 const toggles = document.querySelectorAll('.btn-toggle button');
 toggles.forEach((toggle) => {
   toggle.addEventListener('click', () => {
-    const input = toggle.closest('.btn-toggle').querySelector('input');
-    input.value = toggle.value;
-
-    if (document.querySelectorAll('.toggle_content').length) {
-      document
-        .querySelectorAll('.toggle_content')
-        .forEach((el) => el.classList.remove('active'));
-      document
-        .querySelector(`#${toggle.value}_content`)
-        .classList.add('active');
-    }
-
-    const changeEvent = new Event('change', {
-      bubbles: true,
-      cancelable: true,
-    });
-    input.dispatchEvent(changeEvent);
-    if (toggle.classList.contains('active')) return;
-    toggles.forEach((toggle) => toggle.classList.remove('active'));
-    toggle.classList.add('active');
+    toggleValue(toggle);
   });
 });
+
+function toggleValue(toggle) {
+  const input = toggle.closest('.btn-toggle').querySelector('input');
+  input.value = toggle.value;
+
+  if (document.querySelectorAll('.toggle_content').length) {
+    document
+      .querySelectorAll('.toggle_content')
+      .forEach((el) => el.classList.remove('active'));
+    document.querySelector(`#${toggle.value}_content`).classList.add('active');
+  }
+
+  const changeEvent = new Event('change', {
+    bubbles: true,
+    cancelable: true,
+  });
+  input.dispatchEvent(changeEvent);
+  if (toggle.classList.contains('active')) return;
+  toggles.forEach((toggle) => toggle.classList.remove('active'));
+  toggle.classList.add('active');
+}
 
 function onSearchTypeChange() {
   const searchType = document.querySelector('#search_type').value;

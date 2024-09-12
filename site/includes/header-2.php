@@ -27,3 +27,12 @@
             </div>
         </div>
     </div>
+    <div class="menu">
+        <div class="container">
+            <div class="navbar">
+                <a href="<?= $url ?>home-2">Home</a>
+                <a href="<?= $url ?>lojas">Lojas</a>
+                <a href="<?= $url ?>home-2#como-chegar">Como Chegar</a>
+            </div>
+        </div>
+    </div>
