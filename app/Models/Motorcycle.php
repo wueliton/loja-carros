@@ -30,9 +30,6 @@ class Motorcycle extends Model
         'motor',
         'color_id',
         'km',
-        'fuel_capacity',
-        'size',
-        'axis_length',
         'details',
         'slug',
         'visits'

@@ -25,9 +25,6 @@ export class Motorcycle extends DefaultModel {
   color_id?: number;
   color?: Color;
   km?: number;
-  fuel_capacity?: number;
-  size?: string;
-  axis_length?: string;
   optionals?: MotorcycleOptional[];
   images?: { id?: number; url?: string }[];
   details?: string;

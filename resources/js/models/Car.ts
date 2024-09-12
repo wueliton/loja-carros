@@ -31,11 +31,6 @@ export class Car extends DefaultModel {
   km?: number;
   last_digit?: number;
   details?: string;
-  seats?: number;
-  power?: string;
-  size?: string;
-  fuel_capacity?: number;
-  axis_length?: string;
   images?: { id?: number; url?: string }[];
   optionals?: CarOptional[];
   created_at?: string;

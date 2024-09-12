@@ -38,9 +38,6 @@ export default function EditMotorcyclePage({
     motor?: string;
     color?: number;
     km?: number;
-    fuelCapacity?: number;
-    size?: string;
-    axisLength?: string;
     optionals?: (number | undefined)[];
     images?: File[];
     details?: string;
@@ -52,8 +49,6 @@ export default function EditMotorcyclePage({
     type: motorcycle.type_id,
     color: motorcycle.color_id,
     optionals: motorcycle.optionals?.map((optional) => optional.id),
-    fuelCapacity: motorcycle.fuel_capacity,
-    axisLength: motorcycle.axis_length,
     manufacturingYear: motorcycle.manufacturing_year,
     images: [],
   });
@@ -267,37 +262,6 @@ export default function EditMotorcyclePage({
             value={data.details}
             onChange={(data) => setData('details', data)}
             error={errors.details}
-          />
-          <h2 className="md:col-span-2 text-lg font-bold mt-4">
-            Desempenho e dimensões
-          </h2>
-          <Input
-            label="Comprimento x Altura x Largura"
-            value={data.size}
-            onChange={(e) => setData('size', e.target.value)}
-            name="size"
-            error={errors.size}
-          />
-          <Input
-            label="Tanque de combustível"
-            type="number"
-            step={1}
-            min={1}
-            value={data.fuelCapacity}
-            onChange={(e) => setData('fuelCapacity', +e.target.value)}
-            suffix={
-              <span className="p-2 min-w-10 text-center bg-gray-50">L</span>
-            }
-            name="fuelCapacity"
-            error={errors.fuelCapacity}
-            required
-          />
-          <Input
-            label="Distância entre eixos"
-            value={data.axisLength}
-            onChange={(e) => setData('axisLength', e.target.value)}
-            name="axisLength"
-            error={errors.axisLength}
           />
           <h2 className="md:col-span-2 text-lg font-bold mt-4">Outros</h2>
           <Autocomplete

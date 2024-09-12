@@ -69,10 +69,6 @@ function renderCarAttributesTable($car)
         ['title' => 'Modelo', 'content' => $car['model']['name']],
         ['title' => 'Version', 'content' => $car['version']],
         ['title' => 'Motor', 'content' => $car['motor']],
-        ['title' => 'Assentos', 'content' => $car['seats']],
-        ['title' => 'Potência', 'content' => $car['power']],
-        ['title' => 'Tamanho', 'content' => $car['size']],
-        ['title' => 'Capacidade do Tanque', 'content' => $car['fuel_capacity'] . ' Lt'],
     ];
 
     echo "<table><tbody>";
@@ -101,8 +97,6 @@ function renderMotorcycleAttributesTable($car)
         ['title' => 'Marca', 'content' => $car['brand']['name']],
         ['title' => 'Modelo', 'content' => $car['model']['name']],
         ['title' => 'Motor', 'content' => $car['motor']],
-        ['title' => 'Tamanho', 'content' => $car['size']],
-        ['title' => 'Capacidade do Tanque', 'content' => $car['fuel_capacity'] . ' Lt'],
     ];
 
     echo "<table><tbody>";

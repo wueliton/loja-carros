@@ -34,11 +34,6 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
     motor?: string;
     km?: number;
     lastDigit?: number;
-    seats?: number;
-    fuelCapacity?: number;
-    power?: string;
-    size?: string;
-    axisLength?: string;
     optionals?: (number | undefined)[];
     images?: File[];
     details?: string;
@@ -53,8 +48,6 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
     optionals: car.optionals?.map((optional) => optional.id) ?? [],
     manufacturingYear: car.manufacturing_year,
     lastDigit: car.last_digit,
-    fuelCapacity: car.fuel_capacity,
-    axisLength: car.axis_length,
     images: [],
   });
 
@@ -301,54 +294,6 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
             value={data.details}
             onChange={(data) => setData('details', data)}
             error={errors.details}
-          />
-          <h2 className="md:col-span-2 text-lg font-bold mt-4">
-            Desempenho e dimensões
-          </h2>
-          <Input
-            label="Quantidade de pessoas"
-            type="number"
-            step={1}
-            min={1}
-            value={data.seats}
-            onChange={(e) => setData('seats', +e.target.value)}
-            name="seats"
-            error={errors.seats}
-          />
-          <Input
-            label="Potência"
-            value={data.power}
-            onChange={(e) => setData('power', e.target.value)}
-            name="power"
-            error={errors.power}
-          />
-          <Input
-            label="Comprimento x Altura x Largura"
-            value={data.size}
-            onChange={(e) => setData('size', e.target.value)}
-            name="size"
-            error={errors.size}
-          />
-          <Input
-            label="Tanque de combustível"
-            type="number"
-            step={1}
-            min={1}
-            value={data.fuelCapacity}
-            onChange={(e) => setData('fuelCapacity', +e.target.value)}
-            suffix={
-              <span className="p-2 min-w-10 text-center bg-gray-50">L</span>
-            }
-            name="fuelCapacity"
-            error={errors.fuelCapacity}
-            required
-          />
-          <Input
-            label="Distância entre eixos"
-            value={data.axisLength}
-            onChange={(e) => setData('axisLength', e.target.value)}
-            name="axisLength"
-            error={errors.axisLength}
           />
           <h2 className="md:col-span-2 text-lg font-bold mt-4">Outros</h2>
           <Autocomplete
