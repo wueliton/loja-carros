@@ -1,6 +1,6 @@
 <?php
 
-require '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use GuzzleHttp\Client;
 
@@ -69,10 +69,6 @@ function renderCarAttributesTable($car)
         ['title' => 'Modelo', 'content' => $car['model']['name']],
         ['title' => 'Version', 'content' => $car['version']],
         ['title' => 'Motor', 'content' => $car['motor']],
-        ['title' => 'Assentos', 'content' => $car['seats']],
-        ['title' => 'Potência', 'content' => $car['power']],
-        ['title' => 'Tamanho', 'content' => $car['size']],
-        ['title' => 'Capacidade do Tanque', 'content' => $car['fuel_capacity'] . ' Lt'],
     ];
 
     echo "<table><tbody>";
@@ -101,8 +97,6 @@ function renderMotorcycleAttributesTable($car)
         ['title' => 'Marca', 'content' => $car['brand']['name']],
         ['title' => 'Modelo', 'content' => $car['model']['name']],
         ['title' => 'Motor', 'content' => $car['motor']],
-        ['title' => 'Tamanho', 'content' => $car['size']],
-        ['title' => 'Capacidade do Tanque', 'content' => $car['fuel_capacity'] . ' Lt'],
     ];
 
     echo "<table><tbody>";
@@ -172,11 +166,30 @@ function convertSearchFilter($formSearch)
         $filter['where']['and'][] = convertBetweenFilter('price', $start, $end);
     }
 
+    if (isset($removedNullValues['optionals'])) {
+        unset($removedNullValues['optionals']);
+        $filter['where']['and'][] = [
+            'fieldName' => $searchType === 'cars' ? 'optionals.car_optional_id' : 'optionals.motorcycle_id',
+            'value' => $formSearch['optionals'],
+            'comparison' => 'inq'
+        ];
+    }
+
     foreach ($removedNullValues as $key => $value) {
+        $comparison = 'equals';
+        if ($key === 'last_digit') {
+            $value = explode(',', implode(',', $value));
+            $comparison = 'inq';
+        }
+
+        if ($key === 'version') {
+            $comparison = 'contains';
+        }
+
         $filter['where']['and'][] = [
             'fieldName' => $key,
             'value' => $value,
-            'comparison' => 'equals'
+            'comparison' => $comparison
         ];
     }
 

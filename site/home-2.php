@@ -3,7 +3,7 @@ $title = 'Auto Shopping Raposo'; //20-70 CARATERES
 $description = 'Visite o Auto Shopping Raposo, o maior centro automotivo da América, com lojas e serviços para apaixonados por veículos.'; //70 - 160 CARACTERES
 $keywords = $title;
 include "resources/api.php";
-include "includes/head.php";
+include "includes/head-2.php";
 ?>
 
 <section class="section-video">
@@ -11,6 +11,14 @@ include "includes/head.php";
         <video poster="assets/img/video-home.jpg" autoplay loop muted>
             <source src="assets/img/video-home.MP4" type="video/mp4">Your browser does not support the video tag.
         </video>
+    </div>
+</section>
+
+<?php include "./resources/latest.php"; ?>
+
+<section class="container">
+    <div class="row">
+        <?php include "./resources/highlights.php"; ?>
     </div>
 </section>
 
@@ -34,20 +42,22 @@ include "includes/head.php";
     </div>
 </section>
 
-<section class="section-location">
-    <div>
-        <img src="./assets/img/localizacao.jpg" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>"
-            class="img-fluid img-localizacao">
-    </div>
-    <div class="container">
-        <h2> Rodovia Raposo Tavares, km 18,5 <br> <span>(Em frente ao posto rodoviário)</span> </h2>
-        <h3> Descubra seu novo destino em uma das regiões de maior crescimento na Grande São Paulo!</h3>
-        <p> Localizado próximo ao Rodoanel e entre as marginais dos rios Pinheiros e Tietê, o Auto Shopping Raposo
-            abrange uma extensa área. Com uma variedade de lojas e um completo Centro Automotivo, atrai clientes não
-            apenas da cidade de São Paulo e Região Metropolitana, mas também das cidades vizinhas servidas pelas
-            rodovias que cruzam o Rodoanel. </p>
-    </div>
-</section>
+<a id="como-chegar">
+    <section class="section-location">
+        <div>
+            <img src="./assets/img/localizacao.jpg" alt="<?= $nomeEmpresa; ?>" title="<?= $nomeEmpresa; ?>"
+                class="img-fluid img-localizacao">
+        </div>
+        <div class="container">
+            <h2> Rodovia Raposo Tavares, km 18,5 <br> <span>(Em frente ao posto rodoviário)</span> </h2>
+            <h3> Descubra seu novo destino em uma das regiões de maior crescimento na Grande São Paulo!</h3>
+            <p> Localizado próximo ao Rodoanel e entre as marginais dos rios Pinheiros e Tietê, o Auto Shopping Raposo
+                abrange uma extensa área. Com uma variedade de lojas e um completo Centro Automotivo, atrai clientes não
+                apenas da cidade de São Paulo e Região Metropolitana, mas também das cidades vizinhas servidas pelas
+                rodovias que cruzam o Rodoanel. </p>
+        </div>
+    </section>
+</a>
 
 <section class="section-lojas">
     <div class="container">

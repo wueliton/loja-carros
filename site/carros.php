@@ -10,7 +10,7 @@ $title = $car['title'];
 $description = '';
 $keywords = $title . "," . $car['brand']['name'] . "," . $car['model']['name'];
 
-include "includes/head.php";
+include "includes/head-2.php";
 ?>
 <main class="container mb-4 adv">
     <div class="row">
@@ -62,20 +62,24 @@ include "includes/head.php";
                     </div>
                 </div>
             </div>
-            <div class="divider"></div>
-            <div>
-                <h3>Itens Opcionais</h3>
-                <div class="row">
-                    <div class="col-12">
-                        <?= renderOptionals($car) ?>
+            <?php if (isset($car['optionals']) && count($car['optionals']) > 0): ?>
+                <div class="divider"></div>
+                <div>
+                    <h3>Itens Opcionais</h3>
+                    <div class="row">
+                        <div class="col-12">
+                            <?= renderOptionals($car) ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="divider"></div>
-            <div>
-                <h3>Descrição</h3>
-                <?= $car['details'] ?>
-            </div>
+            <?php endif; ?>
+            <?php if (isset($car['details'])): ?>
+                <div class="divider"></div>
+                <div>
+                    <h3>Descrição</h3>
+                    <?= $car['details'] ?>
+                </div>
+            <?php endif; ?>
         </div>
         <div class="col-lg-4 store-contacts">
             <div class="contact-card price-card d-none d-lg-flex">

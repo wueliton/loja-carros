@@ -53,7 +53,6 @@ class CarController extends Controller
             'year' => 'required|numeric|digits:4',
             'version' => 'string|nullable',
             'color' => 'required|numeric|exists:colors,id',
-            'fuelType' => 'required|numeric|exists:fuel_types,id',
             'doors' => 'required|numeric',
             'transmission' => 'required|numeric|exists:car_transmissions,id',
             'motor' => 'required|numeric',
@@ -62,11 +61,6 @@ class CarController extends Controller
             'images' => 'nullable|array|max:5',
             'images.*' => 'image',
             'details' => 'nullable|string',
-            'seats' => 'nullable|numeric',
-            'power' => 'nullable|string',
-            'size' => 'nullable|string',
-            'fuelCapacity' => 'required|numeric',
-            'axisLength' => 'nullable|string',
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:car_optionals,id',
         ]);
@@ -98,10 +92,6 @@ class CarController extends Controller
             'km' => $request->km,
             'last_digit' => $request->lastDigit,
             'details' => $request->details,
-            'seats' => $request->seats,
-            'power' => $request->power,
-            'size' => $request->size,
-            'fuel_capacity' => $request->fuelCapacity,
             'axis_length' => $request->axisLength
         ]);
 
@@ -135,11 +125,6 @@ class CarController extends Controller
             'images' => 'nullable|array|max:5',
             'images.*' => 'image',
             'details' => 'nullable|string',
-            'seats' => 'nullable|numeric',
-            'power' => 'nullable|string',
-            'size' => 'nullable|string',
-            'fuelCapacity' => 'required|numeric',
-            'axisLength' => 'nullable|string',
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:car_optionals,id',
         ]);
@@ -172,11 +157,6 @@ class CarController extends Controller
         $car->km = $request->km;
         $car->last_digit = $request->lastDigit;
         $car->details = $request->details;
-        $car->seats = $request->seats;
-        $car->power = $request->power;
-        $car->size = $request->size;
-        $car->fuel_capacity = $request->fuelCapacity;
-        $car->axis_length = $request->axisLength;
 
         $car->save();
 

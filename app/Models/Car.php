@@ -34,11 +34,6 @@ class Car extends Model
         'km',
         'last_digit',
         'details',
-        'seats',
-        'power',
-        'size',
-        'fuel_capacity',
-        'axis_length',
         'slug',
         'visits'
     ];

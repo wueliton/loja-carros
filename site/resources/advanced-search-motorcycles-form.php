@@ -129,9 +129,9 @@ $types = $advancedSearchOptions['motorcycles']['types'];
                 </div>
             </div>
             <div class="form-field">
-                <label for="motorcycle_type">Tipo</label>
+                <label for="type_id">Tipo</label>
                 <div class="field">
-                    <select name="motorcycle_type" id="motorcycle_type">
+                    <select name="type_id" id="type_id">
                         <option value="">Selecione uma opção</option>
                         <?php foreach ($types as $type): ?>
                             <option value="<?= $type['id'] ?>"><?= $type['name'] ?></option>
@@ -157,7 +157,7 @@ $types = $advancedSearchOptions['motorcycles']['types'];
             <h4>Opcionais:</h4>
             <div class="optionals-list">
                 <?php foreach ($optionals as $optional): ?>
-                    <label><input type="checkbox" name="optionals" value="<?= $optional['id'] ?>"></input>
+                    <label><input type="checkbox" name="optionals[]" value="<?= $optional['id'] ?>"></input>
                         <span><?= $optional['name'] ?></span></label>
                 <?php endforeach; ?>
             </div>

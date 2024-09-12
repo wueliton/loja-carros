@@ -91,19 +91,19 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
                 <label>Final da Placa</label>
                 <div class="check-group">
                     <label>
-                        <input type="checkbox" name="last_digit" value="1,2" /> 1/2
+                        <input type="checkbox" name="last_digit[]" value="1,2" /> 1/2
                     </label>
                     <label>
-                        <input type="checkbox" name="last_digit" value="3,4" /> 3/4
+                        <input type="checkbox" name="last_digit[]" value="3,4" /> 3/4
                     </label>
                     <label>
-                        <input type="checkbox" name="last_digit" value="5,6" /> 5/6
+                        <input type="checkbox" name="last_digit[]" value="5,6" /> 5/6
                     </label>
                     <label>
-                        <input type="checkbox" name="last_digit" value="7,8" /> 7/8
+                        <input type="checkbox" name="last_digit[]" value="7,8" /> 7/8
                     </label>
                     <label>
-                        <input type="checkbox" name="last_digit" value="9,0" /> 9/0
+                        <input type="checkbox" name="last_digit[]" value="9,0" /> 9/0
                     </label>
                 </div>
                 <div class="error"></div>
@@ -135,13 +135,13 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
                 <div class="error"></div>
             </div>
             <div class="form-field">
-                <label for="ports">Nº de Portas</label>
+                <label for="doors">Nº de Portas</label>
                 <div class="field">
-                    <select name="ports" id="ports">
+                    <select name="doors" id="doors">
                         <option value="">Selecione uma opção</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
-                        <option value="2">4</option>
+                        <option value="4">4</option>
                     </select>
                 </div>
                 <div class="error"></div>
@@ -187,9 +187,9 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
                 </div>
             </div>
             <div class="form-field">
-                <label for="ports">Loja</label>
+                <label for="store_id">Loja</label>
                 <div class="field">
-                    <select name="ports" id="ports">
+                    <select name="store_id" id="store_id">
                         <option value="">Selecione uma opção</option>
                         <?php foreach ($stores as $store): ?>
                             <option value="<?= $store['id'] ?>"><?= $store['name'] ?></option>
@@ -203,7 +203,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
             <h4>Opcionais:</h4>
             <div class="optionals-list">
                 <?php foreach ($optionals as $optional): ?>
-                    <label><input type="checkbox" name="optionals" value="<?= $optional['id'] ?>"></input>
+                    <label><input type="checkbox" name="optionals[]" value="<?= $optional['id'] ?>"></input>
                         <span><?= $optional['name'] ?></span></label>
                 <?php endforeach; ?>
             </div>

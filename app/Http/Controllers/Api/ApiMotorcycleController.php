@@ -31,7 +31,7 @@ class ApiMotorcycleController extends Controller
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }
-        })->with('brand', 'singleImage', 'color', 'model')->select('id', 'title', 'brand_id', 'price', 'km', 'color_id', 'slug', 'model_id')->paginate(10);
+        })->with('brand', 'singleImage', 'color', 'model')->select('id', 'title', 'brand_id', 'price', 'km', 'color_id', 'slug', 'model_id', 'type_id')->paginate(10);
 
         return response()->json($motorcycles);
     }

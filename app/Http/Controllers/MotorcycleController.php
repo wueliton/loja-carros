@@ -70,9 +70,6 @@ class MotorcycleController extends Controller
             'motor' => 'string|nullable',
             'color' => 'required|numeric|exists:colors,id',
             'km' => 'required|numeric',
-            'fuelCapacity' => 'required|numeric',
-            'size' => 'string|nullable',
-            'axisLength' => 'string|nullable',
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
             'images' => 'nullable|array|max:5',
@@ -103,9 +100,6 @@ class MotorcycleController extends Controller
             'motor' => $request->motor,
             'color_id' => $request->color,
             'km' => $request->km,
-            'fuel_capacity' => $request->fuelCapacity,
-            'size' => $request->size,
-            'axis_length' => $request->axisLength,
             'details' => $request->details,
         ]);
 
@@ -133,9 +127,6 @@ class MotorcycleController extends Controller
             'motor' => 'string|nullable',
             'color' => 'required|numeric|exists:colors,id',
             'km' => 'required|numeric',
-            'fuelCapacity' => 'required|numeric',
-            'size' => 'string|nullable',
-            'axisLength' => 'string|nullable',
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
             'images' => 'nullable|array|max:5',
@@ -167,9 +158,6 @@ class MotorcycleController extends Controller
         $motorcycle->motor = $request->motor;
         $motorcycle->color_id = $request->color;
         $motorcycle->km = $request->km;
-        $motorcycle->fuel_capacity = $request->fuelCapacity;
-        $motorcycle->size = $request->size;
-        $motorcycle->axis_length = $request->axisLength;
         $motorcycle->details = $request->details;
 
         $motorcycle->save();

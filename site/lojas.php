@@ -8,7 +8,7 @@ $keywords = $title;
 
 $stores = api("GET", "stores");
 
-include "includes/head.php";
+include "includes/head-2.php";
 ?>
 <main class="container py-5">
     <div class="row">

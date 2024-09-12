@@ -10,7 +10,7 @@ $title = $motorcycle['title'];
 $description = '';
 $keywords = $title . "," . $motorcycle['brand']['name'] . "," . $motorcycle['model']['name'];
 
-include "includes/head.php";
+include "includes/head-2.php";
 ?>
 <main class="container mb-4 adv">
     <div class="row">
@@ -61,20 +61,24 @@ include "includes/head.php";
                     </div>
                 </div>
             </div>
-            <div class="divider"></div>
-            <div>
-                <h3>Itens Opcionais</h3>
-                <div class="row">
-                    <div class="col-12">
-                        <?= renderOptionals($motorcycle) ?>
+            <?php if (isset($motorcycle['optionals']) && count($motorcycle['optionals']) > 0): ?>
+                <div class="divider"></div>
+                <div>
+                    <h3>Itens Opcionais</h3>
+                    <div class="row">
+                        <div class="col-12">
+                            <?= renderOptionals($motorcycle) ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="divider"></div>
-            <div>
-                <h3>Descrição</h3>
-                <?= $motorcycle['details'] ?>
-            </div>
+            <?php endif; ?>
+            <?php if (isset($motorcycle['details'])): ?>
+                <div class="divider"></div>
+                <div>
+                    <h3>Descrição</h3>
+                    <?= $motorcycle['details'] ?>
+                </div>
+            <?php endif; ?>
         </div>
         <div class="col-lg-4 store-contacts">
             <div class="contact-card price-card d-none d-lg-flex">
