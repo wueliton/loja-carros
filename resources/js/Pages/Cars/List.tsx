@@ -1,5 +1,6 @@
 import { Button } from '@/Components/Button';
 import { Filter } from '@/Components/Filter';
+import { Chip } from '@/Components/Forms/Chip';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
@@ -25,6 +26,11 @@ const carHeader: THeadProps<Car>[] = [
     key: 'model',
     title: 'Modelo',
     render: (data) => <>{data.model?.name}</>,
+  },
+  {
+    key: 'store',
+    title: 'Loja',
+    render: (data) => <Chip canRemove={false}>{data.store?.name}</Chip>,
   },
   {
     key: 'created_at',

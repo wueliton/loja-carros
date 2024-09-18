@@ -29,4 +29,9 @@ class QueryBuilder
 
         return $this->query;
     }
+
+    public function query()
+    {
+        return $this->query;
+    }
 }

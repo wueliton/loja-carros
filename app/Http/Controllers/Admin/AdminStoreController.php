@@ -13,7 +13,9 @@ use Inertia\Inertia;
 
 class AdminStoreController extends Controller
 {
-    public function __construct(protected FilterService $filterService, protected ImageUploadService $imageUploadService) {}
+    public function __construct(protected FilterService $filterService, protected ImageUploadService $imageUploadService)
+    {
+    }
 
     public function edit(Request $request)
     {
@@ -27,7 +29,7 @@ class AdminStoreController extends Controller
 
     public function update(StorePostRequest $request)
     {
-        $request->validate();
+        $request->validated();
         $lastStoreId = $request->user()->lastStoreId();
 
         $store = Store::findOrFail($lastStoreId);

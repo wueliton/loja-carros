@@ -15,11 +15,13 @@ use Inertia\Response;
 
 class CarController extends Controller
 {
-    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService) {}
+    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService)
+    {
+    }
 
     public function list(Request $request): Response
     {
-        $cars = Car::with('brand:id,name', 'model:id,name')->select('id', 'title', 'brand_id', 'model_id', 'created_at')->where(function ($query) use ($request) {
+        $cars = Car::with('brand:id,name', 'model:id,name', 'store:id,name')->select('id', 'title', 'brand_id', 'model_id', 'store_id', 'created_at')->where(function ($query) use ($request) {
             if (!$request->user()->hasRole('super')) {
                 $userStore = $request->user()->lastStore()->pluck('store_id');
                 $query = $query->where('store_id', $userStore);
