@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BrandDataRequest;
 use App\Models\Brands;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
@@ -44,37 +45,45 @@ class BrandController extends Controller
         return $brands;
     }
 
-    public function create(Request $request): RedirectResponse
+    public function create(BrandDataRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        Brands::create([
-            'name' => $request->name
-        ]);
+        $this->patchBrand($request);
 
         return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(BrandDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        $fuelType = Brands::findOrFail($id);
-        $fuelType->name = $request->name;
-        $fuelType->save();
+        $brand = Brands::findOrFail($id);
+        $this->patchBrand($request, $brand);
 
         return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
 
     public function delete(Request $request, $id)
     {
-        $fuelType = Brands::findOrFail($id);
-        $fuelType->delete();
+        $brand = Brands::findOrFail($id);
+        $brand->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiCreate(BrandDataRequest $request)
+    {
+        $brand = $this->patchBrand($request);
+
+        return response()->json($brand);
+    }
+
+    public function patchBrand(Request $request, Brands $brand = null)
+    {
+        if (!$brand) {
+            $brand = new Brands();
+        }
+
+        $brand->name = $request->name;
+
+        $brand->save();
+        return $brand;
     }
 }

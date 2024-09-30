@@ -7,43 +7,15 @@ import { AcceptedKeys, FloatingMenu } from '../../FloatingMenu';
 import { Chip } from '../Chip';
 import { Input } from '../Input';
 import styles from './Autocomplete.module.scss';
+import { AutocompleteProps } from './types';
 
-export interface AutocompleteProps<
-  T,
-  isMulti extends boolean,
-  CanCreate extends boolean,
-> {
-  label: string;
-  propertyValue: keyof T;
-  propertyToDisplay: keyof T;
-  searchProperties: string[];
-  moreThanOne?: isMulti;
-  url: string;
-  name?: string;
-  value?: isMulti extends true ? T[keyof T][] : T[keyof T];
-  error?: string;
-  disabled?: boolean;
-  autoFocus?: boolean;
-  filter?: Where<T>[];
-  className?: string;
-  canCreate?: CanCreate;
-  required?: boolean;
-  onChange?: (values: isMulti extends true ? T[keyof T][] : T[keyof T]) => void;
-  onChangeFull?: (values: isMulti extends true ? T[] : T) => void;
-}
-
-export const Autocomplete = <
-  T,
-  isMulti extends boolean = boolean,
-  CanCreate extends boolean = false,
->({
+export const Autocomplete = <T, isMulti extends boolean = boolean>({
   label,
   propertyToDisplay,
   propertyValue,
   searchProperties = [],
   moreThanOne,
   autoFocus,
-  canCreate,
   className,
   disabled,
   required,
@@ -54,9 +26,8 @@ export const Autocomplete = <
   error,
   onChange,
   onChangeFull,
-}: CanCreate extends true
-  ? { createUrl: string } & AutocompleteProps<T, isMulti, CanCreate>
-  : AutocompleteProps<T, isMulti, CanCreate>) => {
+  onCreate,
+}: AutocompleteProps<T, isMulti>) => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState<string | null>(null);
   const [selected, setSelected] = useState<T[]>([]);
@@ -90,10 +61,10 @@ export const Autocomplete = <
             fieldName: prop,
             comparison: 'contains',
             value: inputSearch,
-          })) as unknown as Where<T>[]),
-          ...(filter?.filter(
+          })) as Where<T>[]),
+          ...((filter?.filter(
             (cond) => cond.comparison && cond.fieldName && cond.value,
-          ) ?? []),
+          ) ?? []) as Where<T>[]),
         ],
       },
     });
@@ -130,12 +101,21 @@ export const Autocomplete = <
   };
 
   const handleSelectOption = (item: T) => {
-    setSelected((prev) => Array.from(new Set([...prev, item])));
+    setSearch('');
+    setSelected((prev) => {
+      const selected = Array.from(new Set([...prev, item]));
+      handleSelectedChange(selected);
+      return selected;
+    });
     setOpened(false);
   };
 
   const handleRemoveOption = (item: T) => {
-    setSelected((prev) => prev.filter((selected) => selected !== item));
+    setSelected((prev) => {
+      const selected = prev.filter((selected) => selected !== item);
+      handleSelectedChange(selected);
+      return selected;
+    });
   };
 
   const handleTabPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -159,6 +139,36 @@ export const Autocomplete = <
     }
   };
 
+  const handleCreate = async () => {
+    if (!search || !onCreate) return;
+    const newOptions = search;
+    const option = await onCreate(newOptions);
+    if (!option) return;
+    setOptions([option]);
+    handleSelectOption(option);
+  };
+
+  const handleSelectedChange = (selected: T[]) => {
+    const allSelected = moreThanOne
+      ? [...selected]
+      : [...selected].splice(0, 1);
+
+    if (allSelected === value) return;
+
+    const mappedChangedValues = allSelected.map((item) => item[propertyValue]);
+
+    onChange?.(
+      (moreThanOne
+        ? mappedChangedValues
+        : mappedChangedValues[0]) as isMulti extends true
+        ? T[keyof T][]
+        : T[keyof T],
+    );
+    onChangeFull?.(
+      (moreThanOne ? selected : selected[0]) as isMulti extends true ? T[] : T,
+    );
+  };
+
   const debounceSearch = debounce((e: ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
     setSearch(e.target.value);
@@ -179,24 +189,6 @@ export const Autocomplete = <
       return;
     loadInitialValues(valueToArray as T[keyof T][]);
   }, [value]);
-
-  useEffect(() => {
-    const allSelected = moreThanOne
-      ? [...selected]
-      : [...selected].splice(0, 1);
-    const mappedChangedValues = allSelected.map((item) => item[propertyValue]);
-
-    onChange?.(
-      (moreThanOne
-        ? mappedChangedValues
-        : mappedChangedValues[0]) as isMulti extends true
-        ? T[keyof T][]
-        : T[keyof T],
-    );
-    onChangeFull?.(
-      (moreThanOne ? selected : selected[0]) as isMulti extends true ? T[] : T,
-    );
-  }, [selected]);
 
   useEffect(() => {
     keyboardSelectRef.current = { options, focused };
@@ -232,6 +224,7 @@ export const Autocomplete = <
         }
         autoComplete="off"
         name={name}
+        value={search ?? ''}
         ref={inputRef}
         role="combobox"
         type="text"
@@ -267,14 +260,15 @@ export const Autocomplete = <
           </div>
         ) : (
           <>
-            {!options.length && !canCreate && (
+            {!options.length && !onCreate && (
               <div className={styles.empty}>Nenhuma opção disponível</div>
             )}
-            {!options.length && canCreate && search && (
+            {!options.length && onCreate && search && (
               <div
                 key={0}
                 className={`${styles.option} ${focused === 0 ? styles['active-option'] : ''}`}
                 onMouseEnter={() => setFocused(0)}
+                onClick={handleCreate}
               >
                 Criar "{search}"
               </div>

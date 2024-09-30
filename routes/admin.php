@@ -15,7 +15,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
         Route::get('create', [AdminUserController::class, 'new'])->name('new');
         Route::get('{id}', [AdminUserController::class, 'edit'])->name('edit')->where('id', '[0-9]+');
         Route::patch('{id}', [AdminUserController::class, 'update'])->name('update')->where('id', '[0-9]+');
-        Route::post('', [AdminUserController::class, 'create'])->name('create')->where('id', '[0-9]+');
+        Route::post('', [AdminUserController::class, 'create'])->name('create');
         Route::delete('{id}', [AdminUserController::class, 'create'])->name('delete')->where('id', '[0-9]+');
     });
 });

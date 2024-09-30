@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarDataRequest;
 use App\Models\Car;
 use App\Models\CarImages;
 use App\Services\FilterService;
@@ -37,131 +38,17 @@ class CarController extends Controller
         ]);
     }
 
-    public function create(Request $request): RedirectResponse
+    public function create(CarDataRequest $request): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required|string',
-            'brand' => 'required|numeric|exists:brands,id',
-            'model' => 'required|numeric|exists:car_brand_models,id',
-            'price' => 'required|numeric',
-            'store' => 'required|numeric|exists:stores,id',
-            'manufacturingYear' => 'required|numeric|digits:4',
-            'year' => 'required|numeric|digits:4',
-            'version' => 'string|nullable',
-            'color' => 'required|numeric|exists:colors,id',
-            'doors' => 'required|numeric',
-            'transmission' => 'required|numeric|exists:car_transmissions,id',
-            'motor' => 'required|numeric',
-            'km' => 'required|numeric',
-            'lastDigit' => 'required|numeric',
-            'images' => 'nullable|array|max:10|min:2',
-            'images.*' => 'image',
-            'details' => 'nullable|string',
-            'optionals' => 'nullable|array',
-            'optionals.*' => 'nullable|numeric|exists:car_optionals,id',
-        ]);
-
-        $filesPath = [];
-
-        if ($request->has('images')) {
-            $files = $request->images;
-            foreach ($files as $file) {
-                $filePath = $this->imageUploadService->upload($file);
-                array_push($filesPath, ['url' => $filePath]);
-            }
-        }
-
-        $car = Car::create([
-            'title' => $request->title,
-            'brand_id' => $request->brand,
-            'model_id' => $request->model,
-            'price' => $request->price,
-            'store_id' => $request->store,
-            'manufacturing_year' => $request->manufacturingYear,
-            'year' => $request->year,
-            'version' => $request->version,
-            'color_id' => $request->color,
-            'fuel_type_id' => $request->fuelType,
-            'doors' => $request->doors,
-            'transmission_id' => $request->transmission,
-            'motor' => $request->motor,
-            'km' => $request->km,
-            'last_digit' => $request->lastDigit,
-            'details' => $request->details,
-            'axis_length' => $request->axisLength
-        ]);
-
-        $car->images()->createMany($filesPath);
-
-        if ($request->has('optionals')) {
-            $car->optionals()->attach($request->optionals);
-        }
+        $this->patchCar($request);
 
         return Redirect::route('cars');
     }
 
-    public function edit(Request $request, $id): RedirectResponse
+    public function edit(CarDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required|string',
-            'brand' => 'required|numeric|exists:brands,id',
-            'model' => 'required|numeric|exists:car_brand_models,id',
-            'price' => 'required|numeric',
-            'store' => 'required|numeric|exists:stores,id',
-            'manufacturingYear' => 'required|numeric|digits:4',
-            'year' => 'required|numeric|digits:4',
-            'version' => 'string|nullable',
-            'color' => 'required|numeric|exists:colors,id',
-            'fuelType' => 'required|numeric|exists:fuel_types,id',
-            'doors' => 'required|numeric',
-            'transmission' => 'required|numeric|exists:car_transmissions,id',
-            'motor' => 'required|numeric',
-            'km' => 'required|numeric',
-            'lastDigit' => 'required|numeric',
-            'images' => 'nullable|array|max:10|min:2',
-            'images.*' => 'image',
-            'details' => 'nullable|string',
-            'optionals' => 'nullable|array',
-            'optionals.*' => 'nullable|numeric|exists:car_optionals,id',
-        ]);
-
         $car = Car::findOrFail($id);
-
-        $filesPath = [];
-
-        if ($request->has('images')) {
-            $files = $request->images;
-            foreach ($files as $file) {
-                $filePath = $this->imageUploadService->upload($file);
-                array_push($filesPath, ['url' => $filePath]);
-            }
-        }
-
-        $car->title = $request->title;
-        $car->brand_id = $request->brand;
-        $car->model_id = $request->model;
-        $car->price = $request->price;
-        $car->store_id = $request->store;
-        $car->manufacturing_year = $request->manufacturingYear;
-        $car->year = $request->year;
-        $car->version = $request->version;
-        $car->color_id = $request->color;
-        $car->fuel_type_id = $request->fuelType;
-        $car->doors = $request->doors;
-        $car->transmission_id = $request->transmission;
-        $car->motor = $request->motor;
-        $car->km = $request->km;
-        $car->last_digit = $request->lastDigit;
-        $car->details = $request->details;
-
-        $car->save();
-
-        $car->images()->createMany($filesPath);
-
-        if ($request->has('optionals')) {
-            $car->optionals()->detach();
-            $car->optionals()->attach($request->optionals);
-        }
+        $this->patchCar($request, $car);
 
         return Redirect::route('cars');
     }
@@ -194,5 +81,54 @@ class CarController extends Controller
         $image->delete();
 
         return response()->json(['success' => true], 200);
+    }
+
+    public function patchCar(Request $request, Car $car = null)
+    {
+        if (!$car) {
+            $car = new Car();
+        }
+
+        $currentStore = $request->user->lastStoreId();
+        $filesPath = [];
+
+        if (!$currentStore)
+            return $car;
+
+        if ($request->has('images')) {
+            $files = $request->images;
+            foreach ($files as $file) {
+                $filePath = $this->imageUploadService->upload($file);
+                array_push($filesPath, ['url' => $filePath]);
+            }
+        }
+
+        $car->title = $request->title;
+        $car->brand_id = $request->brand;
+        $car->model_id = $request->model;
+        $car->price = $request->price;
+        $car->store_id = $currentStore;
+        $car->manufacturing_year = $request->manufacturingYear;
+        $car->year = $request->year;
+        $car->version = $request->version;
+        $car->color_id = $request->color;
+        $car->fuel_type_id = $request->fuelType;
+        $car->doors = $request->doors;
+        $car->transmission_id = $request->transmission;
+        $car->motor = $request->motor;
+        $car->km = $request->km;
+        $car->last_digit = $request->lastDigit;
+        $car->details = $request->details;
+
+        $car->save();
+
+        $car->images()->createMany($filesPath);
+
+        if ($request->has('optionals')) {
+            $car->optionals()->detach();
+            $car->optionals()->attach($request->optionals);
+        }
+
+        return $car;
     }
 }

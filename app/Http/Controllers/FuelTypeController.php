@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FuelTypeDataRequest;
 use App\Models\FuelType;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
@@ -43,28 +44,17 @@ class FuelTypeController extends Controller
         return $fuelTypes;
     }
 
-    public function create(Request $request): RedirectResponse
+    public function create(FuelTypeDataRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        FuelType::create([
-            'name' => $request->name
-        ]);
+        $this->patchFuelType($request);
 
         return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(FuelTypeDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
         $fuelType = FuelType::findOrFail($id);
-        $fuelType->name = $request->name;
-        $fuelType->save();
+        $this->patchFuelType($request, $fuelType);
 
         return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
@@ -75,5 +65,24 @@ class FuelTypeController extends Controller
         $fuelType->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiCreate(FuelTypeDataRequest $request)
+    {
+        $fuelType = $this->patchFuelType($request);
+
+        return response()->json($fuelType);
+    }
+
+    private function patchFuelType(Request $request, FuelType $fuelType = null)
+    {
+        if (!$fuelType) {
+            $fuelType = new FuelType();
+        }
+
+        $fuelType->name = $request->name;
+        $fuelType->save();
+
+        return $fuelType;
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MotorcycleOptionalDataRequest;
 use App\Models\MotorcycleOptional;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -44,28 +44,17 @@ class MotorcycleOptionalController extends Controller
         return $optional;
     }
 
-    public function create(Request $request): RedirectResponse
+    public function create(MotorcycleOptionalDataRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        MotorcycleOptional::create([
-            'name' => $request->name
-        ]);
+        $this->patchOptional($request);
 
         return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(MotorcycleOptionalDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        $fuelType = MotorcycleOptional::findOrFail($id);
-        $fuelType->name = $request->name;
-        $fuelType->save();
+        $optional = MotorcycleOptional::findOrFail($id);
+        $this->patchOptional($request, $optional);
 
         return redirect()->back()->with('success', 'Item editado com sucesso.');
     }
@@ -76,5 +65,24 @@ class MotorcycleOptionalController extends Controller
         $fuelType->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiCreate(Request $request)
+    {
+        $optional = $this->patchOptional($request);
+
+        return response()->json($optional);
+    }
+
+    private function patchOptional(Request $request, MotorcycleOptional $optional = null)
+    {
+        if (!$optional) {
+            $optional = new MotorcycleOptional();
+        }
+
+        $optional->name = $request->name;
+        $optional->save();
+
+        return $optional;
     }
 }

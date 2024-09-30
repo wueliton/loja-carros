@@ -111,5 +111,25 @@ export const RegularMenu: (MenuItem | MenuCategory)[] = [
     url: AdminRouter.DASHBOARD,
     icon: <DashboardIcon />,
   },
-  ...CommonMenu,
+  {
+    title: 'Loja',
+    url: AdminRouter.EDIT_STORE,
+    icon: <StoreIcon />,
+  },
+  {
+    category: 'Carros',
+  },
+  {
+    url: 'cars',
+    icon: <CarIcon />,
+    title: 'Carros',
+  },
+  {
+    category: 'Motos',
+  },
+  {
+    url: 'motorcycle',
+    icon: <MotoqueiroIcon />,
+    title: 'Motos',
+  },
 ];
