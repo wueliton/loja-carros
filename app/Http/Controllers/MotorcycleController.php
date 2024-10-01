@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MotorcycleDataRequest;
 use App\Models\Motorcycle;
 use App\Models\MotorcycleImages;
-use App\Models\Store;
 use App\Services\FilterService;
 use App\Services\ImageUploadService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -35,139 +34,37 @@ class MotorcycleController extends Controller
             return $query;
         })->latest()->paginate(10);
 
-        return Inertia::render('Motorcycle/List', [
+        return Inertia::render('User/Motorcycle/List/index', [
             'motorcycles' => $motorcycles
         ]);
     }
 
-    public function getMotorcycle(Request $request, $id)
+    public function editView(Request $request, $id)
     {
         try {
             $motorcycle = Motorcycle::with('images', 'optionals')->findOrFail($id);
 
-            return Inertia::render('Motorcycle/Edit', [
+            return Inertia::render('User/Motorcycle/Edit/index', [
                 'motorcycle' => $motorcycle
             ]);
         } catch (ModelNotFoundException $e) {
-            return Redirect::route('motorcycle');
+            return Redirect::route('motorcycle.list.view');
         }
     }
 
-    public function create(Request $request): RedirectResponse
+    public function create(MotorcycleDataRequest $request): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required|string',
-            'brand' => 'required|numeric|exists:brands,id',
-            'model' => 'required|numeric|exists:motorcycle_brand_models,id',
-            'store' => 'required|numeric|exists:stores,id',
-            'price' => 'required|numeric',
-            'type' => 'required|numeric|exists:motorcycle_types,id',
-            'manufacturingYear' => 'required|numeric|digits:4',
-            'year' => 'required|numeric|digits:4',
-            'cylinder' => 'required',
-            'motor' => 'string|nullable',
-            'color' => 'required|numeric|exists:colors,id',
-            'km' => 'required|numeric',
-            'optionals' => 'nullable|array',
-            'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
-            'images' => 'nullable|array|max:10|min:2',
-            'images.*' => 'image',
-            'details' => 'nullable|string'
-        ]);
+        $this->patchMotorcycle($request);
 
-        $filesPath = [];
-
-        if ($request->has('images')) {
-            $files = $request->images;
-            foreach ($files as $file) {
-                $filePath = $this->imageUploadService->upload($file);
-                array_push($filesPath, ['url' => $filePath]);
-            }
-        }
-
-        $motorcycle = Motorcycle::create([
-            'title' => $request->title,
-            'brand_id' => $request->brand,
-            'model_id' => $request->model,
-            'store_id' => $request->store,
-            'price' => $request->price,
-            'type_id' => $request->type,
-            'manufacturing_year' => $request->manufacturingYear,
-            'year' => $request->year,
-            'cylinder' => $request->cylinder,
-            'motor' => $request->motor,
-            'color_id' => $request->color,
-            'km' => $request->km,
-            'details' => $request->details,
-        ]);
-
-        $motorcycle->images()->createMany($filesPath);
-
-        if ($request->has('optionals')) {
-            $motorcycle->optionals()->attach($request->optionals);
-        }
-
-        return Redirect::route('motorcycle');
+        return Redirect::route('motorcycle.list.view');
     }
 
-    public function edit(Request $request, $id): RedirectResponse
+    public function edit(MotorcycleDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required|string',
-            'brand' => 'required|numeric|exists:brands,id',
-            'model' => 'required|numeric|exists:motorcycle_brand_models,id',
-            'store' => 'required|numeric|exists:stores,id',
-            'price' => 'required|numeric',
-            'type' => 'required|numeric|exists:motorcycle_types,id',
-            'manufacturingYear' => 'required|numeric|digits:4',
-            'year' => 'required|numeric|digits:4',
-            'cylinder' => 'required',
-            'motor' => 'string|nullable',
-            'color' => 'required|numeric|exists:colors,id',
-            'km' => 'required|numeric',
-            'optionals' => 'nullable|array',
-            'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
-            'images' => 'nullable|array|max:10|min:2',
-            'images.*' => 'image',
-            'details' => 'nullable|string'
-        ]);
-
         $motorcycle = Motorcycle::findOrFail($id);
+        $this->patchMotorcycle($request, $motorcycle);
 
-        $filesPath = [];
-
-        if ($request->has('images')) {
-            $files = $request->images;
-            foreach ($files as $file) {
-                $filePath = $this->imageUploadService->upload($file);
-                array_push($filesPath, ['url' => $filePath]);
-            }
-        }
-
-        $motorcycle->title = $request->title;
-        $motorcycle->brand_id = $request->brand;
-        $motorcycle->model_id = $request->model;
-        $motorcycle->price = $request->price;
-        $motorcycle->store_id = $request->store;
-        $motorcycle->type_id = $request->type;
-        $motorcycle->manufacturing_year = $request->manufacturingYear;
-        $motorcycle->year = $request->year;
-        $motorcycle->cylinder = $request->cylinder;
-        $motorcycle->motor = $request->motor;
-        $motorcycle->color_id = $request->color;
-        $motorcycle->km = $request->km;
-        $motorcycle->details = $request->details;
-
-        $motorcycle->save();
-
-        $motorcycle->images()->createMany($filesPath);
-
-        if ($request->has('optionals')) {
-            $motorcycle->optionals()->detach();
-            $motorcycle->optionals()->attach($request->optionals);
-        }
-
-        return Redirect::route('motorcycle');
+        return Redirect::route('motorcycle.list.view');
     }
 
     public function delete(Request $request, $id): RedirectResponse
@@ -189,5 +86,49 @@ class MotorcycleController extends Controller
         $image->delete();
 
         return response()->json(['success' => true], 200);
+    }
+
+    private function patchMotorcycle(Request $request, Motorcycle $motorcycle = null)
+    {
+        if (!$motorcycle) {
+            $motorcycle = new Motorcycle();
+        }
+
+        $filesPath = [];
+
+        if ($request->has('images')) {
+            $files = $request->images;
+            foreach ($files as $file) {
+                $filePath = $this->imageUploadService->upload($file);
+                array_push($filesPath, ['url' => $filePath]);
+            }
+        }
+
+        $lastStoreId = $request->user()->lastStoreId();
+
+        $motorcycle->title = $request->title;
+        $motorcycle->brand_id = $request->brand;
+        $motorcycle->model_id = $request->model;
+        $motorcycle->store_id = $lastStoreId;
+        $motorcycle->price = $request->price;
+        $motorcycle->type_id = $request->type;
+        $motorcycle->manufacturing_year = $request->manufacturingYear;
+        $motorcycle->year = $request->year;
+        $motorcycle->cylinder = $request->cylinder;
+        $motorcycle->motor = $request->motor;
+        $motorcycle->color_id = $request->color;
+        $motorcycle->km = $request->km;
+        $motorcycle->details = $request->details;
+
+        $motorcycle->save();
+
+        $motorcycle->images()->createMany($filesPath);
+
+        if ($request->has('optionals')) {
+            $motorcycle->optionals()->detach();
+            $motorcycle->optionals()->attach($request->optionals);
+        }
+
+        return $motorcycle;
     }
 }

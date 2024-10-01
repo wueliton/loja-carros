@@ -12,7 +12,7 @@ class DashboardController extends Controller
     {
         $activities = Activity::where('causer_id', Auth::id())->latest()->take(20)->get();
 
-        return Inertia::render('Dashboard', [
+        return Inertia::render('User/Dashboard/index', [
             'logs' => $activities
         ]);
     }

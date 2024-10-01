@@ -75,7 +75,7 @@ export default function ListVehiclesPage({
         <Head title="Carros">
           <Button
             onClick={() =>
-              router.visit(route(Car.GET_ROUTE('createView')), {
+              router.visit(route(Car.GET_ROUTE('create.view')), {
                 preserveScroll: true,
               })
             }
@@ -91,7 +91,7 @@ export default function ListVehiclesPage({
           headers={carHeader}
           onDelete={handleDelete}
           onEdit={(item) =>
-            router.visit(route(Car.GET_ROUTE('get'), { id: item.id }), {
+            router.visit(route('cars.edit.view', { id: item.id }), {
               preserveScroll: true,
             })
           }

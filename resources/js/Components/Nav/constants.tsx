@@ -120,7 +120,7 @@ export const RegularMenu: (MenuItem | MenuCategory)[] = [
     category: 'Carros',
   },
   {
-    url: 'cars',
+    url: 'cars.list.view',
     icon: <CarIcon />,
     title: 'Carros',
   },
@@ -128,7 +128,7 @@ export const RegularMenu: (MenuItem | MenuCategory)[] = [
     category: 'Motos',
   },
   {
-    url: 'motorcycle',
+    url: 'motorcycle.list.view',
     icon: <MotoqueiroIcon />,
     title: 'Motos',
   },

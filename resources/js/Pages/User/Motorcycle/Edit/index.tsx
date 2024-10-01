@@ -2,8 +2,8 @@ import { Card } from '@/Components/Card';
 import { Head } from '@/Components/Head';
 import { Motorcycle } from '@/models/Motorcycle';
 import { PageProps } from '@/types';
-import { MotorcycleForm } from './components/MotorcycleForm';
-import { MotorcycleSchema } from './components/MotorcycleForm/types';
+import { MotorcycleForm } from '../components/MotorcycleForm';
+import { MotorcycleSchema } from '../components/MotorcycleForm/types';
 
 export default function EditMotorcyclePage({
   motorcycle,
@@ -23,11 +23,11 @@ export default function EditMotorcyclePage({
     <>
       <Head
         title={`Editar ${motorcycle.title}`}
-        breadcrumb={[{ title: 'Motos', url: route('motorcycle') }]}
+        breadcrumb={[{ title: 'Motos', url: 'motorcycle.list.view' }]}
       />
       <Card>
         <MotorcycleForm
-          postUrl={route(Motorcycle.GET_ROUTE('edit'), { id: motorcycle.id })}
+          postUrl={route('motorcycle.edit', { id: motorcycle.id })}
           defaultValues={defaultValues}
           images={motorcycle.images}
         />

@@ -64,12 +64,9 @@ export default function MotorcyclePage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(
-          route(Motorcycle.GET_ROUTE('delete'), { id: motorcycle.id }),
-          {
-            preserveScroll: true,
-          },
-        );
+        router.delete(route('motorcycle.delete', { id: motorcycle.id }), {
+          preserveScroll: true,
+        });
       },
     });
 
@@ -78,7 +75,7 @@ export default function MotorcyclePage({
       <Head title="Motos">
         <Button
           onClick={() =>
-            router.visit(route(Motorcycle.GET_ROUTE('createView')), {
+            router.visit(route('motorcycle.create.view'), {
               preserveScroll: true,
             })
           }
@@ -93,7 +90,7 @@ export default function MotorcyclePage({
         headers={motorcycleHeader}
         onDelete={handleDeleteMotorcycle}
         onEdit={(item) =>
-          router.visit(route(Motorcycle.GET_ROUTE('get'), { id: item.id }), {
+          router.visit(route('motorcycle.edit.view', { id: item.id }), {
             preserveScroll: true,
           })
         }

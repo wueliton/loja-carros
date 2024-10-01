@@ -33,7 +33,7 @@ class CarController extends Controller
             return $query;
         })->latest()->paginate(10);
 
-        return Inertia::render('Cars/List', [
+        return Inertia::render('User/Cars/List/index', [
             'cars' => $cars
         ]);
     }
@@ -42,7 +42,7 @@ class CarController extends Controller
     {
         $this->patchCar($request);
 
-        return Redirect::route('cars');
+        return Redirect::route('cars.list.view');
     }
 
     public function edit(CarDataRequest $request, $id): RedirectResponse
@@ -50,14 +50,14 @@ class CarController extends Controller
         $car = Car::findOrFail($id);
         $this->patchCar($request, $car);
 
-        return Redirect::route('cars');
+        return Redirect::route('cars.list.view');
     }
 
-    public function getCar(Request $request, $id): Response
+    public function editView(Request $request, $id): Response
     {
         $car = Car::with('images', 'optionals')->findOrFail($id);
 
-        return Inertia::render('Cars/Edit', [
+        return Inertia::render('User/Cars/Edit/index', [
             'car' => $car
         ]);
     }
@@ -89,7 +89,7 @@ class CarController extends Controller
             $car = new Car();
         }
 
-        $currentStore = $request->user->lastStoreId();
+        $currentStore = $request->user()->lastStoreId();
         $filesPath = [];
 
         if (!$currentStore)

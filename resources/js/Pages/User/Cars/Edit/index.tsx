@@ -2,8 +2,8 @@ import { Card } from '@/Components/Card';
 import { Head } from '@/Components/Head';
 import { Car } from '@/models/Car';
 import { PageProps } from '@/types';
-import { CarForm } from './components/CarForm';
-import { CarFormSchema } from './components/CarForm/types';
+import { CarForm } from '../components/CarForm';
+import { CarFormSchema } from '../components/CarForm/types';
 
 export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
   const defaultValues: CarFormSchema = {
@@ -23,11 +23,11 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
     <>
       <Head
         title={`Editar ${car.title}`}
-        breadcrumb={[{ title: 'Carros', url: route(Car.GET_ROUTE()) }]}
+        breadcrumb={[{ title: 'Carros', url: route('cars.list.view') }]}
       />
       <Card>
         <CarForm
-          postUrl={route(Car.GET_ROUTE('edit'), { id: car.id })}
+          postUrl={route('cars.edit', { id: car.id })}
           defaultValues={defaultValues}
           images={car.images?.map((image) => ({
             ...image,
