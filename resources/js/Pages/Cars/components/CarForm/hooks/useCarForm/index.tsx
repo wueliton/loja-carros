@@ -48,7 +48,7 @@ export const useCarForm = ({
         if (!data) return;
 
         axios
-          .delete(route(Car.GET_ROUTE('deleteImage'), { id }))
+          .delete(route('api.cars.images.delete', { id }))
           .then(() =>
             setCurrentFiles((prev) => prev?.filter((img) => img.id !== id)),
           );

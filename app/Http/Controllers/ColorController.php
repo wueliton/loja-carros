@@ -35,17 +35,6 @@ class ColorController extends Controller
         ]);
     }
 
-    public function get(Request $request)
-    {
-        $colors = Color::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $colors;
-    }
-
     public function create(ColorDataRequest $request): RedirectResponse
     {
         $this->patchColor($request);
@@ -67,6 +56,17 @@ class ColorController extends Controller
         $color->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $colors = Color::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $colors;
     }
 
     public function apiCreate(ColorDataRequest $request)

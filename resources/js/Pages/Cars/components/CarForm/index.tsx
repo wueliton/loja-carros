@@ -41,7 +41,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Marca"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('brands.list')}
+        url={route('api.brand.list')}
         searchProperties={['name']}
         value={data.brand}
         onChange={(e) => {
@@ -60,7 +60,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Modelo"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('brandModels.list')}
+        url={route('api.cars.model.list')}
         searchProperties={['name']}
         name="models"
         disabled={!data.brand}
@@ -127,7 +127,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Cor"
         propertyToDisplay="color"
         propertyValue="id"
-        url={route('colors.list')}
+        url={route('api.color.list')}
         searchProperties={['color']}
         value={data.color}
         onChange={(e) => setData('color', e as number)}
@@ -140,7 +140,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Tipo de combustível"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('fuelTypes.list')}
+        url={route('api.fuelType.list')}
         searchProperties={['name']}
         value={data.fuelType}
         onChange={(e) => setData('fuelType', e as number)}
@@ -162,7 +162,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Transmissão"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('transmissions.list')}
+        url={route('api.cars.transmission.list')}
         searchProperties={['name']}
         value={data.transmission}
         onChange={(e) => setData('transmission', e as number)}
@@ -227,7 +227,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Opcionais"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('optional.list')}
+        url={route('api.cars.optionals.list')}
         searchProperties={['name']}
         value={data.optionals}
         onChange={(e) => setData('optionals', e as number[])}

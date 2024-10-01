@@ -178,7 +178,7 @@ class MotorcycleController extends Controller
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 
-    public function deleteImage(Request $request, $id)
+    public function apiDeleteImage(Request $request, $id)
     {
         $image = MotorcycleImages::findOrFail($id);
         $filePath = 'uploads/' . $image->url;

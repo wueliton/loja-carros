@@ -33,17 +33,6 @@ class FuelTypeController extends Controller
         ]);
     }
 
-    public function get(Request $request)
-    {
-        $fuelTypes = FuelType::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $fuelTypes;
-    }
-
     public function create(FuelTypeDataRequest $request): RedirectResponse
     {
         $this->patchFuelType($request);
@@ -65,6 +54,17 @@ class FuelTypeController extends Controller
         $fuelType->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $fuelTypes = FuelType::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $fuelTypes;
     }
 
     public function apiCreate(FuelTypeDataRequest $request)

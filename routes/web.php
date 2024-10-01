@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::group(['prefix' => 'users'], function () {
         Route::get('', [UserController::class, 'list'])->name('users');
@@ -74,8 +76,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('{id}', [ColorController::class, 'update'])->name('colors.update')->where('id', '[0-9]+');
             Route::delete('{id}', [ColorController::class, 'delete'])->name('colors.delete')->where('id', '[0-9]+');
         });
-
-        Route::get('list', [ColorController::class, 'get'])->name('colors.list');
     });
 
     Route::group(['prefix' => 'fuelTypes'], function () {
@@ -85,8 +85,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('{id}', [FuelTypeController::class, 'update'])->name('fuelTypes.update')->where('id', '[0-9]+');
             Route::delete('{id}', [FuelTypeController::class, 'delete'])->name('fuelTypes.delete')->where('id', '[0-9]+');
         });
-
-        Route::get('list', [FuelTypeController::class, 'get'])->name('fuelTypes.list');
     });
 
     Route::group(['prefix' => 'brands'], function () {
@@ -96,8 +94,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('{id}', [BrandController::class, 'update'])->name('brands.update')->where('id', '[0-9]+');
             Route::delete('{id}', [BrandController::class, 'delete'])->name('brands.delete')->where('id', '[0-9]+');
         });
-
-        Route::get('list', [BrandController::class, 'get'])->name('brands.list');
     });
 
     Route::group(['prefix' => 'brandModels'], function () {
@@ -107,8 +103,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('{id}', [CarBrandModelController::class, 'update'])->name('brandModels.update')->where('id', '[0-9]+');
             Route::delete('{id}', [CarBrandModelController::class, 'delete'])->name('brandModels.delete')->where('id', '[0-9]+');
         });
-
-        Route::get('list', [CarBrandModelController::class, 'get'])->name('brandModels.list');
     });
 
     Route::group(['prefix' => 'transmissions'], function () {
@@ -118,8 +112,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('{id}', [CarTransmissionController::class, 'update'])->name('transmissions.update')->where('id', '[0-9]+');
             Route::delete('{id}', [CarTransmissionController::class, 'delete'])->name('transmissions.delete')->where('id', '[0-9]+');
         });
-
-        Route::get('list', [CarTransmissionController::class, 'get'])->name('transmissions.list');
     });
 
     Route::group(['prefix' => 'optional'], function () {
@@ -129,8 +121,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('{id}', [CarOptionalController::class, 'update'])->name('optional.update')->where('id', '[0-9]+');
             Route::delete('{id}', [CarOptionalController::class, 'delete'])->name('optional.delete')->where('id', '[0-9]+');
         });
-
-        Route::get('list', [CarOptionalController::class, 'get'])->name('optional.list');
     });
 
     Route::group(['prefix' => 'cars'], function () {
@@ -140,7 +130,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('{id}', [CarController::class, 'getCar'])->name('cars.get')->where('id', '[0-9]+');
         Route::delete('{id}', [CarController::class, 'delete'])->name('cars.delete')->where('id', '[0-9]+');
         Route::post('{id}', [CarController::class, 'edit'])->name('cars.edit')->where('id', '[0-9]+');
-        Route::delete('image/{id}', [CarController::class, 'deleteImage'])->name('cars.deleteImage')->where('id', '[0-9]+');
     });
 
     Route::group(['prefix' => 'motorcycleBrandModel'], function () {
@@ -150,8 +139,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('{id}', [MotorcycleBrandModelController::class, 'update'])->name('motorcycleBrandModel.update')->where('id', '[0-9]+');
             Route::delete('{id}', [MotorcycleBrandModelController::class, 'delete'])->name('motorcycleBrandModel.delete')->where('id', '[0-9]+');
         });
-
-        Route::get('list', [MotorcycleBrandModelController::class, 'get'])->name('motorcycleBrandModel.list');
     });
 
     Route::group(['prefix' => 'motorcycleOptional'], function () {
@@ -161,8 +148,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('{id}', [MotorcycleOptionalController::class, 'update'])->name('motorcycleOptional.update')->where('id', '[0-9]+');
             Route::delete('{id}', [MotorcycleOptionalController::class, 'delete'])->name('motorcycleOptional.delete')->where('id', '[0-9]+');
         });
-
-        Route::get('list', [MotorcycleOptionalController::class, 'get'])->name('motorcycleOptional.list');
     });
 
     Route::group(['prefix' => 'motorcycleTypes'], function () {
@@ -172,8 +157,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('{id}', [MotorcycleTypesController::class, 'update'])->name('motorcycleTypes.update')->where('id', '[0-9]+');
             Route::delete('{id}', [MotorcycleTypesController::class, 'delete'])->name('motorcycleTypes.delete')->where('id', '[0-9]+');
         });
-
-        Route::get('list', [MotorcycleTypesController::class, 'get'])->name('motorcycleTypes.list');
     });
 
     Route::group(['prefix' => 'motorcycle'], function () {
@@ -183,7 +166,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('{id}', [MotorcycleController::class, 'delete'])->name('motorcycle.delete')->where('id', '[0-9]+');
         Route::get('{id}', [MotorcycleController::class, 'getMotorcycle'])->name('motorcycle.get')->where('id', '[0-9]+');
         Route::post('{id}', [MotorcycleController::class, 'edit'])->name('motorcycle.edit')->where('id', '[0-9]+');
-        Route::delete('image/{id}', [MotorcycleController::class, 'deleteImage'])->name('motorcycle.deleteImage')->where('id', '[0-9]+');
     });
 });
 

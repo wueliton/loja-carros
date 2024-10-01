@@ -33,17 +33,6 @@ class CarOptionalController extends Controller
         ]);
     }
 
-    public function get(Request $request)
-    {
-        $optional = CarOptional::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $optional;
-    }
-
     public function create(CarOptionalDataRequest $request): RedirectResponse
     {
         $this->patchOptional($request);
@@ -65,6 +54,17 @@ class CarOptionalController extends Controller
         $fuelType->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $optional = CarOptional::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $optional;
     }
 
     function apiCreate(CarOptionalDataRequest $request)

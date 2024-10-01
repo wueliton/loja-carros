@@ -50,7 +50,7 @@ export const useMotorcycleForm = ({
         if (!data) return;
 
         axios
-          .delete(route(Motorcycle.GET_ROUTE('deleteImage'), { id }))
+          .delete(route('api.motorcycle.images.delete', { id }))
           .then(() =>
             setCurrentFiles((prev) => prev?.filter((img) => img.id !== id)),
           );

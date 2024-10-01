@@ -34,17 +34,6 @@ class BrandController extends Controller
         ]);
     }
 
-    public function get(Request $request)
-    {
-        $brands = Brands::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $brands;
-    }
-
     public function create(BrandDataRequest $request): RedirectResponse
     {
         $this->patchBrand($request);
@@ -66,6 +55,17 @@ class BrandController extends Controller
         $brand->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $brands = Brands::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $brands;
     }
 
     public function apiCreate(BrandDataRequest $request)

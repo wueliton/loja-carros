@@ -33,17 +33,6 @@ class CarBrandModelController extends Controller
         ]);
     }
 
-    public function get(Request $request)
-    {
-        $brandModels = CarBrandModel::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $brandModels;
-    }
-
     public function create(CarBrandModelDataRequest $request): RedirectResponse
     {
         $this->patchModel($request);
@@ -65,6 +54,17 @@ class CarBrandModelController extends Controller
         $brandModel->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $brandModels = CarBrandModel::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $brandModels;
     }
 
     public function apiCreate(CarBrandModelDataRequest $request)

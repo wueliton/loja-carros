@@ -35,17 +35,6 @@ class CarTransmissionController extends Controller
         ]);
     }
 
-    public function get(Request $request)
-    {
-        $transmissions = CarTransmission::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $transmissions;
-    }
-
     public function create(CarTransmissionDataRequest $request): RedirectResponse
     {
         $this->patchTransmission($request);
@@ -67,6 +56,17 @@ class CarTransmissionController extends Controller
         $transmission->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $transmissions = CarTransmission::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $transmissions;
     }
 
     public function apiCreate(Request $request)

@@ -33,17 +33,6 @@ class MotorcycleBrandModelController extends Controller
         ]);
     }
 
-    public function get(Request $request)
-    {
-        $brandModels = MotorcycleBrandModel::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $brandModels;
-    }
-
     public function create(MotorcycleBrandModelDataRequest $request): RedirectResponse
     {
         $this->patchModel($request);
@@ -65,6 +54,17 @@ class MotorcycleBrandModelController extends Controller
         $brandModel->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $brandModels = MotorcycleBrandModel::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $brandModels;
     }
 
     public function apiCreate(MotorcycleBrandModelDataRequest $request)

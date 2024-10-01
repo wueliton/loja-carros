@@ -33,17 +33,6 @@ class MotorcycleOptionalController extends Controller
         ]);
     }
 
-    public function get(Request $request)
-    {
-        $optional = MotorcycleOptional::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $optional;
-    }
-
     public function create(MotorcycleOptionalDataRequest $request): RedirectResponse
     {
         $this->patchOptional($request);
@@ -65,6 +54,17 @@ class MotorcycleOptionalController extends Controller
         $fuelType->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $optional = MotorcycleOptional::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $optional;
     }
 
     public function apiCreate(Request $request)

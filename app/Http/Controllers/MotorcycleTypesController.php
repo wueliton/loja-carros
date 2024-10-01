@@ -33,17 +33,6 @@ class MotorcycleTypesController extends Controller
         ]);
     }
 
-    public function get(Request $request)
-    {
-        $motorcycleTypes = MotorcycleTypes::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $motorcycleTypes;
-    }
-
     public function create(MotorcycleTypeDataRequest $request): RedirectResponse
     {
         $this->patchType($request);
@@ -65,6 +54,17 @@ class MotorcycleTypesController extends Controller
         $motorcycleTypes->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $motorcycleTypes = MotorcycleTypes::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $motorcycleTypes;
     }
 
     public function apiCreate(MotorcycleTypeDataRequest $request)
