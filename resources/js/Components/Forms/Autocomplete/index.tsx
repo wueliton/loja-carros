@@ -39,6 +39,13 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
     options,
     focused,
   });
+  const canCreate =
+    !options.length &&
+    onCreate &&
+    search &&
+    !selected
+      .map((option) => option[propertyToDisplay])
+      .some((option) => option === search);
 
   const fetchResult = async (params: Filter<T>) => {
     const { data } = await axios.get<T[]>(url, {
@@ -263,7 +270,7 @@ export const Autocomplete = <T, isMulti extends boolean = boolean>({
             {!options.length && !onCreate && (
               <div className={styles.empty}>Nenhuma opção disponível</div>
             )}
-            {!options.length && onCreate && search && (
+            {canCreate && (
               <div
                 key={0}
                 className={`${styles.option} ${focused === 0 ? styles['active-option'] : ''}`}

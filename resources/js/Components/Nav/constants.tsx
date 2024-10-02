@@ -113,7 +113,7 @@ export const RegularMenu: (MenuItem | MenuCategory)[] = [
   },
   {
     title: 'Loja',
-    url: AdminRouter.EDIT_STORE,
+    url: 'store.edit.view',
     icon: <StoreIcon />,
   },
   {

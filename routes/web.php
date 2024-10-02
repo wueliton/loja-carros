@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MotorcycleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\UserStoreController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,6 +15,11 @@ Route::get('/', function () {
 Route::group(['middlware' => ['auth']], function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('', [DashboardController::class, 'dashboard'])->name('dashboard');
+    });
+
+    Route::group(['prefix' => 'store', 'as' => 'store.'], function () {
+        Route::get('', [UserStoreController::class, 'getView'])->name('edit.view');
+        Route::post('', [UserStoreController::class, 'suggestChanges'])->name('suggest-change');
     });
 
     Route::group(['prefix' => 'motorcycle', 'as' => 'motorcycle.'], function () {

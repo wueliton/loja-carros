@@ -1,5 +1,5 @@
 import { Card } from '@/Components/Card';
-import { AlertIcon } from '@/Components/Icons/Alert';
+import { InfoBlockMessage } from '@/Components/InfoBlockMessage';
 import { Timeline } from '@/Components/Timeline';
 import { useUser } from '@/Context/User';
 import { CustomLog, Logs } from '@/models/Logs';
@@ -44,18 +44,16 @@ export default function Dashboard({ auth, logs }: PageProps<{ logs: Logs[] }>) {
           </div>
         </Card>
       </div> */}
-
-        {!stores?.length && (
-          <Card className="!bg-yellow-200">
-            <h2 className="text-xl font-bold mb-4">
-              <AlertIcon />
-              Nenhuma loja cadastrada
-            </h2>
-            <p>
-              Você não possui acesso a nenhuma loja cadastrada, contate o
-              administrador.
-            </p>
-          </Card>
+        {stores?.length ? null : (
+          <InfoBlockMessage variant="important">
+            <div>
+              <h2 className="text-lg font-bold">Nenhuma loja cadastrada</h2>
+              <p>
+                Você não possui acesso a nenhuma loja cadastrada, contate o
+                administrador.
+              </p>
+            </div>
+          </InfoBlockMessage>
         )}
 
         <Card>

@@ -68,7 +68,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
 
     useEffect(() => {
       setValue(String(value ?? ''));
-    }, [value]);
+    }, []);
 
     useEffect(() => {
       unmaskedValueChange?.(unmaskedValue);

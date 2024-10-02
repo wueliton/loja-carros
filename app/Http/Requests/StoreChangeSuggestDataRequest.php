@@ -4,16 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePostRequest extends FormRequest
+class StoreChangeSuggestDataRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return $this->user()->hasRole(['admin', 'super']);
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,8 +19,6 @@ class StorePostRequest extends FormRequest
             'email' => 'required|email',
             'phone' => 'required|numeric|digits_between:10,11',
             'whatsapp' => 'required|numeric|digits_between:10,11',
-            'users' => 'required|array',
-            'users.*' => 'nullable|required|numeric|exists:users,id',
             'logo_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:1024'
         ];
     }
