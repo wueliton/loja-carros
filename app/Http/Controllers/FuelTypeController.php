@@ -28,7 +28,7 @@ class FuelTypeController extends Controller
             }
             return $query;
         })->paginate(10);
-        return Inertia::render('FuelTypes/List', [
+        return Inertia::render('Admin/FuelTypes/List', [
             'fuelTypes' => $fuelTypes
         ]);
     }

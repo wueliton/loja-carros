@@ -3,31 +3,32 @@ import { DialogFooter } from '@/Components/Dialog/Footer';
 import { DialogHeader } from '@/Components/Dialog/Header';
 import { Input } from '@/Components/Forms/Input';
 import { DialogProps } from '@/Context/Dialog';
-import { MotorcycleTypes } from '@/models/MotorcycleTypes';
+import { AdminRoutes } from '@/constants';
+import { Transmission } from '@/models/Transmission';
 import { useForm } from '@inertiajs/react';
 import { FC, FormEvent } from 'react';
 
-export const PutMotorcycleTypeModal: FC<
-  DialogProps<{ type?: MotorcycleTypes }>
-> = ({ close, type }) => {
-  const { data, errors, put, post, setData } = useForm<{
-    id?: number;
+export const PutTransmissionModal: FC<
+  DialogProps<{ transmission?: Transmission }>
+> = ({ close, transmission }) => {
+  const { setData, data, errors, post, put } = useForm<{
     name?: string;
+    id?: number;
   }>({
-    id: type?.id,
-    name: type?.name,
+    name: transmission?.name,
+    id: transmission?.id,
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (type) {
-      put(route(MotorcycleTypes.GET_ROUTE('update'), { id: data.id }), {
+    if (transmission) {
+      put(route(AdminRoutes.CAR_TRANSMISSIONS_EDIT, { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route(MotorcycleTypes.GET_ROUTE('create')), {
+    post(route(AdminRoutes.CAR_TRANSMISSIONS_CREATE), {
       onSuccess: () => close(true),
     });
   };
@@ -35,10 +36,10 @@ export const PutMotorcycleTypeModal: FC<
   return (
     <>
       <DialogHeader>
-        <h2>{type ? 'Editar' : 'Novo'} Tipo</h2>
+        <h2>{transmission ? 'Editar' : 'Novo'} Tipo de Câmbio</h2>
       </DialogHeader>
       <div className="text-left py-4">
-        <form id="create-type-form" onSubmit={handleSubmit}>
+        <form id="create-color-form" onSubmit={handleSubmit}>
           <Input
             name="name"
             label="Nome"
@@ -53,7 +54,7 @@ export const PutMotorcycleTypeModal: FC<
         <Button variant="basic" onClick={() => close()}>
           Cancelar
         </Button>
-        <Button color="primary" type="submit" form="create-type-form">
+        <Button color="primary" type="submit" form="create-color-form">
           Salvar
         </Button>
       </DialogFooter>

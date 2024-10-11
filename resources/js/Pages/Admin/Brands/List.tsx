@@ -6,6 +6,7 @@ import { THeadProps, Table } from '@/Components/Table';
 import { ToggleTab, ToggleTabs } from '@/Components/ToggleTabs';
 import { useDialog } from '@/Context/Dialog';
 import { useUser } from '@/Context/User';
+import { AdminRoutes } from '@/constants';
 import { Brand } from '@/models/Brand';
 import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
@@ -43,7 +44,7 @@ export default function ListFuelTypesPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route(Brand.GET_ROUTE('delete'), { id: brand.id }), {
+        router.delete(route(AdminRoutes.BRANDS_DELETE, { id: brand.id }), {
           preserveScroll: true,
           onSuccess: () => {
             router.reload();

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\StoreDataRequest;
 use App\Models\Store;
 use App\Services\FilterService;
 use App\Services\ImageUploadService;
@@ -27,14 +27,14 @@ class AdminStoreController extends Controller
         ]);
     }
 
-    public function update(StorePostRequest $request)
+    public function update(StoreDataRequest $request)
     {
         $request->validated();
         $lastStoreId = $request->user()->lastStoreId();
 
         $store = Store::findOrFail($lastStoreId);
         $this->patchStore($request, $store);
-        return Redirect::route('stores');
+        return Redirect::refresh();
     }
 
     protected function patchStore(Request $request, Store $store = null)

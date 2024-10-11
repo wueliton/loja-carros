@@ -28,7 +28,7 @@ class MotorcycleTypesController extends Controller
             }
             return $query;
         })->paginate(10);
-        return Inertia::render('MotorcycleTypes/List', [
+        return Inertia::render('Admin/Moto/Types/List', [
             'types' => $motorcycleTypes
         ]);
     }

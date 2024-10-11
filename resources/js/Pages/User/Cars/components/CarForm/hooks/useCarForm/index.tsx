@@ -2,6 +2,7 @@ import { TrashIcon } from '@/Components/Icons/Trash';
 import { useDialog } from '@/Context/Dialog';
 import { useCarService } from '@/Hooks/useCarService';
 import { useCommonService } from '@/Hooks/useCommonService';
+import { APIRoutes } from '@/constants';
 import { Car } from '@/models/Car';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
@@ -48,7 +49,7 @@ export const useCarForm = ({
         if (!data) return;
 
         axios
-          .delete(route('api.cars.images.delete', { id }))
+          .delete(route(APIRoutes.CAR_IMAGE_DELETE, { id }))
           .then(() =>
             setCurrentFiles((prev) => prev?.filter((img) => img.id !== id)),
           );

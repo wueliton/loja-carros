@@ -28,7 +28,7 @@ class MotorcycleBrandModelController extends Controller
             }
             return $query;
         })->latest()->paginate(10);
-        return Inertia::render('MotorcycleBrandModels/List', [
+        return Inertia::render('Admin/Moto/Models/List', [
             'models' => $models
         ]);
     }

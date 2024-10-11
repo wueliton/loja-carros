@@ -30,7 +30,7 @@ class CarTransmissionController extends Controller
             return $query;
         })->paginate(10);
 
-        return Inertia::render('CarTransmissions/List', [
+        return Inertia::render('Admin/Car/Transmissions/List', [
             'transmissions' => $transmissions
         ]);
     }

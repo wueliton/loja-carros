@@ -6,35 +6,41 @@ import { THeadProps, Table } from '@/Components/Table';
 import { ToggleTab, ToggleTabs } from '@/Components/ToggleTabs';
 import { useDialog } from '@/Context/Dialog';
 import { useUser } from '@/Context/User';
-import { MotorcycleTypes } from '@/models/MotorcycleTypes';
+import { AdminRoutes } from '@/constants';
+import { CarBrandModel } from '@/models/BrandModels';
 import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
-import { PutMotorcycleTypeModal } from './PutMotorcycleTypesModal';
+import { PutBrandModelModal } from './PutCarBrandModelModal';
 
-const motorcycleTypesHeader: THeadProps<MotorcycleTypes>[] = [
+const brandModelsHeader: THeadProps<CarBrandModel>[] = [
   {
     key: 'name',
-    title: 'Tipo',
+    title: 'Modelo',
+  },
+  {
+    key: 'brand',
+    title: 'Marca',
+    render: (model) => <>{model.brand?.name}</>,
   },
 ];
 
-export default function MotorcycleTypesPage({
-  types,
+export default function ListFuelTypesPage({
+  models,
   auth,
-}: PageProps<{ types: Paginated<MotorcycleTypes> }>) {
+}: PageProps<{ models: Paginated<CarBrandModel> }>) {
   const { openDialog } = useDialog();
   const { hasRole } = useUser();
 
-  const handlePutType = (optional?: MotorcycleTypes) =>
+  const handlePutBrandModel = (brandModel?: CarBrandModel) =>
     openDialog({
-      component: PutMotorcycleTypeModal,
+      component: PutBrandModelModal,
       props: {
-        optional,
+        brandModel,
       },
     });
 
-  const handleDeleteType = (optional: MotorcycleTypes) =>
+  const handleDeleteBrandModel = (brandModel: CarBrandModel) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -44,11 +50,10 @@ export default function MotorcycleTypesPage({
       onClose: (data) => {
         if (!data) return;
         router.delete(
-          route(MotorcycleTypes.GET_ROUTE('delete'), {
-            id: optional.id,
-          }),
+          route(AdminRoutes.CAR_MODELS_DELETE, { id: brandModel.id }),
           {
             preserveScroll: true,
+            onSuccess: () => {},
           },
         );
       },
@@ -56,21 +61,21 @@ export default function MotorcycleTypesPage({
 
   return (
     <>
-      <Head title="Tipos">
-        <Button onClick={() => handlePutType()}>Adicionar</Button>
+      <Head title="Modelos">
+        <Button onClick={() => handlePutBrandModel()}>Adicionar</Button>
       </Head>
 
       <Filter searchProperties={['name']}>
         <ToggleTabs fieldName="showAll">
-          <ToggleTab>Todos os tipos</ToggleTab>
-          <ToggleTab value={false}>Meus tipos</ToggleTab>
+          <ToggleTab>Todos os modelos</ToggleTab>
+          <ToggleTab value={false}>Meus modelos</ToggleTab>
         </ToggleTabs>
       </Filter>
       <Table
-        data={types}
-        headers={motorcycleTypesHeader}
-        onEdit={(optional) => handlePutType(optional)}
-        onDelete={handleDeleteType}
+        data={models}
+        headers={brandModelsHeader}
+        onEdit={(brandModel) => handlePutBrandModel(brandModel)}
+        onDelete={handleDeleteBrandModel}
         canDelete={(item) =>
           hasRole('admin') || item.created_by === auth.user.id
         }

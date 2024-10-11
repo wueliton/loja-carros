@@ -29,7 +29,7 @@ class ColorController extends Controller
             return $query;
         })->paginate(10);
 
-        return Inertia::render('Colors/List', [
+        return Inertia::render('Admin/Colors/List', [
             'colors' => $colors,
             'showAll' => $request->showAll
         ]);

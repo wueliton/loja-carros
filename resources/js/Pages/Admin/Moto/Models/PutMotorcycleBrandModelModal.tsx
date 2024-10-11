@@ -1,33 +1,37 @@
 import { Button } from '@/Components/Button';
 import { DialogFooter } from '@/Components/Dialog/Footer';
 import { DialogHeader } from '@/Components/Dialog/Header';
+import { Autocomplete } from '@/Components/Forms/Autocomplete';
 import { Input } from '@/Components/Forms/Input';
 import { DialogProps } from '@/Context/Dialog';
-import { Transmission } from '@/models/Transmission';
+import { APIRoutes, AdminRoutes } from '@/constants';
+import { MotorcycleBrandModels } from '@/models/MotorcycleBrandModels';
 import { useForm } from '@inertiajs/react';
 import { FC, FormEvent } from 'react';
 
-export const PutTransmissionModal: FC<
-  DialogProps<{ transmission?: Transmission }>
-> = ({ close, transmission }) => {
+export const PutMotorcycleBrandModelModal: FC<
+  DialogProps<{ brandModel?: MotorcycleBrandModels }>
+> = ({ close, brandModel }) => {
   const { setData, data, errors, post, put } = useForm<{
     name?: string;
+    brand?: number;
     id?: number;
   }>({
-    name: transmission?.name,
-    id: transmission?.id,
+    name: brandModel?.name,
+    brand: brandModel?.brand?.id,
+    id: brandModel?.id,
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (transmission) {
-      put(route(Transmission.GET_ROUTE('update'), { id: data.id }), {
+    if (brandModel) {
+      put(route(AdminRoutes.MOTO_MODELS_EDIT, { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route(Transmission.GET_ROUTE('create')), {
+    post(route(AdminRoutes.MOTO_MODELS_CREATE), {
       onSuccess: () => close(true),
     });
   };
@@ -35,7 +39,7 @@ export const PutTransmissionModal: FC<
   return (
     <>
       <DialogHeader>
-        <h2>{transmission ? 'Editar' : 'Novo'} Tipo de Câmbio</h2>
+        <h2>{brandModel ? 'Editar' : 'Novo'} Modelo</h2>
       </DialogHeader>
       <div className="text-left py-4">
         <form id="create-color-form" onSubmit={handleSubmit}>
@@ -46,6 +50,17 @@ export const PutTransmissionModal: FC<
             onChange={(e) => setData('name', e.target.value)}
             error={errors.name}
             autoFocus
+          />
+          <Autocomplete
+            error={errors.brand}
+            label="Marca"
+            propertyToDisplay="name"
+            propertyValue="id"
+            url={route(APIRoutes.BRAND_LIST)}
+            searchProperties={['name']}
+            name="brands"
+            value={data.brand}
+            onChange={(e) => setData('brand', e)}
           />
         </form>
       </div>

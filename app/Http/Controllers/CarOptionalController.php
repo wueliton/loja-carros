@@ -28,7 +28,7 @@ class CarOptionalController extends Controller
             }
             return $query;
         })->paginate(10);
-        return Inertia::render('CarOptional/List', [
+        return Inertia::render('Admin/Car/Optionals/List', [
             'optional' => $optional
         ]);
     }

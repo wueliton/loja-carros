@@ -6,6 +6,7 @@ import { THeadProps, Table } from '@/Components/Table';
 import { ToggleTab, ToggleTabs } from '@/Components/ToggleTabs';
 import { useDialog } from '@/Context/Dialog';
 import { useUser } from '@/Context/User';
+import { AdminRoutes } from '@/constants';
 import { Color } from '@/models/Color';
 import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
@@ -43,7 +44,7 @@ export default function ListColorsPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route(Color.GET_ROUTE('delete'), { id: color.id }), {
+        router.delete(route(AdminRoutes.COLORS_DELETE, { id: color.id }), {
           preserveScroll: true,
           onSuccess: () => {},
         });

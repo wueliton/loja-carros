@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Api\ApiCarController;
 use App\Http\Controllers\Api\ApiMotorcycleController;
 use App\Http\Controllers\Api\ApiQuickSearchParams;
@@ -20,23 +21,6 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
-    Route::group(['prefix' => '/motorcycles'], function () {
-        Route::get('/brand-models', [ApiMotorcycleController::class, 'getBrandModels']);
-        Route::get('', [ApiMotorcycleController::class, 'find']);
-        Route::get('{slug}', [ApiMotorcycleController::class, 'getBySlug']);
-    });
-
-    Route::group(['prefix' => '/search'], function () {
-        Route::get('/quick/options', [ApiQuickSearchParams::class, 'quickSearchOptions']);
-        Route::get('/advanced/options', [ApiQuickSearchParams::class, 'advancedSearchOptions']);
-    });
-
-    Route::group(['prefix' => 'stores'], function () {
-        Route::get('{slug}', [ApiStoresController::class, 'getBySlug']);
-        Route::get('/ads/{id}', [ApiStoresController::class, 'getAds']);
-        Route::get('', [ApiStoresController::class, 'find']);
-    });
-
     /* AUTHENTICATED ROUTES */
     Route::group(['middleware' => ['auth']], function () {
         Route::group(['prefix' => 'brand', 'as' => 'brand.'], function () {
@@ -44,7 +28,7 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
             Route::get('', [BrandController::class, 'apiGet'])->name('list');
         });
 
-        Route::group(['prefix' => 'color', 'as' => 'color.'], function () {
+        Route::group(['prefix' => 'colors', 'as' => 'colors.'], function () {
             Route::post('', [ColorController::class, 'apiCreate'])->name('create');
             Route::get('', [ColorController::class, 'apiGet'])->name('list');
         });
@@ -95,6 +79,13 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
                 Route::delete('{id}', [MotorcycleController::class, 'apiDeleteImage'])->name('delete')->where('id', '[0-9]+');
             });
         });
+
+        /* AUTHENTICATED ADMIN */
+        Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admin']], function () {
+            Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+                Route::get('', [AdminUserController::class, 'apiGet'])->name('list');
+            });
+        });
     });
 
     /* PUBLIC ROUTES */
@@ -104,5 +95,22 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
         Route::get('/brand-models', [ApiCarController::class, 'getBrandModels']);
         Route::get('{slug}', [ApiCarController::class, 'getBySlug']);
         Route::get('', [ApiCarController::class, 'find']);
+    });
+
+    Route::group(['prefix' => '/motorcycles'], function () {
+        Route::get('/brand-models', [ApiMotorcycleController::class, 'getBrandModels']);
+        Route::get('', [ApiMotorcycleController::class, 'find']);
+        Route::get('{slug}', [ApiMotorcycleController::class, 'getBySlug']);
+    });
+
+    Route::group(['prefix' => '/search'], function () {
+        Route::get('/quick/options', [ApiQuickSearchParams::class, 'quickSearchOptions']);
+        Route::get('/advanced/options', [ApiQuickSearchParams::class, 'advancedSearchOptions']);
+    });
+
+    Route::group(['prefix' => 'stores'], function () {
+        Route::get('{slug}', [ApiStoresController::class, 'getBySlug']);
+        Route::get('/ads/{id}', [ApiStoresController::class, 'getAds']);
+        Route::get('', [ApiStoresController::class, 'find']);
     });
 });

@@ -1,7 +1,5 @@
 import { AdminRouter } from '@/Routes/app.router';
-import { MotorcycleBrandModels } from '@/models/MotorcycleBrandModels';
-import { MotorcycleOptional } from '@/models/MotorcycleOptional';
-import { MotorcycleTypes } from '@/models/MotorcycleTypes';
+import { AdminRoutes, UserRoutes } from '@/constants';
 import { BisIcon } from '../Icons/Bis';
 import { CambioIcon } from '../Icons/Cambio';
 import { CapaceteIcon } from '../Icons/Capacete';
@@ -18,68 +16,68 @@ import { MenuCategory, MenuItem } from './index';
 
 export const CommonMenu: (MenuItem | MenuCategory)[] = [
   {
+    url: UserRoutes.CAR_LIST,
+    icon: <CarIcon />,
+    title: 'Carros',
+  },
+  {
+    url: UserRoutes.MOTO_LIST,
+    icon: <MotoqueiroIcon />,
+    title: 'Motos',
+  },
+  {
     category: 'Config. Gerais',
   },
   {
     title: 'Marcas',
-    url: 'brands',
+    url: AdminRoutes.BRANDS_LIST,
     icon: <CarIcon />,
   },
   {
     title: 'Tipos de Combustível',
-    url: 'fuelTypes',
+    url: AdminRoutes.FUEL_TYPES_LIST,
     icon: <FuelPumpIcon />,
   },
   {
     title: 'Cores',
-    url: 'colors',
+    url: AdminRoutes.COLORS_LIST,
     icon: <ColorsIcon />,
   },
   {
     category: 'Carros',
   },
   {
-    url: 'brandModels',
+    url: AdminRoutes.CAR_MODELS_LIST,
     icon: <CarIcon />,
     title: 'Modelos',
   },
   {
-    url: 'transmissions',
+    url: AdminRoutes.CAR_TRANSMISSIONS_LIST,
     icon: <CambioIcon />,
     title: 'Tipos de Câmbio',
   },
   {
-    url: 'optional',
+    url: AdminRoutes.CAR_OPTIONALS_LIST,
     icon: <CarFrontIcon />,
     title: 'Opcionais',
-  },
-  {
-    url: 'cars',
-    icon: <CarIcon />,
-    title: 'Carros',
   },
   {
     category: 'Motos',
   },
   {
-    url: MotorcycleBrandModels.GET_ROUTE(),
+    url: AdminRoutes.MOTO_MODELS_LIST,
     icon: <MotoIcon />,
     title: 'Modelos',
   },
   {
-    url: MotorcycleOptional.GET_ROUTE(),
+    url: AdminRoutes.MOTO_OPTIONALS_LIST,
     icon: <CapaceteIcon />,
     title: 'Opcionais',
   },
   {
-    url: MotorcycleTypes.GET_ROUTE(),
+    url: AdminRoutes.MOTO_TYPES_LIST,
     icon: <BisIcon />,
     title: 'Tipos',
-  },
-  {
-    url: 'motorcycle',
-    icon: <MotoqueiroIcon />,
-    title: 'Motos',
   },
 ];
 
@@ -113,14 +111,14 @@ export const RegularMenu: (MenuItem | MenuCategory)[] = [
   },
   {
     title: 'Loja',
-    url: 'store.edit.view',
+    url: UserRoutes.STORE_VIEW,
     icon: <StoreIcon />,
   },
   {
     category: 'Carros',
   },
   {
-    url: 'cars.list.view',
+    url: UserRoutes.CAR_LIST,
     icon: <CarIcon />,
     title: 'Carros',
   },
@@ -128,7 +126,7 @@ export const RegularMenu: (MenuItem | MenuCategory)[] = [
     category: 'Motos',
   },
   {
-    url: 'motorcycle.list.view',
+    url: UserRoutes.MOTO_LIST,
     icon: <MotoqueiroIcon />,
     title: 'Motos',
   },

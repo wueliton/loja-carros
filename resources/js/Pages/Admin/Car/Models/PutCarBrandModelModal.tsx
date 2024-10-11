@@ -4,7 +4,7 @@ import { DialogHeader } from '@/Components/Dialog/Header';
 import { Autocomplete } from '@/Components/Forms/Autocomplete';
 import { Input } from '@/Components/Forms/Input';
 import { DialogProps } from '@/Context/Dialog';
-import { Brand } from '@/models/Brand';
+import { APIRoutes, AdminRoutes } from '@/constants';
 import { CarBrandModel } from '@/models/BrandModels';
 import { useForm } from '@inertiajs/react';
 import { FC, FormEvent } from 'react';
@@ -25,13 +25,13 @@ export const PutBrandModelModal: FC<
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (brandModel) {
-      put(route(CarBrandModel.GET_ROUTE('update'), { id: data.id }), {
+      put(route(AdminRoutes.CAR_MODELS_EDIT, { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route(CarBrandModel.GET_ROUTE('create')), {
+    post(route(AdminRoutes.CAR_MODELS_CREATE), {
       onSuccess: () => close(true),
     });
   };
@@ -56,7 +56,7 @@ export const PutBrandModelModal: FC<
             label="Marca"
             propertyToDisplay="name"
             propertyValue="id"
-            url={route(Brand.GET_ROUTE('list'))}
+            url={route(APIRoutes.BRAND_LIST)}
             searchProperties={['name']}
             name="brands"
             value={data.brand}

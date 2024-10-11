@@ -3,6 +3,7 @@ import { DialogFooter } from '@/Components/Dialog/Footer';
 import { DialogHeader } from '@/Components/Dialog/Header';
 import { Input } from '@/Components/Forms/Input';
 import { DialogProps } from '@/Context/Dialog';
+import { AdminRoutes } from '@/constants';
 import { MotorcycleOptional } from '@/models/MotorcycleOptional';
 import { useForm } from '@inertiajs/react';
 import { FC, FormEvent } from 'react';
@@ -21,13 +22,13 @@ export const PutMotorcycleOptionalModal: FC<
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (optional) {
-      put(route(MotorcycleOptional.GET_ROUTE('update'), { id: data.id }), {
+      put(route(AdminRoutes.MOTO_OPTIONALS_EDIT, { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route(MotorcycleOptional.GET_ROUTE('create')), {
+    post(route(AdminRoutes.MOTO_OPTIONALS_CREATE), {
       onSuccess: () => close(true),
     });
   };

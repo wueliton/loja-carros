@@ -5,6 +5,7 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
+import { UserRoutes } from '@/constants';
 import { Motorcycle } from '@/models/Motorcycle';
 import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
@@ -64,7 +65,7 @@ export default function MotorcyclePage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route('motorcycle.delete', { id: motorcycle.id }), {
+        router.delete(route(UserRoutes.MOTO_DELETE, { id: motorcycle.id }), {
           preserveScroll: true,
         });
       },
@@ -75,7 +76,7 @@ export default function MotorcyclePage({
       <Head title="Motos">
         <Button
           onClick={() =>
-            router.visit(route('motorcycle.create.view'), {
+            router.visit(route(UserRoutes.MOTO_CREATE_VIEW), {
               preserveScroll: true,
             })
           }
@@ -90,7 +91,7 @@ export default function MotorcyclePage({
         headers={motorcycleHeader}
         onDelete={handleDeleteMotorcycle}
         onEdit={(item) =>
-          router.visit(route('motorcycle.edit.view', { id: item.id }), {
+          router.visit(route(UserRoutes.MOTO_EDIT_VIEW, { id: item.id }), {
             preserveScroll: true,
           })
         }

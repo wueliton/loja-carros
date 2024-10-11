@@ -6,35 +6,36 @@ import { THeadProps, Table } from '@/Components/Table';
 import { ToggleTab, ToggleTabs } from '@/Components/ToggleTabs';
 import { useDialog } from '@/Context/Dialog';
 import { useUser } from '@/Context/User';
+import { AdminRoutes } from '@/constants';
+import { MotorcycleTypes } from '@/models/MotorcycleTypes';
 import { Paginated } from '@/models/Paginated';
-import { Transmission } from '@/models/Transmission';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
-import { PutTransmissionModal } from './PutCarTransmissionModal';
+import { PutMotorcycleTypeModal } from './PutMotorcycleTypesModal';
 
-const TransmissionsHeader: THeadProps<Transmission>[] = [
+const motorcycleTypesHeader: THeadProps<MotorcycleTypes>[] = [
   {
     key: 'name',
-    title: 'Tipo de Câmbio',
+    title: 'Tipo',
   },
 ];
 
-export default function ListTransmissionsPage({
-  transmissions,
+export default function MotorcycleTypesPage({
+  types,
   auth,
-}: PageProps<{ transmissions: Paginated<Transmission> }>) {
+}: PageProps<{ types: Paginated<MotorcycleTypes> }>) {
   const { openDialog } = useDialog();
   const { hasRole } = useUser();
 
-  const handleAddFuelType = (transmission?: Transmission) =>
+  const handlePutType = (optional?: MotorcycleTypes) =>
     openDialog({
-      component: PutTransmissionModal,
+      component: PutMotorcycleTypeModal,
       props: {
-        transmission,
+        optional,
       },
     });
 
-  const handleDeleteFuelType = (transmission: Transmission) =>
+  const handleDeleteType = (optional: MotorcycleTypes) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -44,10 +45,11 @@ export default function ListTransmissionsPage({
       onClose: (data) => {
         if (!data) return;
         router.delete(
-          route(Transmission.GET_ROUTE('delete'), { id: transmission.id }),
+          route(AdminRoutes.MOTO_TYPES_DELETE, {
+            id: optional.id,
+          }),
           {
             preserveScroll: true,
-            onSuccess: () => {},
           },
         );
       },
@@ -55,8 +57,8 @@ export default function ListTransmissionsPage({
 
   return (
     <>
-      <Head title="Tipos de Câmbios">
-        <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
+      <Head title="Tipos">
+        <Button onClick={() => handlePutType()}>Adicionar</Button>
       </Head>
 
       <Filter searchProperties={['name']}>
@@ -66,10 +68,10 @@ export default function ListTransmissionsPage({
         </ToggleTabs>
       </Filter>
       <Table
-        data={transmissions}
-        headers={TransmissionsHeader}
-        onEdit={(color) => handleAddFuelType(color)}
-        onDelete={handleDeleteFuelType}
+        data={types}
+        headers={motorcycleTypesHeader}
+        onEdit={(optional) => handlePutType(optional)}
+        onDelete={handleDeleteType}
         canDelete={(item) =>
           hasRole('admin') || item.created_by === auth.user.id
         }

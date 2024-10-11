@@ -3,6 +3,7 @@ import { Autocomplete } from '@/Components/Forms/Autocomplete';
 import { Editor } from '@/Components/Forms/Editor';
 import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
+import { APIRoutes } from '@/constants';
 import { FC } from 'react';
 import { useMotorcycleForm } from './hooks/useMotorcycleForm';
 import { MotorcycleFormProps } from './types';
@@ -42,7 +43,7 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
         label="Marca"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('api.brand.list')}
+        url={route(APIRoutes.BRAND_LIST)}
         searchProperties={['name']}
         value={data.brand}
         error={errors.brand}
@@ -61,7 +62,7 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
         label="Modelo"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('api.motorcycle.model.list')}
+        url={route(APIRoutes.MOTO_MODEL_LIST)}
         searchProperties={['name']}
         name="models"
         disabled={!data.brand}
@@ -82,7 +83,7 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
         label="Tipo"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('api.motorcycle.types.list')}
+        url={route(APIRoutes.MOTO_TYPES_LIST)}
         searchProperties={['name']}
         name="type"
         onChange={(e) => setData('type', e as number)}
@@ -159,7 +160,7 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
         label="Cor"
         propertyToDisplay="color"
         propertyValue="id"
-        url={route('api.color.list')}
+        url={route(APIRoutes.COLOR_LIST)}
         searchProperties={['color']}
         value={data.color}
         onChange={(e) => setData('color', e as number)}
@@ -193,7 +194,7 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
         label="Opcionais"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('api.motorcycle.optionals.list')}
+        url={route(APIRoutes.MOTO_OPTIONALS_LIST)}
         searchProperties={['name']}
         value={data.optionals}
         onChange={(e) => setData('optionals', e as number[])}

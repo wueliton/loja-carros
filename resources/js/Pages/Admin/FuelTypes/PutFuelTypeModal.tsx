@@ -3,6 +3,7 @@ import { DialogFooter } from '@/Components/Dialog/Footer';
 import { DialogHeader } from '@/Components/Dialog/Header';
 import { Input } from '@/Components/Forms/Input';
 import { DialogProps } from '@/Context/Dialog';
+import { AdminRoutes } from '@/constants';
 import { FuelType } from '@/models/FuelType';
 import { useForm } from '@inertiajs/react';
 import { FC, FormEvent } from 'react';
@@ -22,13 +23,13 @@ export const PutFuelTypeModal: FC<DialogProps<{ fuelType?: FuelType }>> = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (fuelType) {
-      put(route(FuelType.GET_ROUTE('update'), { id: data.id }), {
+      put(route(AdminRoutes.FUEL_TYPES_EDIT, { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route(FuelType.GET_ROUTE('create')), {
+    post(route(AdminRoutes.FUEL_TYPES_CREATE), {
       onSuccess: () => close(true),
     });
   };

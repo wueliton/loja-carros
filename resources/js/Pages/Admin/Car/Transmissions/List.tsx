@@ -6,40 +6,36 @@ import { THeadProps, Table } from '@/Components/Table';
 import { ToggleTab, ToggleTabs } from '@/Components/ToggleTabs';
 import { useDialog } from '@/Context/Dialog';
 import { useUser } from '@/Context/User';
-import { CarBrandModel } from '@/models/BrandModels';
+import { AdminRoutes } from '@/constants';
 import { Paginated } from '@/models/Paginated';
+import { Transmission } from '@/models/Transmission';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
-import { PutBrandModelModal } from './PutCarBrandModelModal';
+import { PutTransmissionModal } from './PutCarTransmissionModal';
 
-const brandModelsHeader: THeadProps<CarBrandModel>[] = [
+const TransmissionsHeader: THeadProps<Transmission>[] = [
   {
     key: 'name',
-    title: 'Modelo',
-  },
-  {
-    key: 'brand',
-    title: 'Marca',
-    render: (model) => <>{model.brand?.name}</>,
+    title: 'Tipo de Câmbio',
   },
 ];
 
-export default function ListFuelTypesPage({
-  models,
+export default function ListTransmissionsPage({
+  transmissions,
   auth,
-}: PageProps<{ models: Paginated<CarBrandModel> }>) {
+}: PageProps<{ transmissions: Paginated<Transmission> }>) {
   const { openDialog } = useDialog();
   const { hasRole } = useUser();
 
-  const handlePutBrandModel = (brandModel?: CarBrandModel) =>
+  const handleAddFuelType = (transmission?: Transmission) =>
     openDialog({
-      component: PutBrandModelModal,
+      component: PutTransmissionModal,
       props: {
-        brandModel,
+        transmission,
       },
     });
 
-  const handleDeleteBrandModel = (brandModel: CarBrandModel) =>
+  const handleDeleteFuelType = (transmission: Transmission) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -49,7 +45,7 @@ export default function ListFuelTypesPage({
       onClose: (data) => {
         if (!data) return;
         router.delete(
-          route(CarBrandModel.GET_ROUTE('delete'), { id: brandModel.id }),
+          route(AdminRoutes.CAR_TRANSMISSIONS_DELETE, { id: transmission.id }),
           {
             preserveScroll: true,
             onSuccess: () => {},
@@ -60,21 +56,21 @@ export default function ListFuelTypesPage({
 
   return (
     <>
-      <Head title="Modelos">
-        <Button onClick={() => handlePutBrandModel()}>Adicionar</Button>
+      <Head title="Tipos de Câmbios">
+        <Button onClick={() => handleAddFuelType()}>Adicionar</Button>
       </Head>
 
       <Filter searchProperties={['name']}>
         <ToggleTabs fieldName="showAll">
-          <ToggleTab>Todos os modelos</ToggleTab>
-          <ToggleTab value={false}>Meus modelos</ToggleTab>
+          <ToggleTab>Todos os tipos</ToggleTab>
+          <ToggleTab value={false}>Meus tipos</ToggleTab>
         </ToggleTabs>
       </Filter>
       <Table
-        data={models}
-        headers={brandModelsHeader}
-        onEdit={(brandModel) => handlePutBrandModel(brandModel)}
-        onDelete={handleDeleteBrandModel}
+        data={transmissions}
+        headers={TransmissionsHeader}
+        onEdit={(color) => handleAddFuelType(color)}
+        onDelete={handleDeleteFuelType}
         canDelete={(item) =>
           hasRole('admin') || item.created_by === auth.user.id
         }

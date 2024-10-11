@@ -6,6 +6,7 @@ import { THeadProps, Table } from '@/Components/Table';
 import { ToggleTab, ToggleTabs } from '@/Components/ToggleTabs';
 import { useDialog } from '@/Context/Dialog';
 import { useUser } from '@/Context/User';
+import { AdminRoutes } from '@/constants';
 import { Paginated } from '@/models/Paginated';
 import { CarOptional } from '@/models/VehicleOptional';
 import { PageProps } from '@/types';
@@ -44,7 +45,7 @@ export default function ListOptionalPage({
       onClose: (data) => {
         if (!data) return;
         router.delete(
-          route(CarOptional.GET_ROUTE('delete'), { id: optional.id }),
+          route(AdminRoutes.CAR_OPTIONALS_DELETE, { id: optional.id }),
           {
             preserveScroll: true,
           },

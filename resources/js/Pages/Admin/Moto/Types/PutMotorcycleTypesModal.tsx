@@ -4,32 +4,31 @@ import { DialogHeader } from '@/Components/Dialog/Header';
 import { Input } from '@/Components/Forms/Input';
 import { DialogProps } from '@/Context/Dialog';
 import { AdminRoutes } from '@/constants';
-import { Color } from '@/models/Color';
+import { MotorcycleTypes } from '@/models/MotorcycleTypes';
 import { useForm } from '@inertiajs/react';
 import { FC, FormEvent } from 'react';
 
-export const PutColorModal: FC<DialogProps<{ color?: Color }>> = ({
-  close,
-  color,
-}) => {
-  const { setData, data, errors, post, put } = useForm<{
-    color?: string;
+export const PutMotorcycleTypeModal: FC<
+  DialogProps<{ type?: MotorcycleTypes }>
+> = ({ close, type }) => {
+  const { data, errors, put, post, setData } = useForm<{
     id?: number;
+    name?: string;
   }>({
-    color: color?.color,
-    id: color?.id,
+    id: type?.id,
+    name: type?.name,
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (color) {
-      put(route(AdminRoutes.COLORS_EDIT, { id: data.id }), {
+    if (type) {
+      put(route(AdminRoutes.MOTO_TYPES_EDIT, { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route(AdminRoutes.COLORS_CREATE), {
+    post(route(AdminRoutes.MOTO_TYPES_CREATE), {
       onSuccess: () => close(true),
     });
   };
@@ -37,16 +36,16 @@ export const PutColorModal: FC<DialogProps<{ color?: Color }>> = ({
   return (
     <>
       <DialogHeader>
-        <h2>{color ? 'Editar' : 'Nova'} Cor</h2>
+        <h2>{type ? 'Editar' : 'Novo'} Tipo</h2>
       </DialogHeader>
       <div className="text-left py-4">
-        <form id="create-color-form" onSubmit={handleSubmit}>
+        <form id="create-type-form" onSubmit={handleSubmit}>
           <Input
             name="name"
             label="Nome"
-            value={data.color}
-            onChange={(e) => setData('color', e.target.value)}
-            error={errors.color}
+            value={data.name}
+            onChange={(e) => setData('name', e.target.value)}
+            error={errors.name}
             autoFocus
           />
         </form>
@@ -55,7 +54,7 @@ export const PutColorModal: FC<DialogProps<{ color?: Color }>> = ({
         <Button variant="basic" onClick={() => close()}>
           Cancelar
         </Button>
-        <Button color="primary" type="submit" form="create-color-form">
+        <Button color="primary" type="submit" form="create-type-form">
           Salvar
         </Button>
       </DialogFooter>

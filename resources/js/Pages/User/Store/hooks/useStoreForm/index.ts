@@ -1,3 +1,4 @@
+import { UserRoutes } from '@/constants';
 import { useForm } from '@inertiajs/react';
 import { FormEvent, useState } from 'react';
 import { StoreSchema, UseStoreFormProps } from './types';
@@ -22,7 +23,7 @@ export const useStoreForm = ({ store }: UseStoreFormProps) => {
         : undefined,
     }));
     e.preventDefault();
-    post(route('store.suggest-change'), {
+    post(route(UserRoutes.STORE_SUGGEST_CHANGE), {
       onFinish: () => {
         setEditState(false);
       },

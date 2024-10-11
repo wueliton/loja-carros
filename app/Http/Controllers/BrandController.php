@@ -29,7 +29,7 @@ class BrandController extends Controller
             return $query;
         })->paginate(10);
 
-        return Inertia::render('Brands/List', [
+        return Inertia::render('Admin/Brands/List', [
             'brands' => $brands
         ]);
     }

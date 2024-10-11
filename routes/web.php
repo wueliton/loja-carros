@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MotorcycleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\User\UserStoreController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,9 +21,11 @@ Route::group(['middlware' => ['auth']], function () {
     Route::group(['prefix' => 'store', 'as' => 'store.'], function () {
         Route::get('', [UserStoreController::class, 'getView'])->name('edit.view');
         Route::post('', [UserStoreController::class, 'suggestChanges'])->name('suggest-change');
+
+        Route::post('{storeId}', [StoreController::class, 'changeUserStore'])->name('change-store');
     });
 
-    Route::group(['prefix' => 'motorcycle', 'as' => 'motorcycle.'], function () {
+    Route::group(['prefix' => 'motorcycles', 'as' => 'motorcycles.'], function () {
         Route::get('', [MotorcycleController::class, 'list'])->name('list.view');
         Route::inertia('create', 'User/Motorcycle/Create/index')->name('create.view');
         Route::get('{id}', [MotorcycleController::class, 'editView'])->name('edit.view');

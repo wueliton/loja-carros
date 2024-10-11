@@ -1,7 +1,7 @@
 import { ArrowUpDown } from '@/Components/Icons/ArrowUpDown';
 import { Menu } from '@/Components/Menu';
 import { useUser } from '@/Context/User';
-import { Store } from '@/models/Store';
+import { UserRoutes } from '@/constants';
 import { MenuItem } from '@headlessui/react';
 import { router } from '@inertiajs/react';
 import { FC, useMemo } from 'react';
@@ -52,7 +52,7 @@ export const StoreSelection: FC = () => {
                 <button
                   onClick={() =>
                     router.post(
-                      route(Store.GET_ROUTE('changeUserStore'), {
+                      route(UserRoutes.CHANGE_STORE, {
                         storeId: store.id,
                       }),
                     )

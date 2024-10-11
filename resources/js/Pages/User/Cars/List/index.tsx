@@ -5,6 +5,7 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
+import { UserRoutes } from '@/constants';
 import { Car } from '@/models/Car';
 import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
@@ -63,7 +64,7 @@ export default function ListVehiclesPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route(Car.GET_ROUTE('delete'), { id: car.id }), {
+        router.delete(route(UserRoutes.CAR_DELETE, { id: car.id }), {
           preserveScroll: true,
         });
       },
@@ -75,7 +76,7 @@ export default function ListVehiclesPage({
         <Head title="Carros">
           <Button
             onClick={() =>
-              router.visit(route(Car.GET_ROUTE('create.view')), {
+              router.visit(route(UserRoutes.CAR_CREATE_VIEW), {
                 preserveScroll: true,
               })
             }
@@ -91,7 +92,7 @@ export default function ListVehiclesPage({
           headers={carHeader}
           onDelete={handleDelete}
           onEdit={(item) =>
-            router.visit(route('cars.edit.view', { id: item.id }), {
+            router.visit(route(UserRoutes.CAR_EDIT_VIEW, { id: item.id }), {
               preserveScroll: true,
             })
           }

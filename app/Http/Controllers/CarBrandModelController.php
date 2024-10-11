@@ -28,7 +28,7 @@ class CarBrandModelController extends Controller
             }
             return $query;
         })->latest()->paginate(10);
-        return Inertia::render('CarBrandModels/List', [
+        return Inertia::render('Admin/Car/Models/List', [
             'models' => $models
         ]);
     }

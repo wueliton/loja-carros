@@ -6,40 +6,36 @@ import { THeadProps, Table } from '@/Components/Table';
 import { ToggleTab, ToggleTabs } from '@/Components/ToggleTabs';
 import { useDialog } from '@/Context/Dialog';
 import { useUser } from '@/Context/User';
-import { MotorcycleBrandModels } from '@/models/MotorcycleBrandModels';
+import { AdminRoutes } from '@/constants';
+import { MotorcycleOptional } from '@/models/MotorcycleOptional';
 import { Paginated } from '@/models/Paginated';
 import { PageProps } from '@/types';
 import { router } from '@inertiajs/react';
-import { PutMotorcycleBrandModelModal } from './PutMotorcycleBrandModelModal';
+import { PutMotorcycleOptionalModal } from './PutMotorcycleOptionalModal';
 
-const motorcycleBrandModelsHeader: THeadProps<MotorcycleBrandModels>[] = [
+const motorcycleOptionalHeader: THeadProps<MotorcycleOptional>[] = [
   {
     key: 'name',
-    title: 'Modelo',
-  },
-  {
-    key: 'brand',
-    title: 'Marca',
-    render: (model) => <>{model.brand?.name}</>,
+    title: 'Opcional',
   },
 ];
 
-export default function ListFuelTypesPage({
-  models,
+export default function MotorcycleOptionalsPage({
+  optionals,
   auth,
-}: PageProps<{ models: Paginated<MotorcycleBrandModels> }>) {
+}: PageProps<{ optionals: Paginated<MotorcycleOptional> }>) {
   const { openDialog } = useDialog();
   const { hasRole } = useUser();
 
-  const handlePutBrandModel = (brandModel?: MotorcycleBrandModels) =>
+  const handlePutOptional = (optional?: MotorcycleOptional) =>
     openDialog({
-      component: PutMotorcycleBrandModelModal,
+      component: PutMotorcycleOptionalModal,
       props: {
-        brandModel,
+        optional,
       },
     });
 
-  const handleDeleteBrandModel = (brandModel: MotorcycleBrandModels) =>
+  const handleDeleteOptional = (optional: MotorcycleOptional) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -49,8 +45,8 @@ export default function ListFuelTypesPage({
       onClose: (data) => {
         if (!data) return;
         router.delete(
-          route(MotorcycleBrandModels.GET_ROUTE('delete'), {
-            id: brandModel.id,
+          route(AdminRoutes.MOTO_OPTIONALS_DELETE, {
+            id: optional.id,
           }),
           {
             preserveScroll: true,
@@ -61,8 +57,8 @@ export default function ListFuelTypesPage({
 
   return (
     <>
-      <Head title="Modelos">
-        <Button onClick={() => handlePutBrandModel()}>Adicionar</Button>
+      <Head title="Opcionais">
+        <Button onClick={() => handlePutOptional()}>Adicionar</Button>
       </Head>
 
       <Filter searchProperties={['name']}>
@@ -72,10 +68,10 @@ export default function ListFuelTypesPage({
         </ToggleTabs>
       </Filter>
       <Table
-        data={models}
-        headers={motorcycleBrandModelsHeader}
-        onEdit={(brandModel) => handlePutBrandModel(brandModel)}
-        onDelete={handleDeleteBrandModel}
+        data={optionals}
+        headers={motorcycleOptionalHeader}
+        onEdit={(optional) => handlePutOptional(optional)}
+        onDelete={handleDeleteOptional}
         canDelete={(item) =>
           hasRole('admin') || item.created_by === auth.user.id
         }

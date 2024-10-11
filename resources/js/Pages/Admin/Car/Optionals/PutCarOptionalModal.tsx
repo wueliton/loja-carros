@@ -3,6 +3,7 @@ import { DialogFooter } from '@/Components/Dialog/Footer';
 import { DialogHeader } from '@/Components/Dialog/Header';
 import { Input } from '@/Components/Forms/Input';
 import { DialogProps } from '@/Context/Dialog';
+import { AdminRoutes } from '@/constants';
 import { CarOptional } from '@/models/VehicleOptional';
 import { useForm } from '@inertiajs/react';
 import { FC, FormEvent } from 'react';
@@ -22,13 +23,13 @@ export const PutOptionalModal: FC<DialogProps<{ optional?: CarOptional }>> = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (optional) {
-      put(route(CarOptional.GET_ROUTE('update'), { id: data.id }), {
+      put(route(AdminRoutes.CAR_OPTIONALS_EDIT, { id: data.id }), {
         onSuccess: () => close(true),
       });
       return;
     }
 
-    post(route(CarOptional.GET_ROUTE('create')), {
+    post(route(AdminRoutes.CAR_OPTIONALS_CREATE), {
       onSuccess: () => close(true),
     });
   };

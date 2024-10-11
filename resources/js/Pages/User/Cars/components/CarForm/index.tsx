@@ -3,6 +3,7 @@ import { Autocomplete } from '@/Components/Forms/Autocomplete';
 import { Editor } from '@/Components/Forms/Editor';
 import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
+import { APIRoutes } from '@/constants';
 import { useCarForm } from './hooks/useCarForm';
 import { CarFormProps } from './types';
 
@@ -41,7 +42,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Marca"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('api.brand.list')}
+        url={route(APIRoutes.BRAND_LIST)}
         searchProperties={['name']}
         value={data.brand}
         onChange={(e) => {
@@ -60,7 +61,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Modelo"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('api.cars.model.list')}
+        url={route(APIRoutes.MOTO_MODEL_LIST)}
         searchProperties={['name']}
         name="models"
         disabled={!data.brand}
@@ -127,7 +128,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Cor"
         propertyToDisplay="color"
         propertyValue="id"
-        url={route('api.color.list')}
+        url={route(APIRoutes.COLOR_LIST)}
         searchProperties={['color']}
         value={data.color}
         onChange={(e) => setData('color', e as number)}
@@ -140,7 +141,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Tipo de combustível"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('api.fuelType.list')}
+        url={route(APIRoutes.FUEL_TYPE_LIST)}
         searchProperties={['name']}
         value={data.fuelType}
         onChange={(e) => setData('fuelType', e as number)}
@@ -162,7 +163,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Transmissão"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('api.cars.transmission.list')}
+        url={route(APIRoutes.CAR_TRANSMISSION_LIST)}
         searchProperties={['name']}
         value={data.transmission}
         onChange={(e) => setData('transmission', e as number)}
@@ -227,7 +228,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         label="Opcionais"
         propertyToDisplay="name"
         propertyValue="id"
-        url={route('api.cars.optionals.list')}
+        url={route(APIRoutes.CAR_OPTIONALS_LIST)}
         searchProperties={['name']}
         value={data.optionals}
         onChange={(e) => setData('optionals', e as number[])}

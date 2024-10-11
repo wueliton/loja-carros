@@ -76,6 +76,18 @@ class AdminUserController extends Controller
         return Redirect::back()->with('success', 'Item excluído com sucesso');
     }
 
+    public function apiGet(Request $request)
+    {
+        $users = User::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+
+        return $users;
+    }
+
     protected function patchUser(Request $request, User $user = null)
     {
         if (!$user) {
