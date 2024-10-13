@@ -27,15 +27,15 @@ export default function MotorcycleTypesPage({
   const { openDialog } = useDialog();
   const { hasRole } = useUser();
 
-  const handlePutType = (optional?: MotorcycleTypes) =>
+  const handlePutType = (type?: MotorcycleTypes) =>
     openDialog({
       component: PutMotorcycleTypeModal,
       props: {
-        optional,
+        type,
       },
     });
 
-  const handleDeleteType = (optional: MotorcycleTypes) =>
+  const handleDeleteType = (type: MotorcycleTypes) =>
     openDialog({
       content: {
         title: 'Deseja excluir?',
@@ -46,7 +46,7 @@ export default function MotorcycleTypesPage({
         if (!data) return;
         router.delete(
           route(AdminRoutes.MOTO_TYPES_DELETE, {
-            id: optional.id,
+            id: type.id,
           }),
           {
             preserveScroll: true,
@@ -70,12 +70,12 @@ export default function MotorcycleTypesPage({
       <Table
         data={types}
         headers={motorcycleTypesHeader}
-        onEdit={(optional) => handlePutType(optional)}
+        onEdit={(type) => handlePutType(type)}
         onDelete={handleDeleteType}
         canDelete={(item) =>
-          hasRole('admin') || item.created_by === auth.user.id
+          hasRole('super') || item.created_by === auth.user.id
         }
-        canEdit={(item) => hasRole('admin') || item.created_by === auth.user.id}
+        canEdit={(item) => hasRole('super') || item.created_by === auth.user.id}
       />
     </>
   );

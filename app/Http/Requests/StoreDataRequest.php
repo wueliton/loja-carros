@@ -19,6 +19,9 @@ class StoreDataRequest extends FormRequest
             'email' => 'required|email',
             'phone' => 'required|numeric|digits_between:10,11',
             'whatsapp' => 'required|numeric|digits_between:10,11',
+            'instagram' => 'nullable|string|url',
+            'facebook' => 'nullable|string|url',
+            'site' => 'nullable|string|url',
             'users' => 'required|array',
             'users.*' => 'nullable|required|numeric|exists:users,id',
             'logo_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:1024'

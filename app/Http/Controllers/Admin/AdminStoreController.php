@@ -34,7 +34,7 @@ class AdminStoreController extends Controller
 
         $store = Store::findOrFail($lastStoreId);
         $this->patchStore($request, $store);
-        return Redirect::refresh();
+        return Redirect::route('admin.store.edit.view');
     }
 
     protected function patchStore(Request $request, Store $store = null)
@@ -45,13 +45,13 @@ class AdminStoreController extends Controller
 
         $filePath = 'no-image.jpg';
 
-        if ($request->has('logo_url')) {
+        if ($request->has('logo_url') && isset($request->logo_url)) {
             $file = $request->file('logo_url');
             $filePath = $this->imageUploadService->upload($file);
+            $store->logo_url = $filePath;
         }
 
         $store->name = $request->name;
-        $store->logo_url = $filePath;
         $store->store_number = $request->store_number;
         $store->email = $request->email;
         $store->phone = $request->phone;

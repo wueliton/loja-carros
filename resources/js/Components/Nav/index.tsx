@@ -1,13 +1,13 @@
 import { useUser } from '@/Context/User';
 import { Link } from '@inertiajs/react';
-import { Fragment, ReactNode, forwardRef, useMemo } from 'react';
+import { Fragment, ReactNode, forwardRef } from 'react';
 import ApplicationLogo from '../ApplicationLogo';
 import { Divider } from '../Divider';
 import { HasRole } from '../HasRole';
 import styles from './Nav.module.scss';
 import { NavLink } from './NavLink';
 import { StoreSelection } from './StoreSelection';
-import { AdminMenu, RegularMenu } from './constants';
+import { menus } from './constants';
 
 export type MenuCategory = {
   category: string;
@@ -28,10 +28,18 @@ export const NavComponent = forwardRef<
   }
 >(({ opened, setOpened }, ref) => {
   const { stores, lastStore, roles } = useUser();
-  const menu = useMemo(
-    () => (roles?.includes('admin') ? AdminMenu : RegularMenu),
-    [],
+  const isRegularOrAdminUser = ['admin', 'user'].some((role) =>
+    roles?.includes(role),
   );
+  const isSuper = roles?.includes('super');
+  const showMenu =
+    (isRegularOrAdminUser && lastStore && stores?.length) || isSuper;
+  const userType = roles?.includes('super')
+    ? 'super'
+    : roles?.includes('admin')
+      ? 'admin'
+      : 'regular';
+  const menu = menus[userType];
 
   return (
     <nav
@@ -43,11 +51,11 @@ export const NavComponent = forwardRef<
         <ApplicationLogo className={styles.logo} />
       </Link>
 
-      <StoreSelection />
+      {isRegularOrAdminUser ? <StoreSelection /> : null}
 
-      {!!stores?.length && lastStore && (
+      {showMenu ? (
         <>
-          <Divider />
+          {isRegularOrAdminUser ? <Divider /> : null}
 
           <div className={styles.links}>
             {menu.map((item, key) => {
@@ -74,7 +82,7 @@ export const NavComponent = forwardRef<
             })}
           </div>
         </>
-      )}
+      ) : null}
     </nav>
   );
 });

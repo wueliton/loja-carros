@@ -5,7 +5,7 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { AdminRouter } from '@/Routes/app.router';
+import { AdminRoutes, userRoles } from '@/constants';
 import { Paginated } from '@/models/Paginated';
 import { PageProps, User } from '@/types';
 import { router } from '@inertiajs/react';
@@ -25,7 +25,7 @@ const usersHeader: THeadProps<User>[] = [
     render: (data) => (
       <>
         {data.roles.map((role, index) => (
-          <Chip key={`${data.id}-role-${index}`}>{role.name}</Chip>
+          <Chip key={`${data.id}-role-${index}`}>{userRoles[role.name]}</Chip>
         ))}
       </>
     ),
@@ -34,10 +34,11 @@ const usersHeader: THeadProps<User>[] = [
 
 export default function AdminListUserPage({
   users,
+  auth,
 }: PageProps<{ users: Paginated<User> }>) {
   const { openDialog } = useDialog();
 
-  console.log(route());
+  console.log({ users });
 
   const handleDelete = (item: User) => {
     openDialog({
@@ -48,7 +49,7 @@ export default function AdminListUserPage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route(AdminRouter.REQ_DELETE_USER, { id: item.id }), {
+        router.delete(route(AdminRoutes.USERS_DELETE, { id: item.id }), {
           preserveScroll: true,
           onSuccess: () => {},
         });
@@ -61,7 +62,9 @@ export default function AdminListUserPage({
       <Head title="Usuários">
         <Button
           onClick={() =>
-            router.visit(route(AdminRouter.NEW_USER), { preserveScroll: true })
+            router.visit(route(AdminRoutes.USERS_CREATE_VIEW), {
+              preserveScroll: true,
+            })
           }
         >
           Adicionar
@@ -74,10 +77,12 @@ export default function AdminListUserPage({
         headers={usersHeader}
         onDelete={handleDelete}
         onEdit={(item) => {
-          router.visit(route(AdminRouter.EDIT_USER, { id: item.id }), {
+          router.visit(route(AdminRoutes.USERS_EDIT_VIEW, { id: item.id }), {
             preserveScroll: true,
           });
         }}
+        canEdit={(item) => item.created_by === auth.user.id}
+        canDelete={(item) => item.created_by === auth.user.id}
       />
     </>
   );

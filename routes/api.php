@@ -16,6 +16,7 @@ use App\Http\Controllers\MotorcycleBrandModelController;
 use App\Http\Controllers\MotorcycleController;
 use App\Http\Controllers\MotorcycleOptionalController;
 use App\Http\Controllers\MotorcycleTypesController;
+use App\Http\Controllers\Super\SuperStoreController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -81,9 +82,15 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
         });
 
         /* AUTHENTICATED ADMIN */
-        Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admin']], function () {
+        Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admin|super']], function () {
             Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
                 Route::get('', [AdminUserController::class, 'apiGet'])->name('list');
+            });
+        });
+
+        Route::group(['prefix' => 'super', 'as' => 'super.', 'middleware' => ['role:super']], function () {
+            Route::group(['prefix' => 'stores', 'as' => 'stores.'], function () {
+                Route::get('', [SuperStoreController::class, 'apiGet'])->name('list');
             });
         });
     });
@@ -108,7 +115,7 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
         Route::get('/advanced/options', [ApiQuickSearchParams::class, 'advancedSearchOptions']);
     });
 
-    Route::group(['prefix' => 'stores'], function () {
+    Route::group(['prefix' => 'stores', 'as' => 'stores.'], function () {
         Route::get('{slug}', [ApiStoresController::class, 'getBySlug']);
         Route::get('/ads/{id}', [ApiStoresController::class, 'getAds']);
         Route::get('', [ApiStoresController::class, 'find']);

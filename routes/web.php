@@ -13,7 +13,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::group(['middlware' => ['auth']], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('', [DashboardController::class, 'dashboard'])->name('dashboard');
     });

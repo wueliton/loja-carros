@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserDataRequest;
 use App\Http\Requests\UserPostRequest;
 use App\Models\Store;
 use App\Models\User;
@@ -20,14 +21,12 @@ class AdminUserController extends Controller
 
     public function list(Request $request)
     {
-        $lastStoreId = $request->user()->lastStoreId();
-        $store = Store::findOrFail($lastStoreId);
-        $users = $store->users()->with('roles')->where(function ($query) use ($request) {
+        $users = User::with('roles')->where(function ($query) use ($request) {
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }
             return $query;
-        })->paginate(10);
+        })->latest()->paginate(10);
 
         return Inertia::render("Admin/Users/List", [
             'users' => $users
@@ -53,19 +52,19 @@ class AdminUserController extends Controller
         ]);
     }
 
-    public function update(UserPostRequest $request, $id)
+    public function update(UserDataRequest $request, $id)
     {
         $request->validated();
         $user = User::findOrFail($id);
         $this->patchUser($request, $user);
-        return Redirect::route("admin.users.list");
+        return Redirect::route("admin.users.list.view");
     }
 
-    public function create(UserPostRequest $request)
+    public function create(UserDataRequest $request)
     {
         $request->validated();
         $this->patchUser($request);
-        return Redirect::route("admin.users.list");
+        return Redirect::route("admin.users.list.view");
     }
 
     public function delete(Request $request, $id)

@@ -22,16 +22,26 @@ class CarController extends Controller
 
     public function list(Request $request): Response
     {
-        $cars = Car::with('brand:id,name', 'model:id,name', 'store:id,name')->select('id', 'title', 'brand_id', 'model_id', 'store_id', 'created_at')->where(function ($query) use ($request) {
-            if (!$request->user()->hasRole('super')) {
+        $cars = Car::with(
+            'brand:id,name',
+            'model:id,name',
+            'store:id,name'
+        )->select(
+                'id',
+                'title',
+                'brand_id',
+                'model_id',
+                'store_id',
+                'created_at'
+            )->where(function ($query) use ($request) {
                 $userStore = $request->user()->lastStore()->pluck('store_id');
                 $query = $query->where('store_id', $userStore);
-            }
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->latest()->paginate(10);
+
+                if ($request->has('where')) {
+                    $query = $this->filterService->apply($query, $request->where);
+                }
+                return $query;
+            })->latest()->paginate(10);
 
         return Inertia::render('User/Cars/List/index', [
             'cars' => $cars

@@ -1,11 +1,10 @@
-import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { Store } from '@/models/Store';
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
 import { UseStoreFormProps } from './types';
 
 export const useStoreForm = ({ store, postRoute }: UseStoreFormProps) => {
-  const { post, transform, isDirty, ...form } = useForm<
+  const { post, transform, ...form } = useForm<
     Omit<Store, 'logo_url' | 'phone' | 'whatsapp'> & {
       phone?: string | number;
       whatsapp?: string | number;
@@ -31,10 +30,12 @@ export const useStoreForm = ({ store, postRoute }: UseStoreFormProps) => {
         : undefined,
     }));
     e.preventDefault();
-    post(postRoute);
+    post(postRoute, {
+      onSuccess: () => {
+        router.reload();
+      },
+    });
   };
-
-  useDiscardUnsaved(isDirty);
 
   return {
     ...form,

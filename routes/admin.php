@@ -11,20 +11,18 @@ use App\Http\Controllers\FuelTypeController;
 use App\Http\Controllers\MotorcycleBrandModelController;
 use App\Http\Controllers\MotorcycleOptionalController;
 use App\Http\Controllers\MotorcycleTypesController;
-use App\Models\MotorcycleBrandModel;
-use App\Models\MotorcycleOptional;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'role:admin']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'role:admin|super']], function () {
     Route::group(['prefix' => 'store', 'as' => 'store.'], function () {
-        Route::get('', [AdminStoreController::class, 'edit'])->name('edit');
+        Route::get('', [AdminStoreController::class, 'edit'])->name('edit.view');
         Route::post('', [AdminStoreController::class, 'update'])->name('update');
     });
 
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
-        Route::get('', [AdminUserController::class, 'list'])->name('list');
-        Route::get('create', [AdminUserController::class, 'new'])->name('new');
-        Route::get('{id}', [AdminUserController::class, 'edit'])->name('edit')->where('id', '[0-9]+');
+        Route::get('', [AdminUserController::class, 'list'])->name('list.view');
+        Route::get('create', [AdminUserController::class, 'new'])->name('create.view');
+        Route::get('{id}', [AdminUserController::class, 'edit'])->name('edit.view')->where('id', '[0-9]+');
         Route::patch('{id}', [AdminUserController::class, 'update'])->name('update')->where('id', '[0-9]+');
         Route::post('', [AdminUserController::class, 'create'])->name('create');
         Route::delete('{id}', [AdminUserController::class, 'create'])->name('delete')->where('id', '[0-9]+');
@@ -85,14 +83,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
         Route::group(['prefix' => 'types', 'as' => 'types.'], function () {
             Route::get('', [MotorcycleTypesController::class, 'list'])->name('list.view');
             Route::post('create', [MotorcycleTypesController::class, 'create'])->name('create');
-            Route::put('{id}', [MotorcycleTypesController::class, 'update'])->name('update')->where('id', '[0-9]+');
+            Route::put('{id}', [MotorcycleTypesController::class, 'update'])->name('edit')->where('id', '[0-9]+');
             Route::delete('{id}', [MotorcycleTypesController::class, 'delete'])->name('delete')->where('id', '[0-9]+');
         });
 
         Route::group(['prefix' => 'optionals', 'as' => 'optionals.'], function () {
             Route::get('', [MotorcycleOptionalController::class, 'list'])->name('list.view');
             Route::post('create', [MotorcycleOptionalController::class, 'create'])->name('create');
-            Route::put('{id}', [MotorcycleOptionalController::class, 'update'])->name('update')->where('id', '[0-9]+');
+            Route::put('{id}', [MotorcycleOptionalController::class, 'update'])->name('edit')->where('id', '[0-9]+');
             Route::delete('{id}', [MotorcycleOptionalController::class, 'delete'])->name('delete')->where('id', '[0-9]+');
         });
     });

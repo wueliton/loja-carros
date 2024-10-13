@@ -9,6 +9,7 @@ export interface User {
   email_verified_at: string;
   password?: string;
   roles: Role[];
+  created_by: number;
 }
 
 export type PageProps<

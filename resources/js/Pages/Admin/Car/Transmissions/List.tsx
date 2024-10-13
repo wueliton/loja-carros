@@ -72,9 +72,9 @@ export default function ListTransmissionsPage({
         onEdit={(color) => handleAddFuelType(color)}
         onDelete={handleDeleteFuelType}
         canDelete={(item) =>
-          hasRole('admin') || item.created_by === auth.user.id
+          hasRole('super') || item.created_by === auth.user.id
         }
-        canEdit={(item) => hasRole('admin') || item.created_by === auth.user.id}
+        canEdit={(item) => hasRole('super') || item.created_by === auth.user.id}
       />
     </>
   );

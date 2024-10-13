@@ -13,6 +13,7 @@ export default function EditStore({
   store,
   changeRequest,
 }: PageProps<{ store: Store; changeRequest: Store }>) {
+  const canCreateChangeRequest = false;
   const { data, onSubmit, errors, setData, editState, setEditState } =
     useStoreForm({
       store,
@@ -133,7 +134,7 @@ export default function EditStore({
                   </p>
                 </div>
               </div>
-              {!changeRequest ? (
+              {canCreateChangeRequest ? (
                 <div className="col-span-full flex justify-end mt-3">
                   <Button type="submit" onClick={() => setEditState(true)}>
                     Sugerir Alteração

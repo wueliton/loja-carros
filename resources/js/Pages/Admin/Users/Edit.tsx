@@ -4,7 +4,7 @@ import { Input } from '@/Components/Forms/Input';
 import { Select } from '@/Components/Forms/Select';
 import { Head } from '@/Components/Head';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
-import { AdminRouter } from '@/Routes/app.router';
+import { AdminRoutes } from '@/constants';
 import { Role } from '@/models/Role';
 import { PageProps, User } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -26,7 +26,7 @@ export default function EditUserPage({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    patch(route(AdminRouter.REQ_UPDATE_USER, { id: user.id }));
+    patch(route(AdminRoutes.USERS_UPDATE, { id: user.id }));
   };
 
   useDiscardUnsaved(isDirty);
@@ -35,7 +35,9 @@ export default function EditUserPage({
     <>
       <Head
         title={`Editar Usuário ${user.name}`}
-        breadcrumb={[{ title: 'Usuários', url: route(AdminRouter.USERS) }]}
+        breadcrumb={[
+          { title: 'Usuários', url: route(AdminRoutes.USERS_LIST_VIEW) },
+        ]}
       />
       <Card>
         <form

@@ -4,7 +4,7 @@ import { Input } from '@/Components/Forms/Input';
 import { Select } from '@/Components/Forms/Select';
 import { Head } from '@/Components/Head';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
-import { AdminRouter } from '@/Routes/app.router';
+import { AdminRoutes } from '@/constants';
 import { Role } from '@/models/Role';
 import { PageProps } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -27,7 +27,7 @@ export default function CreateUserPage({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post(route('users.create'));
+    post(route(AdminRoutes.USERS_CREATE));
   };
 
   useDiscardUnsaved(isDirty);
@@ -36,7 +36,9 @@ export default function CreateUserPage({
     <>
       <Head
         title="Adicionar Usuário"
-        breadcrumb={[{ title: 'Usuários', url: route(AdminRouter.USERS) }]}
+        breadcrumb={[
+          { title: 'Usuários', url: route(AdminRoutes.USERS_LIST_VIEW) },
+        ]}
       />
       <Card>
         <form

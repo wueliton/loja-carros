@@ -69,9 +69,9 @@ export default function ListColorsPage({
         onEdit={(color) => handleAddColor(color)}
         onDelete={handleDeleteColor}
         canDelete={(item) =>
-          hasRole('admin') || item.created_by === auth.user.id
+          hasRole('super') || item.created_by === auth.user.id
         }
-        canEdit={(item) => hasRole('admin') || item.created_by === auth.user.id}
+        canEdit={(item) => hasRole('super') || item.created_by === auth.user.id}
       />
     </>
   );

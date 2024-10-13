@@ -70,12 +70,14 @@ export default function MotorcycleOptionalsPage({
       <Table
         data={optionals}
         headers={motorcycleOptionalHeader}
-        onEdit={(optional) => handlePutOptional(optional)}
+        onEdit={(optional) => {
+          handlePutOptional(optional);
+        }}
         onDelete={handleDeleteOptional}
         canDelete={(item) =>
-          hasRole('admin') || item.created_by === auth.user.id
+          hasRole('super') || item.created_by === auth.user.id
         }
-        canEdit={(item) => hasRole('admin') || item.created_by === auth.user.id}
+        canEdit={(item) => hasRole('super') || item.created_by === auth.user.id}
       />
     </>
   );

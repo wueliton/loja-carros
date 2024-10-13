@@ -78,9 +78,9 @@ export default function ListFuelTypesPage({
         onEdit={(brandModel) => handlePutBrandModel(brandModel)}
         onDelete={handleDeleteBrandModel}
         canDelete={(item) =>
-          hasRole('admin') || item.created_by === auth.user.id
+          hasRole('super') || item.created_by === auth.user.id
         }
-        canEdit={(item) => hasRole('admin') || item.created_by === auth.user.id}
+        canEdit={(item) => hasRole('super') || item.created_by === auth.user.id}
       />
     </>
   );

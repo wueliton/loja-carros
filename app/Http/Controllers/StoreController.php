@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Store;
 use App\Services\FilterService;
 use App\Services\ImageUploadService;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,28 +17,8 @@ use Inertia\Response;
 class StoreController extends Controller
 {
 
-    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService) {}
-
-    public function index(Request $request): Response
+    public function __construct(protected ImageUploadService $imageUploadService, protected FilterService $filterService)
     {
-
-        $stores = Store::latest()->where(function ($query) use ($request) {
-            if (!$request->user()->hasRole('admin')) {
-                $loggedUserId = Auth::id();
-
-                $query->whereHas('users', function ($query) use ($loggedUserId) {
-                    $query->whereIn('user_id', [$loggedUserId]);
-                });
-            }
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->paginate(10);
-
-        return Inertia::render('Stores/List', [
-            'stores' => $stores,
-        ]);
     }
 
     public function changeUserStore(Request $request, $storeId)
@@ -76,46 +55,7 @@ class StoreController extends Controller
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
     }
 
-    public function create(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'store_number' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|numeric|digits_between:10,11',
-            'whatsapp' => 'required|numeric|digits_between:10,11',
-            'users' => 'required|array',
-            'users.*' => 'nullable|required|numeric|exists:users,id',
-            'logo_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:1024'
-        ], [
-            'phone.digits_between' => 'O campo deve ter entre :min e :max números',
-            'whatsapp.digits_between' => 'O campo deve ter entre :min e :max números'
-        ]);
-
-        $filePath = 'no-image.jpg';
-
-        if ($request->has('logo_url')) {
-            $file = $request->file('logo_url');
-            $filePath = $this->imageUploadService->upload($file);
-        }
-
-        $store = Store::create([
-            'name' => $request->name,
-            'logo_url' => $filePath,
-            'store_number' => $request->store_number,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'whatsapp' => $request->whatsapp,
-        ]);
-
-        $store->users()->attach($request->users);
-
-        event(new Registered($store));
-
-        return Redirect::route('stores');
-    }
-
-    public function getStore(Request $request, $id): Response | RedirectResponse
+    public function getStore(Request $request, $id): Response|RedirectResponse
     {
         try {
             $store = Store::with('users:id')->findOrFail($id);
@@ -148,7 +88,7 @@ class StoreController extends Controller
 
         $store = Store::findOrFail($id);
 
-        if ($request->has('logo_url')) {
+        if ($request->has('logo_url') && isset($request->logo_url)) {
             $filePath = 'uploads/' . $store->logo_url;
             if (Storage::disk('public')->exists($filePath)) {
                 Storage::disk('public')->delete($filePath);
@@ -170,6 +110,6 @@ class StoreController extends Controller
         $store->users()->detach();
         $store->users()->attach($request->users);
 
-        return Redirect::route('stores');
+        return redirect()->refresh();
     }
 }

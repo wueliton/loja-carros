@@ -1,5 +1,16 @@
 export enum AdminRoutes {
+  DASHBOARD = 'dashboard',
+
   CAR_LIST = 'admin.cars.list.view',
+
+  USERS_LIST_VIEW = 'admin.users.list.view',
+  USERS_CREATE_VIEW = 'admin.users.create.view',
+  USERS_EDIT_VIEW = 'admin.users.edit.view',
+  USERS_CREATE = 'admin.users.create',
+  USERS_UPDATE = 'admin.users.update',
+  USERS_DELETE = 'admin.users.delete',
+
+  EDIT_STORE_VIEW = 'admin.store.edit.view',
 
   BRANDS_LIST = 'admin.brands.list.view',
   BRANDS_CREATE = 'admin.brands.create',
@@ -79,10 +90,12 @@ export enum APIRoutes {
   MOTO_IMAGE_DELETE = 'api.motorcycle.images.delete',
 
   ADMIN_USERS_LIST = 'api.admin.users.list',
+
+  SUPER_STORE_LIST = 'api.super.stores.list',
 }
 
 export enum UserRoutes {
-  DASHBOARd = 'dashboard',
+  DASHBOARD = 'dashboard',
 
   CAR_LIST = 'cars.list.view',
   CAR_CREATE_VIEW = 'cars.create.view',
@@ -103,3 +116,41 @@ export enum UserRoutes {
 
   CHANGE_STORE = 'store.change-store',
 }
+
+export enum SuperRoutes {
+  DASHBOARD = 'dashboard',
+
+  STORE_LIST_VIEW = 'super.stores.list.view',
+  STORE_CREATE_VIEW = 'super.stores.create.view',
+  STORE_EDIT_VIEW = 'super.stores.edit.view',
+  STORE_CREATE = 'super.stores.create',
+  STORE_EDIT = 'super.stores.edit',
+  STORE_DELETE = 'super.stores.delete',
+
+  USERS_LIST_VIEW = 'super.users.list.view',
+  USERS_CREATE_VIEw = 'super.users.create.view',
+  USERS_EDIT_VIEW = 'super.users.edit.view',
+  USERS_EDIT = 'super.users.edit',
+  USERS_CREATE = 'super.users.create',
+  USERS_DELETE = 'super.users.delete',
+
+  CAR_LIST_VIEW = 'super.cars.list.view',
+  CAR_CREATE_VIEW = 'super.cars.create.view',
+  CAR_EDIT_VIEW = 'super.cars.edit.view',
+  CAR_CREATE = 'super.cars.create',
+  CAR_EDIT = 'super.cars.edit',
+  CAR_DELETE = 'super.cars.delete',
+
+  MOTORCYCLE_LIST_VIEW = 'super.motorcycles.list.view',
+  MOTORCYCLE_CREATE_VIEW = 'super.motorcycles.create.view',
+  MOTORCYCLE_EDIT_VIEW = 'super.motorcycles.edit.view',
+  MOTORCYCLE_CREATE = 'super.motorcycles.create',
+  MOTORCYCLE_EDIT = 'super.motorcycles.edit',
+  MOTORCYCLE_DELETE = 'super.motorcycles.delete',
+}
+
+export const userRoles = {
+  super: 'Administrador',
+  admin: 'Logista',
+  user: 'Vendedor',
+};

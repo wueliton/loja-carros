@@ -1,11 +1,11 @@
 import { Button } from '@/Components/Button';
 import { Filter } from '@/Components/Filter';
-import { HasRole } from '@/Components/HasRole';
 import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
 import { useUser } from '@/Context/User';
+import { SuperRoutes } from '@/constants';
 import { Paginated } from '@/models/Paginated';
 import { Store } from '@/models/Store';
 import { PageProps } from '@/types';
@@ -60,7 +60,7 @@ export default function ListStorePage({
       },
       onClose: (data) => {
         if (!data) return;
-        router.delete(route(Store.GET_ROUTE('delete'), { id: item.id }), {
+        router.delete(route(SuperRoutes.STORE_DELETE, { id: item.id }), {
           preserveScroll: true,
           onSuccess: () => {},
         });
@@ -71,17 +71,15 @@ export default function ListStorePage({
   return (
     <>
       <Head title="Lojas">
-        <HasRole role="admin">
-          <Button
-            onClick={() =>
-              router.visit(route(Store.GET_ROUTE('create')), {
-                preserveScroll: true,
-              })
-            }
-          >
-            Adicionar
-          </Button>
-        </HasRole>
+        <Button
+          onClick={() =>
+            router.visit(route(SuperRoutes.STORE_CREATE_VIEW), {
+              preserveScroll: true,
+            })
+          }
+        >
+          Adicionar
+        </Button>
       </Head>
 
       <Filter searchProperties={['name']} />
@@ -90,7 +88,7 @@ export default function ListStorePage({
         headers={storeHeader}
         onDelete={hasRole('admin') ? (item) => handleDelete(item) : undefined}
         onEdit={(item) =>
-          router.visit(route(Store.GET_ROUTE('edit'), { id: item.id }), {
+          router.visit(route(SuperRoutes.STORE_EDIT_VIEW, { id: item.id }), {
             preserveScroll: true,
           })
         }

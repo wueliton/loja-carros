@@ -21,6 +21,9 @@ class Store extends Model
         'email',
         'phone',
         'whatsapp',
+        'instagram',
+        'facebook',
+        'site',
         'slug'
     ];
 
