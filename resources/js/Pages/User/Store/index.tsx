@@ -83,6 +83,24 @@ export default function EditStore({
                 ]}
                 onChange={(e) => setData('whatsapp', e.target.value)}
               />
+              <Input
+                error={errors.instagram}
+                value={data.instagram}
+                label="Instagram"
+                onChange={(e) => setData('instagram', e.target.value)}
+              />
+              <Input
+                error={errors.facebook}
+                value={data.facebook}
+                label="Facebook"
+                onChange={(e) => setData('facebook', e.target.value)}
+              />
+              <Input
+                error={errors.site}
+                value={data.site}
+                label="Site"
+                onChange={(e) => setData('site', e.target.value)}
+              />
               <UploadFile
                 hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
                 className="md:col-span-2"
@@ -131,6 +149,15 @@ export default function EditStore({
                   <p>
                     <strong>Whatsapp:</strong>{' '}
                     {formatPhoneNumber(store.whatsapp!)}
+                  </p>
+                  <p>
+                    <strong>Facebook:</strong> {store.facebook}
+                  </p>
+                  <p>
+                    <strong>Instagram:</strong> {store.instagram}
+                  </p>
+                  <p>
+                    <strong>Site:</strong> {store.site}
                   </p>
                 </div>
               </div>

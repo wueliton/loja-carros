@@ -42,4 +42,10 @@ class ApiMotorcycleController extends Controller
         $motorcycle->increment('visits');
         return response()->json($motorcycle);
     }
+
+    public function getByCode(Request $request, $code)
+    {
+        $motorcycle = Motorcycle::where('code', '=', $code)->get();
+        return response()->json($motorcycle);
+    }
 }

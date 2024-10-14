@@ -97,6 +97,7 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
 
     /* PUBLIC ROUTES */
     Route::group(['prefix' => '/cars'], function () {
+        Route::get('/code/{code}', [ApiCarController::class, 'getByCode']);
         Route::get('/highlights', [ApiCarController::class, 'highlights']);
         Route::get('/latest', [ApiCarController::class, 'latest']);
         Route::get('/brand-models', [ApiCarController::class, 'getBrandModels']);
@@ -105,9 +106,10 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
     });
 
     Route::group(['prefix' => '/motorcycles'], function () {
+        Route::get('/code/{code}', [ApiMotorcycleController::class, 'getByCode']);
         Route::get('/brand-models', [ApiMotorcycleController::class, 'getBrandModels']);
-        Route::get('', [ApiMotorcycleController::class, 'find']);
         Route::get('{slug}', [ApiMotorcycleController::class, 'getBySlug']);
+        Route::get('', [ApiMotorcycleController::class, 'find']);
     });
 
     Route::group(['prefix' => '/search'], function () {

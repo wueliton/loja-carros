@@ -30,18 +30,21 @@ const AdminEditStorePage = ({
             label="Nome"
             onChange={(e) => setData('name', e.target.value)}
             className="md:col-span-2"
+            required
           />
           <Input
             error={errors.store_number}
             value={data.store_number}
             label="Número"
             onChange={(e) => setData('store_number', e.target.value)}
+            required
           />
           <Input
             error={errors.email}
             value={data.email}
             label="E-mail"
             onChange={(e) => setData('email', e.target.value)}
+            required
           />
           <Input
             error={errors.phone}
@@ -55,6 +58,7 @@ const AdminEditStorePage = ({
               { mask: '(00) 0000-0000' },
             ]}
             onChange={(e) => setData('phone', e.target.value)}
+            required
           />
           <Input
             error={errors.whatsapp}
@@ -68,6 +72,25 @@ const AdminEditStorePage = ({
               { mask: '(00) 0000-0000' },
             ]}
             onChange={(e) => setData('whatsapp', e.target.value)}
+            required
+          />
+          <Input
+            error={errors.instagram}
+            value={data.instagram}
+            label="Instagram"
+            onChange={(e) => setData('instagram', e.target.value)}
+          />
+          <Input
+            error={errors.facebook}
+            value={data.facebook}
+            label="Facebook"
+            onChange={(e) => setData('facebook', e.target.value)}
+          />
+          <Input
+            error={errors.site}
+            value={data.site}
+            label="Site"
+            onChange={(e) => setData('site', e.target.value)}
           />
           <UploadFile
             hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
@@ -96,6 +119,7 @@ const AdminEditStorePage = ({
               value={data.users}
               onChange={(e) => setData('users', e)}
               moreThanOne
+              required
             />
           </div>
           <div className="col-span-full flex justify-end">

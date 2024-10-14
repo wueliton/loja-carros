@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDataRequest;
 use App\Models\Store;
 use App\Services\FilterService;
 use App\Services\ImageUploadService;
@@ -70,22 +71,8 @@ class StoreController extends Controller
         }
     }
 
-    public function edit(Request $request, $id): RedirectResponse
+    public function edit(StoreDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string',
-            'store_number' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|numeric|digits_between:10,11',
-            'whatsapp' => 'required|numeric|digits_between:10,11',
-            'users' => 'required|array',
-            'users.*' => 'nullable|required|numeric|exists:users,id',
-            'logo_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:1024'
-        ], [
-            'phone.digits_between' => 'O campo deve ter entre :min e :max números',
-            'whatsapp.digits_between' => 'O campo deve ter entre :min e :max números'
-        ]);
-
         $store = Store::findOrFail($id);
 
         if ($request->has('logo_url') && isset($request->logo_url)) {
@@ -104,6 +91,9 @@ class StoreController extends Controller
         $store->email = $request->email;
         $store->phone = $request->phone;
         $store->whatsapp = $request->whatsapp;
+        $store->instagram = $request->instagram;
+        $store->facebook = $request->facebook;
+        $store->site = $request->site;
 
         $store->save();
 

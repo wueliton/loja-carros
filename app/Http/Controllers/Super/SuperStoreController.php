@@ -79,13 +79,12 @@ class SuperStoreController extends Controller
 
     private function patchStore(Request $request, Store $store = null)
     {
-        if (!$store) {
-            $store = new Store();
-        }
-
         $fileName = 'no-image.jpg';
 
-        $store->logo_url = $fileName;
+        if (!$store) {
+            $store = new Store();
+            $store->logo_url = $fileName;
+        }
 
         if ($request->has('logo_url') && isset($request->logo_url)) {
             if ($store->logo_url) {

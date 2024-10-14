@@ -11,4 +11,7 @@ export interface StoreSchema {
   email?: string;
   phone?: string | number;
   whatsapp?: string | number;
+  instagram?: string;
+  facebook?: string;
+  site?: string;
 }
