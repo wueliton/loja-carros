@@ -11,7 +11,7 @@ include "includes/head-3.php";
         <div class="bg-secondary-light">
             <div class="container">
                 <div class="row py-5">
-                    <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="col-lg-6 mb-4 mb-lg-0 py-4">
                         <h2 class="mb-4 h2">O maior endereço automotivo da América</h2>
                         <p>Oferecemos um espaço de 100.000m² com variedade de lojas de veículos novos, semi novos e
                             motos. Encontre suas marcas favoritas e aproveite a facilidade de tudo estar em um só
@@ -53,7 +53,7 @@ include "includes/head-3.php";
         <div class="py-5">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 py-4">
                         <div class="row">
                             <div class="col-4">
                                 <h3 class="h4">23+</h3>
@@ -61,7 +61,7 @@ include "includes/head-3.php";
                             </div>
                             <div class="col-4">
                                 <h3 class="h4">400+</h3>
-                                <p>Veículos cadastrados</p>
+                                <p>Carros cadastrados</p>
                             </div>
                             <div class="col-4">
                                 <h3 class="h4">200+</h3>
@@ -73,33 +73,36 @@ include "includes/head-3.php";
             </div>
         </div>
     </section>
-    <section class="bg-third mt-4">
-        <div class="container py-5">
-            <div class="d-flex flex-column flex-lg-row gap-4 py-3">
-                <div class="icon-section d-flex gap-2 align-items-start">
+    <section class="bg-third py-5 mt-4">
+        <div class="container py-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-center gap-5 py-3">
+                <div class="icon-section flex-1 d-flex gap-2 align-items-start flex-column">
                     <i class="fa-solid fa-medal"></i>
                     <div>
-                        <h3 class="h6 mb-2">Qualidade</h3>
+                        <h3 class="h6 mb-2"> Atendimento ao Cliente</h3>
                         <p class="body-alt">
-                            Controle de qualidade de todos os veículos
+                            Equipes de vendas bem treinadas e atenciosas que oferecem suporte personalizado.
                         </p>
                     </div>
                 </div>
-                <div class="icon-section d-flex gap-2 align-items-start">
-                    <i class="fa-solid fa-medal"></i>
+                <div class="icon-section flex-1 d-flex gap-2 align-items-start flex-column">
+                    <i class="fa-solid fa-road-circle-check"></i>
                     <div>
-                        <h3 class="h6 mb-2">Qualidade</h3>
+                        <h3 class="h6 mb-2">Fácil acesso</h3>
                         <p class="body-alt">
-                            Controle de qualidade de todos os veículos
+                            Localizado próximo ao Rodoanel e entre as marginais dos rios Pinheiros e Tietê.
                         </p>
                     </div>
                 </div>
-                <div class="icon-section d-flex gap-2 align-items-start">
-                    <i class="fa-solid fa-medal"></i>
+                <div class="icon-section flex-1 d-flex gap-2 align-items-start flex-column">
+                    <div class="icons">
+                        <i class="fa-solid fa-car-side"></i>
+                        <i class="fa-solid fa-motorcycle"></i>
+                    </div>
                     <div>
-                        <h3 class="h6 mb-2">Qualidade</h3>
+                        <h3 class="h6 mb-2">Variedade de Opções</h3>
                         <p class="body-alt">
-                            Controle de qualidade de todos os veículos
+                            Um amplo portfólio de veículos de diferentes marcas, modelos e faixas de preço.
                         </p>
                     </div>
                 </div>
@@ -108,10 +111,10 @@ include "includes/head-3.php";
     </section>
     <section>
         <div class="container py-5">
-            <div class="row">
+            <div class="row py-5">
                 <div class="d-flex flex-column align-items-center justify-content-center pb-3">
                     <h2 class="h2">Encontre seu veículo</h2>
-                    <p>Mensalmente são cadastrados novos veículos.</p>
+                    <p>Novos veículos são cadastrados todos os meses. Não perca a oportunidade de encontrar o seu!</p>
                 </div>
                 <div class="py-4">
                     <div class="search">
@@ -207,7 +210,99 @@ include "includes/head-3.php";
                         </div>
                     </div>
                 </div>
+                <div class="py-4 d-flex justify-content-center">
+                    <a href="" class="btn">Visualizar Todos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="partners py-4">
+        <div class="py-5">
+            <div class="container text-center pb-5">
+                <h2 class="h3">Nossos parceiros</h2>
+                <p>Somos mais de 23 lojas, com uma vasta diversidade de veículos</p>
+            </div>
+            <div class="marquee mb-2">
+                <div class="track">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/auto-prime.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/falco.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/arv.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/rejai.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/af-motors.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/phoenix.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/fast-moters.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/dalibor.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/zeus-car.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/rasauto.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/monster-car.png" alt="Auto Prime">
+                </div>
+            </div>
+            <div class="marquee inverse">
+                <div class="track">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/auto-prime.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/falco.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/arv.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/rejai.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/af-motors.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/phoenix.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/fast-moters.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/dalibor.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/zeus-car.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/rasauto.png" alt="Auto Prime">
+                    <img src="https://www.raposoautoshopping.com.br/assets/img/logos/monster-car.png" alt="Auto Prime">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5">
+        <div class="container meet-us py-5">
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6">
+                    <h2 class="h3 mb-3">Venha nos fazer uma visita</h2>
+                    <p>Aproveite a experiência de ver de perto os veículos, realizar test drives e tirar suas dúvidas em
+                        um ambiente acolhedor e descontraído.</p>
+
+                    <div class="d-flex gap-2 flex-column py-5">
+                        <div class="link-info">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <div>
+                                <p class="h6">Rodovia Raposo Taveres, KM 18,5</p>
+                                <p>São Paulo - SP, 05576-000</p>
+                            </div>
+                        </div>
+                        <div class="link-info">
+                            <i class="fa-solid fa-clock"></i>
+                            <div>
+                                <p class="h6">10H às 19H</p>
+                                <p>Segunda a Sexta</p>
+                                <p class="h6 mt-3">09H às 20H</p>
+                                <p>Sábado</p>
+                                <p class="h6 mt-3">10H às 18H</p>
+                                <p>Domingo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 offset-lg-1 map ">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.4733753106098!2d-46.79365932456175!3d-23.58735017878192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce55208e3217cd%3A0xf4098718d737e8d1!2sAuto%20Shopping%20Raposo!5e0!3m2!1spt-BR!2sbr!4v1728938297112!5m2!1spt-BR!2sbr"
+                        width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="for-business py-4">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    <p class="subtitle mb-2"><i class="fa-solid fa-store"></i> Lojistas</p>
+                    <h2 class="h3 mb-4">Potencialize seu negócio no nosso auto shopping!</h2>
+                    <a class="btn">Saiba mais <i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
             </div>
         </div>
     </section>
 </main>
+<?php include "./includes/footer-3.php"; ?>

@@ -23,12 +23,15 @@
     font-family: 'Montserrat';
     font-weight: 300;
     box-sizing: border-box;
+    text-decoration: none;
 }
 
 :root {
     --primary: hsl(241, 49%, 30%);
     --primary-light: #40A8DF;
+    --primary-light-hover: #68bdeb;
     --primary-dark: hsl(241, 49%, 10%);
+    --primary-opacity: rgb(40, 39, 114, 0.05);
     --secondary: hsl(67, 88%, 42%);
     --secondary-light: hsl(67, 80%, 70%);
     --secondary-dark: hsl(67, 88%, 20%);
@@ -40,29 +43,65 @@
     --third: #F2F2F2;
 }
 
+strong {
+    font-weight: bold;
+}
+
+.border-bottom {
+    border-bottom: 1px solid var(--outline);
+}
+
+a {
+    color: var(--fg);
+}
+
+.h1 {
+    font-size: 40pt;
+    font-weight: bold;
+    color: var(--primary);
+}
+
 .h2 {
     font-size: 32pt;
     font-weight: bold;
+    color: var(--primary);
 }
 
 .h3 {
     font-size: 28pt;
     font-weight: bold;
+    color: var(--primary);
 }
 
 .h4 {
     font-size: 22pt;
     font-weight: bold;
+    color: var(--primary);
 }
 
 .h5 {
     font-size: 18pt;
     font-weight: bold;
+    color: var(--primary);
 }
 
 .h6 {
     font-size: 16pt;
     font-weight: bold;
+    color: var(--primary);
+}
+
+.subtitle {
+    color: var(--primary-light);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.gap-5 {
+    gap: 32px;
 }
 
 .gap-4 {
@@ -85,8 +124,16 @@
     gap: 4px;
 }
 
+.flex-1 {
+    flex: 1;
+}
+
 .text-right {
     text-align: right;
+}
+
+.text-center {
+    text-align: center;
 }
 
 .body-alt {
@@ -117,11 +164,22 @@
 .btn {
     background-color: var(--primary-light);
     color: var(--fg-on-primary);
-    padding: 12px 20px;
+    padding: 20px 32px;
     border-radius: 8px;
     text-transform: uppercase;
     font-weight: 500;
     cursor: pointer;
+    text-decoration: none;
+    font-size: 12pt;
+    display: inline-flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.btn:hover {
+    background-color: var(--primary-light-hover);
 }
 
 header {
@@ -140,8 +198,13 @@ header img {
     width: 100px;
 }
 
-header button.drop-down, header a.menu-btn {
-    padding: 20px;
+header .menu {
+    list-style: none;
+    margin: 0;
+}
+
+header button.dropdown, header a.menu-btn {
+    padding: 18px;
     background-color: transparent;
     color: var(--fg-on-primary);
     text-transform: uppercase;
@@ -150,20 +213,80 @@ header button.drop-down, header a.menu-btn {
     gap: 12px;
     cursor: pointer;
     font-size: 10pt;
+    position: relative;
+    border-radius: 8px;
+    transition: background-color 0.2s;
 }
+
+header button.dropdown:hover, header a.menu-btn:hover, header li:hover a, header li:hover button, header a:focus, header button:focus {
+    background-color: rgba(255,255,255,0.1);
+}
+
+header button.dropdown:focus > i, header li:hover button.dropdown > i {
+    transform: rotate(-180deg);
+}
+
+header ul li:hover ul, header button.dropdown:focus + ul {
+    display: block;
+    opacity: 1;
+}
+
 header .admin-link {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.dropdown + ul {
+    position: absolute;
+    background: var(--surface);
+    top: 100%;
+    right: 0;
+    overflow: hidden;
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    width: 300px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: none;
+    opacity: 0;
+}
+
+.dropdown + ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown + ul a {
+    color: var(--fg);
+    display: block;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown + ul a:hover {
+    background-color: var(--outline);
+}
+
+.dropdown + ul a i {
+    font-size: 10pt;
+}
+
 .carousel {
     height: 500px;
+    background-color: black;
 }
 
 .bg-secondary-light {
     background-color: var(--primary-light);
     color: var(--fg-on-primary);
+}
+
+.about h2 {
+    color: white;
 }
 
 .position-relative {
@@ -206,10 +329,32 @@ hr {
 }
 
 .icon-section i {
-    padding: 12px;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--primary-light);
     color: var(--fg-on-primary);
     border-radius: 80px;
+    font-size: 16pt;
+}
+
+.icon-section .icons {
+    display: flex;
+}
+
+.icon-section .icons i {
+    border: 2px solid var(--outline);
+}
+
+.icon-section .icons i:first-child {
+    z-index: 1;
+}
+
+.icon-section .icons i:last-child {
+    float: left;
+    margin-left: -12px;
 }
 
 .search .actions {
@@ -288,6 +433,120 @@ hr {
 .product:hover {
     background-color: white;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.partners {
+    background-color: var(--primary-light);
+    color: var(--fg-on-primary);
+}
+
+.partners h2 {
+    color: white;
+}
+
+.partners .marquee::before {
+    content: '';
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40%;
+    background: linear-gradient(to right, var(--primary-light) 20%, transparent 80%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.partners .marquee::after {
+    content: '';
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40%;
+    background: linear-gradient(to left, var(--primary-light) 20%, transparent 80%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.marquee {
+    position: relative;
+    width: 100%;
+    height: 86px;
+    overflow: hidden;
+}
+
+.marquee .track {
+    position: absolute;
+    white-space: nowrap;
+    will-change: transform;
+    animation: marquee 40s linear infinite;
+    background-color: var(--primary-light);
+}
+
+.marquee .track img {
+    border-radius: 12px;
+    margin: 4px;
+    height: 80px;
+    width: auto;
+    filter: grayscale(100%);
+    object-fit: cover;
+    mix-blend-mode: soft-light;
+    transition: filter 0.2s;
+}
+
+.marquee .track img:hover {
+    mix-blend-mode: normal;
+    filter: none;
+}
+
+.marquee.inverse .track {
+    animation: marquee 40s linear reverse infinite;
+}
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-40%); }
+}
+
+.meet-us {
+    padding: 30px 60px;
+}
+
+.map iframe {
+    border-radius: 12px;
+}
+
+.link-info {
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    gap: 12px;
+    background-color: var(--primary-opacity);
+}
+
+.link-info i {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18pt;
+}
+
+.for-business {
+    background-color: var(--primary);
+    color: var(--fg-on-primary);
+}
+
+.for-business h2 {
+    color: var(--fg-on-primary);
+}
+
+.footer-icons img {
+    width: 20px;
+    filter: invert(100%);
 }
 
 @media (min-width: 992px) {
