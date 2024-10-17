@@ -88,16 +88,15 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
         </label>
         <div className={styles['field']}>
           {prefix && <>{prefix}</>}
-          {!hideInput && (
-            <input
-              {...props}
-              id={id}
-              ref={inputRef as LegacyRef<HTMLInputElement>}
-              defaultValue={maskValue}
-              type={showPass ? 'text' : type}
-              disabled={disabled}
-            />
-          )}
+          <input
+            {...props}
+            id={id}
+            ref={inputRef as LegacyRef<HTMLInputElement>}
+            value={maskValue}
+            type={showPass ? 'text' : type}
+            disabled={disabled}
+            hidden={hideInput}
+          />
           {type === 'password' ? (
             <IconButton
               icon={showPass ? <EyeNoIcon /> : <EyeIcon />}
@@ -107,9 +106,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
             suffix && <>{suffix}</>
           )}
         </div>
-        <p>
-          {error ? <ErrorLabel error={error} fieldName={label} /> : hint ?? ''}
-        </p>
+        <p>{error ? <ErrorLabel error={error} /> : hint ?? ''}</p>
       </div>
     );
   },

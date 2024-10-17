@@ -30,9 +30,14 @@ class ApiStoresController extends Controller
         return response()->json($results);
     }
 
-    public function find()
+    public function find(Request $request)
     {
-        $stores = Store::latest()->paginate(10);
+        $stores = Store::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->latest()->paginate(10);
         return response()->json($stores);
     }
 }

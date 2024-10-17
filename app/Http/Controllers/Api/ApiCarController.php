@@ -56,4 +56,10 @@ class ApiCarController extends Controller
 
         return response()->json($cars);
     }
+
+    public function getByCode(Request $request, $code)
+    {
+        $car = Car::where('code', '=', $code)->get();
+        return response()->json($car);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ColorDataRequest;
 use App\Models\Color;
 use App\Services\FilterService;
 use Illuminate\Http\RedirectResponse;
@@ -28,45 +29,23 @@ class ColorController extends Controller
             return $query;
         })->paginate(10);
 
-        return Inertia::render('Colors/List', [
+        return Inertia::render('Admin/Colors/List', [
             'colors' => $colors,
             'showAll' => $request->showAll
         ]);
     }
 
-    public function get(Request $request)
+    public function create(ColorDataRequest $request): RedirectResponse
     {
-        $colors = Color::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $colors;
-    }
-
-    public function create(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'color' => 'required|string'
-        ]);
-
-        Color::create([
-            'color' => $request->color
-        ]);
+        $this->patchColor($request);
 
         return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(ColorDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'color' => 'required|string'
-        ]);
-
         $color = Color::findOrFail($id);
-        $color->color = $request->color;
-        $color->save();
+        $this->patchColor($request, $color);
 
         return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
@@ -77,5 +56,35 @@ class ColorController extends Controller
         $color->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $colors = Color::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $colors;
+    }
+
+    public function apiCreate(ColorDataRequest $request)
+    {
+        $color = $this->patchColor($request);
+
+        return response()->json($color);
+    }
+
+    private function patchColor(Request $request, Color $color = null)
+    {
+        if (!$color) {
+            $color = new Color();
+        }
+
+        $color->color = $request->color;
+        $color->save();
+
+        return $color;
     }
 }

@@ -9,4 +9,7 @@ export class Store extends DefaultModel {
   email?: string;
   phone?: number;
   whatsapp?: number;
+  instagram?: string;
+  facebook?: string;
+  site?: string;
 }

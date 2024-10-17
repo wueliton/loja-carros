@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MotorcycleBrandModelDataRequest;
 use App\Models\MotorcycleBrandModel;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,48 +28,22 @@ class MotorcycleBrandModelController extends Controller
             }
             return $query;
         })->latest()->paginate(10);
-        return Inertia::render('MotorcycleBrandModels/List', [
+        return Inertia::render('Admin/Moto/Models/List', [
             'models' => $models
         ]);
     }
 
-    public function get(Request $request)
+    public function create(MotorcycleBrandModelDataRequest $request): RedirectResponse
     {
-        $brandModels = MotorcycleBrandModel::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $brandModels;
-    }
-
-    public function create(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'brand' => 'required|exists:brands,id'
-        ]);
-
-        MotorcycleBrandModel::create([
-            'name' => $request->name,
-            'brand_id' => $request->brand
-        ]);
+        $this->patchModel($request);
 
         return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(MotorcycleBrandModelDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string',
-            'brand' => 'required|exists:brands,id'
-        ]);
-
-        $brandModel = MotorcycleBrandModel::findOrFail($id);
-        $brandModel->name = $request->name;
-        $brandModel->brand_id = $request->brand;
-        $brandModel->save();
+        $model = MotorcycleBrandModel::findOrFail($id);
+        $this->patchModel($request, $model);
 
         return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
@@ -80,5 +54,35 @@ class MotorcycleBrandModelController extends Controller
         $brandModel->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $brandModels = MotorcycleBrandModel::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $brandModels;
+    }
+
+    public function apiCreate(MotorcycleBrandModelDataRequest $request)
+    {
+        $model = $this->patchModel($request);
+        return response()->json($model);
+    }
+
+    private function patchModel(Request $request, MotorcycleBrandModel $model = null)
+    {
+        if (!$model) {
+            $model = new MotorcycleBrandModel();
+        }
+
+        $model->name = $request->name;
+        $model->brand_id = $request->brand;
+        $model->save();
+
+        return $model;
     }
 }

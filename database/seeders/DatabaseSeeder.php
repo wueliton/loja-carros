@@ -3,10 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,10 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Role::create(['name' => 'user']);
-        $createUser = Permission::create(['name' => 'create user']);
-        $admin = Role::create(['name' => 'admin']);
-
-        $admin->givePermissionTo($createUser);
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'super']);
 
         $paulo = User::create([
             'name' => 'Paulo',
@@ -27,6 +23,14 @@ class DatabaseSeeder extends Seeder
             'password' => 'pxb2tek!bcr.bxg!PJB'
         ]);
 
-        $paulo->assignRole('admin');
+        $paulo->assignRole('super');
+
+        $bruna = User::create([
+            'name' => 'Bruna',
+            'email' => 'bruna.conceitopub@gmail.com',
+            'password' => 'Mudar@123'
+        ]);
+
+        $bruna->assignRole('admin');
     }
 }

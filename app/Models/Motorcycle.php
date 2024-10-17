@@ -96,5 +96,10 @@ class Motorcycle extends Model
         static::creating(function ($model) {
             $model->slug = $model->generateUniqueSlug($model->title);
         });
+
+        static::created(function ($model) {
+            $model->code = $model->id . date('Y');
+            $model->saveQuietly();
+        });
     }
 }

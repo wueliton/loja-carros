@@ -1,5 +1,5 @@
 export interface Role {
   id: number;
-  name: string;
+  name: 'admin' | 'super' | 'user';
   guard_name: string;
 }

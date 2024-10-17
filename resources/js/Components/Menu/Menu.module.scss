@@ -1,0 +1,24 @@
+.menu {
+    @apply min-w-52
+        origin-top-right
+        bg-white
+        divide-y
+        divide-gray-100
+        rounded-lg
+        shadow-md
+        max-h-96
+        overflow-y-auto
+        transition
+        duration-100
+        ease-out
+        [--anchor-gap:var(--spacing-1)]
+        focus:outline-none
+        data-[closed]:scale-95
+        data-[closed]:opacity-0
+        z-40
+        mt-3;
+
+    button {
+        @apply w-full p-3 hover:bg-gray-100 active:bg-gray-200;
+    }
+}

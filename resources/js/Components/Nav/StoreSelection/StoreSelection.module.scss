@@ -1,0 +1,15 @@
+.store {
+    @apply flex gap-3 items-center p-3 text-current rounded-md bg-white/10 border-t border-white/30 hover:bg-white/20 cursor-pointer select-none;
+
+    .icon {
+        @apply h-8 w-8 rounded border border-white/20 overflow-hidden;
+
+        img {
+            @apply object-cover w-full h-full;
+        }
+    }
+
+    span {
+        @apply text-ellipsis overflow-hidden flex-1 whitespace-nowrap font-bold;
+    }
+}

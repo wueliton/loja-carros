@@ -97,12 +97,23 @@ class Car extends Model
         return $slug;
     }
 
+    private function generateUniqueCode()
+    {
+
+    }
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
             $model->slug = $model->generateUniqueSlug($model->title);
+            $model->code = date('Y');
+        });
+
+        static::created(function ($model) {
+            $model->code = $model->id . date('Y');
+            $model->saveQuietly();
         });
     }
 }
