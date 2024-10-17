@@ -16,4 +16,6 @@ export interface StoreFormProps {
   instagram?: string;
   facebook?: string;
   site?: string;
+  max_cars?: number;
+  max_motorcycles?: number;
 }

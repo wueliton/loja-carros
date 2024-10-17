@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MotorcycleDataRequest;
 use App\Models\Motorcycle;
 use App\Models\MotorcycleImages;
+use App\Models\Store;
 use App\Services\FilterService;
 use App\Services\ImageUploadService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,18 +24,31 @@ class MotorcycleController extends Controller
 
     public function list(Request $request): Response
     {
-        $motorcycles = Motorcycle::with('brand:id,name', 'model:id,name', 'store:id,name', 'images')->select('id', 'title', 'brand_id', 'model_id', 'store_id', 'created_at')->where(function ($query) use ($request) {
-            $userStore = $request->user()->lastStore()->pluck('store_id');
-            $query->where('store_id', $userStore);
+        $lastStoreId = $request->user()->lastStoreId();
+        $motorcycles = Motorcycle::with(
+            'brand:id,name',
+            'model:id,name',
+            'store:id,name',
+            'images'
+        )->select(
+                'id',
+                'title',
+                'brand_id',
+                'model_id',
+                'store_id',
+                'created_at'
+            )->where('store_id', $lastStoreId)->where(function ($query) use ($request) {
+                if ($request->has('where')) {
+                    $query = $this->filterService->apply($query, $request->where);
+                }
+                return $query;
+            })->latest()->paginate(10);
 
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->latest()->paginate(10);
+        $canCreate = $this->canCreate($lastStoreId);
 
         return Inertia::render('User/Motorcycle/List/index', [
-            'motorcycles' => $motorcycles
+            'motorcycles' => $motorcycles,
+            'canCreate' => $canCreate
         ]);
     }
 
@@ -47,15 +61,21 @@ class MotorcycleController extends Controller
                 'motorcycle' => $motorcycle
             ]);
         } catch (ModelNotFoundException $e) {
-            return Redirect::route('motorcycle.list.view');
+            return Redirect::route('motorcycles.list.view');
         }
     }
 
     public function create(MotorcycleDataRequest $request): RedirectResponse
     {
+        $lastStoreId = $request->user()->lastStoreId();
+        $canCreate = $this->canCreate($lastStoreId);
+
+        if (!$canCreate)
+            return Redirect::route('motorcycles.list.view');
+
         $this->patchMotorcycle($request);
 
-        return Redirect::route('motorcycle.list.view');
+        return Redirect::route('motorcycles.list.view');
     }
 
     public function edit(MotorcycleDataRequest $request, $id): RedirectResponse
@@ -63,7 +83,7 @@ class MotorcycleController extends Controller
         $motorcycle = Motorcycle::findOrFail($id);
         $this->patchMotorcycle($request, $motorcycle);
 
-        return Redirect::route('motorcycle.list.view');
+        return Redirect::route('motorcycles.list.view');
     }
 
     public function delete(Request $request, $id): RedirectResponse
@@ -85,6 +105,15 @@ class MotorcycleController extends Controller
         $image->delete();
 
         return response()->json(['success' => true], 200);
+    }
+
+    private function canCreate($lastStoreId)
+    {
+        $storeMotorcycleLimit = Store::where('id', $lastStoreId)->value('max_motorcycles');
+        $storeMotorcycleCount = Motorcycle::where('store_id', $lastStoreId)->count();
+
+        $canCreate = $storeMotorcycleLimit > $storeMotorcycleCount;
+        return $canCreate;
     }
 
     private function patchMotorcycle(Request $request, Motorcycle $motorcycle = null)

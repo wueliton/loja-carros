@@ -53,7 +53,8 @@ const carHeader: THeadProps<Car>[] = [
 
 export default function ListVehiclesPage({
   cars,
-}: PageProps<{ cars: Paginated<Car> }>) {
+  canCreate,
+}: PageProps<{ cars: Paginated<Car>; canCreate: boolean }>) {
   const { openDialog } = useDialog();
   const handleDelete = (car: Car) =>
     openDialog({
@@ -80,6 +81,13 @@ export default function ListVehiclesPage({
                 preserveScroll: true,
               })
             }
+            disabled={!canCreate}
+            {...(canCreate
+              ? {}
+              : {
+                  'data-tooltip-id': 'created_at',
+                  'data-tooltip-content': 'Você atingiu o limite de cadastros',
+                })}
           >
             Adicionar
           </Button>

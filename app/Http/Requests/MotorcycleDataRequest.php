@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Motorcycle;
+use App\Models\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MotorcycleDataRequest extends FormRequest

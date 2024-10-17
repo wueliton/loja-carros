@@ -24,18 +24,21 @@ export const StoreForm: FC<StoreFormProps> = ({ store, postUrl }) => {
         label="Nome"
         onChange={(e) => setData('name', e.target.value)}
         className="md:col-span-2"
+        required
       />
       <Input
         error={errors.store_number}
         value={data.store_number}
         label="Número"
         onChange={(e) => setData('store_number', e.target.value)}
+        required
       />
       <Input
         error={errors.email}
         value={data.email}
         label="E-mail"
         onChange={(e) => setData('email', e.target.value)}
+        required
       />
       <Input
         error={errors.phone}
@@ -49,6 +52,7 @@ export const StoreForm: FC<StoreFormProps> = ({ store, postUrl }) => {
           { mask: '(00) 0000-0000' },
         ]}
         onChange={(e) => setData('phone', e.target.value)}
+        required
       />
       <Input
         error={errors.whatsapp}
@@ -62,6 +66,7 @@ export const StoreForm: FC<StoreFormProps> = ({ store, postUrl }) => {
           { mask: '(00) 0000-0000' },
         ]}
         onChange={(e) => setData('whatsapp', e.target.value)}
+        required
       />
       <Input
         error={errors.instagram}
@@ -98,6 +103,31 @@ export const StoreForm: FC<StoreFormProps> = ({ store, postUrl }) => {
           ) : undefined
         }
       />
+      <div className="md:col-span-2 mt-2 w-full">
+        <h2 className="text-lg font-bold">Limites</h2>
+        <div className="grid md:grid-cols-2 gap-3">
+          <Input
+            label="Limite Carros"
+            type="number"
+            name="max_cars"
+            min={0}
+            value={data.max_cars}
+            error={errors.max_cars}
+            onChange={(e) => setData('max_cars', Number(e.target.value))}
+            required
+          />
+          <Input
+            label="Limite Motos"
+            type="number"
+            min={0}
+            name="max_motorcycles"
+            value={data.max_motorcycles}
+            error={errors.max_motorcycles}
+            onChange={(e) => setData('max_motorcycles', Number(e.target.value))}
+            required
+          />
+        </div>
+      </div>
       <div className="md:col-span-2 mt-2">
         <h2 className="text-lg font-bold">Administradores</h2>
         <Autocomplete
@@ -111,6 +141,7 @@ export const StoreForm: FC<StoreFormProps> = ({ store, postUrl }) => {
           value={data.users}
           onChange={(e) => setData('users', e)}
           moreThanOne
+          required
         />
       </div>
       <div className="col-span-full flex justify-end">

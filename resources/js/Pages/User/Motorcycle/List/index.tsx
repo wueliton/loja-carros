@@ -53,7 +53,8 @@ const motorcycleHeader: THeadProps<Motorcycle>[] = [
 
 export default function MotorcyclePage({
   motorcycles,
-}: PageProps<{ motorcycles: Paginated<Motorcycle> }>) {
+  canCreate,
+}: PageProps<{ motorcycles: Paginated<Motorcycle>; canCreate: boolean }>) {
   const { openDialog } = useDialog();
 
   const handleDeleteMotorcycle = (motorcycle: Motorcycle) =>
@@ -80,6 +81,13 @@ export default function MotorcyclePage({
               preserveScroll: true,
             })
           }
+          disabled={!canCreate}
+          {...(canCreate
+            ? {}
+            : {
+                'data-tooltip-id': 'created_at',
+                'data-tooltip-content': 'Você atingiu o limite de cadastros',
+              })}
         >
           Adicionar
         </Button>

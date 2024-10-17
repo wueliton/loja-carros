@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CarDataRequest;
 use App\Models\Car;
 use App\Models\CarImages;
+use App\Models\Store;
 use App\Services\FilterService;
 use App\Services\ImageUploadService;
 use Illuminate\Http\RedirectResponse;
@@ -22,6 +23,7 @@ class CarController extends Controller
 
     public function list(Request $request): Response
     {
+        $lastStoreId = $request->user()->lastStoreId();
         $cars = Car::with(
             'brand:id,name',
             'model:id,name',
@@ -33,23 +35,29 @@ class CarController extends Controller
                 'model_id',
                 'store_id',
                 'created_at'
-            )->where(function ($query) use ($request) {
-                $userStore = $request->user()->lastStore()->pluck('store_id');
-                $query = $query->where('store_id', $userStore);
-
+            )->where('store_id', $lastStoreId)->where(function ($query) use ($request) {
                 if ($request->has('where')) {
                     $query = $this->filterService->apply($query, $request->where);
                 }
                 return $query;
             })->latest()->paginate(10);
 
+        $canCreate = $this->canCreate($lastStoreId);
+
         return Inertia::render('User/Cars/List/index', [
-            'cars' => $cars
+            'cars' => $cars,
+            'canCreate' => $canCreate
         ]);
     }
 
     public function create(CarDataRequest $request): RedirectResponse
     {
+        $lastStoreId = $request->user()->lastStoreId();
+        $canCreate = $this->canCreate($lastStoreId);
+
+        if (!$canCreate)
+            return Redirect::route('cars.list.view');
+
         $this->patchCar($request);
 
         return Redirect::route('cars.list.view');
@@ -91,6 +99,15 @@ class CarController extends Controller
         $image->delete();
 
         return response()->json(['success' => true], 200);
+    }
+
+    public function canCreate($lastStoreId): bool
+    {
+        $storeCarLimit = Store::where('id', $lastStoreId)->value('max_cars');
+        $storeCarsCount = Car::where('store_id', $lastStoreId)->count();
+
+        $canCreate = $storeCarLimit > $storeCarsCount;
+        return $canCreate;
     }
 
     public function patchCar(Request $request, Car $car = null)

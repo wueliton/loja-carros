@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserDataRequest;
-use App\Http\Requests\UserPostRequest;
-use App\Models\Store;
 use App\Models\User;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
@@ -21,7 +19,7 @@ class AdminUserController extends Controller
 
     public function list(Request $request)
     {
-        $users = User::with('roles')->where(function ($query) use ($request) {
+        $users = User::role(['admin', 'user'])->with('roles')->where(function ($query) use ($request) {
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }

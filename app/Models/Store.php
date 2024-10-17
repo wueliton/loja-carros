@@ -24,7 +24,9 @@ class Store extends Model
         'instagram',
         'facebook',
         'site',
-        'slug'
+        'slug',
+        'max_motorcycles',
+        'max_cars'
     ];
 
     public $displayName = 'Loja';

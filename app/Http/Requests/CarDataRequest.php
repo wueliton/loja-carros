@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Car;
+use App\Models\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CarDataRequest extends FormRequest

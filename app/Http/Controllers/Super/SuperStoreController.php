@@ -108,6 +108,8 @@ class SuperStoreController extends Controller
         $store->instagram = $request->instagram;
         $store->facebook = $request->facebook;
         $store->site = $request->site;
+        $store->max_cars = $request->max_cars;
+        $store->max_motorcycles = $request->max_motorcycles;
         $store->save();
 
         $store->users()->detach();
