@@ -10,14 +10,7 @@
             gap-2;
     }
 
-    .option {
-        @apply p-2
-            cursor-pointer;
 
-            &.active-option {
-                @apply bg-gray-100;
-            }
-    }
 
     .loading {
         @apply flex
@@ -38,4 +31,14 @@
     .prefix {
         @apply p-1;
     }
+}
+
+
+.option {
+    @apply p-2
+        cursor-pointer;
+
+        &.active-option {
+            @apply bg-gray-100;
+        }
 }

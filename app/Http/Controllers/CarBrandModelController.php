@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarBrandModelDataRequest;
 use App\Models\CarBrandModel;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
@@ -27,48 +28,22 @@ class CarBrandModelController extends Controller
             }
             return $query;
         })->latest()->paginate(10);
-        return Inertia::render('CarBrandModels/List', [
+        return Inertia::render('Admin/Car/Models/List', [
             'models' => $models
         ]);
     }
 
-    public function get(Request $request)
+    public function create(CarBrandModelDataRequest $request): RedirectResponse
     {
-        $brandModels = CarBrandModel::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $brandModels;
-    }
-
-    public function create(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'brand' => 'required|exists:brands,id'
-        ]);
-
-        CarBrandModel::create([
-            'name' => $request->name,
-            'brand_id' => $request->brand
-        ]);
+        $this->patchModel($request);
 
         return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(CarBrandModelDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string',
-            'brand' => 'required|exists:brands,id'
-        ]);
-
         $brandModel = CarBrandModel::findOrFail($id);
-        $brandModel->name = $request->name;
-        $brandModel->brand_id = $request->brand;
-        $brandModel->save();
+        $this->patchModel($request, $brandModel);
 
         return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
@@ -79,5 +54,36 @@ class CarBrandModelController extends Controller
         $brandModel->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $brandModels = CarBrandModel::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $brandModels;
+    }
+
+    public function apiCreate(CarBrandModelDataRequest $request)
+    {
+        $model = $this->patchModel($request);
+
+        return response()->json($model);
+    }
+
+    private function patchModel(Request $request, CarBrandModel $model = null)
+    {
+        if (!$model) {
+            $model = new CarBrandModel();
+        }
+
+        $model->name = $request->name;
+        $model->brand_id = $request->brand;
+
+        $model->save();
+        return $model;
     }
 }

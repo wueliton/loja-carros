@@ -66,7 +66,7 @@ export const Filter = ({
   }, 500);
 
   const reload = () => {
-    router.visit((route().current() ?? '').split('?')[0], {
+    router.visit(route((route().current() ?? '').split('?')[0]), {
       data: convertToFormData({
         where: {
           or: inputFilter.current,

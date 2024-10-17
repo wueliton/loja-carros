@@ -57,6 +57,16 @@ class User extends Authenticatable
 
     public function stores()
     {
-        return $this->belongsToMany(Store::class);
+        return $this->belongsToMany(Store::class, 'store_users');
+    }
+
+    public function lastStore()
+    {
+        return $this->hasOne(LastStore::class);
+    }
+
+    public function lastStoreId()
+    {
+        return $this->lastStore()->pluck('store_id')->first();
     }
 }

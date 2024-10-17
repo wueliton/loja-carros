@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarTransmissionDataRequest;
 use App\Models\CarTransmission;
 use App\Services\FilterService;
 use Illuminate\Http\RedirectResponse;
@@ -29,44 +30,22 @@ class CarTransmissionController extends Controller
             return $query;
         })->paginate(10);
 
-        return Inertia::render('CarTransmissions/List', [
+        return Inertia::render('Admin/Car/Transmissions/List', [
             'transmissions' => $transmissions
         ]);
     }
 
-    public function get(Request $request)
+    public function create(CarTransmissionDataRequest $request): RedirectResponse
     {
-        $transmissions = CarTransmission::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $transmissions;
-    }
-
-    public function create(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        CarTransmission::create([
-            'name' => $request->name
-        ]);
+        $this->patchTransmission($request);
 
         return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(CarTransmissionDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
         $transmission = CarTransmission::findOrFail($id);
-        $transmission->name = $request->name;
-        $transmission->save();
+        $this->patchTransmission($request, $transmission);
 
         return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
@@ -77,5 +56,35 @@ class CarTransmissionController extends Controller
         $transmission->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $transmissions = CarTransmission::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $transmissions;
+    }
+
+    public function apiCreate(Request $request)
+    {
+        $transmission = $this->patchTransmission($request);
+
+        return response()->json($transmission);
+    }
+
+    private function patchTransmission(Request $request, CarTransmission $transmission = null)
+    {
+        if (!$transmission) {
+            $transmission = new CarTransmission();
+        }
+
+        $transmission->name = $request->name;
+        $transmission->save();
+
+        return $transmission;
     }
 }

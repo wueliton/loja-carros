@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BrandDataRequest;
 use App\Models\Brands;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
@@ -28,12 +29,35 @@ class BrandController extends Controller
             return $query;
         })->paginate(10);
 
-        return Inertia::render('Brands/List', [
+        return Inertia::render('Admin/Brands/List', [
             'brands' => $brands
         ]);
     }
 
-    public function get(Request $request)
+    public function create(BrandDataRequest $request): RedirectResponse
+    {
+        $this->patchBrand($request);
+
+        return redirect()->back()->with('success', 'Item criado com sucesso.');
+    }
+
+    public function update(BrandDataRequest $request, $id): RedirectResponse
+    {
+        $brand = Brands::findOrFail($id);
+        $this->patchBrand($request, $brand);
+
+        return redirect()->back()->with('success', 'Item atualizado com sucesso.');
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $brand = Brands::findOrFail($id);
+        $brand->delete();
+
+        return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
     {
         $brands = Brands::where(function ($query) use ($request) {
             if ($request->has('where')) {
@@ -44,37 +68,22 @@ class BrandController extends Controller
         return $brands;
     }
 
-    public function create(Request $request): RedirectResponse
+    public function apiCreate(BrandDataRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
+        $brand = $this->patchBrand($request);
 
-        Brands::create([
-            'name' => $request->name
-        ]);
-
-        return redirect()->back()->with('success', 'Item criado com sucesso.');
+        return response()->json($brand);
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function patchBrand(Request $request, Brands $brand = null)
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
+        if (!$brand) {
+            $brand = new Brands();
+        }
 
-        $fuelType = Brands::findOrFail($id);
-        $fuelType->name = $request->name;
-        $fuelType->save();
+        $brand->name = $request->name;
 
-        return redirect()->back()->with('success', 'Item atualizado com sucesso.');
-    }
-
-    public function delete(Request $request, $id)
-    {
-        $fuelType = Brands::findOrFail($id);
-        $fuelType->delete();
-
-        return redirect()->back()->with('success', 'Item excluído com sucesso.');
+        $brand->save();
+        return $brand;
     }
 }

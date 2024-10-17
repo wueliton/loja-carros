@@ -3,14 +3,20 @@ import { IconButton } from '@/Components/IconButton';
 import { MenuIcon } from '@/Components/Icons/Menu';
 import { NavComponent } from '@/Components/Nav';
 import { UserProvider } from '@/Context/User';
+import { Store } from '@/models/Store';
 import { User } from '@/types';
 import { Link } from '@inertiajs/react';
 import { FC, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import styles from './Authenticated.module.scss';
 
 export const AuthenticatedLayout: FC<
-  PropsWithChildren & { user?: User; roles?: string[] }
-> = ({ children, user, roles }) => {
+  PropsWithChildren & {
+    user?: User;
+    roles?: string[];
+    stores?: Store[];
+    lastStore?: number[];
+  }
+> = ({ children, user, roles, stores, lastStore }) => {
   const [navOpened, setNavOpened] = useState(false);
   const [menuOpened, setMenuOpened] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -45,7 +51,12 @@ export const AuthenticatedLayout: FC<
   }, []);
 
   return (
-    <UserProvider user={user} roles={roles}>
+    <UserProvider
+      user={user}
+      roles={roles}
+      lastStore={lastStore?.[0]}
+      stores={stores}
+    >
       <div className={styles.layout} scroll-region="true">
         <NavComponent
           ref={navRef}

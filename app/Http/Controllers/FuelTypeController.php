@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FuelTypeDataRequest;
 use App\Models\FuelType;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
@@ -27,44 +28,22 @@ class FuelTypeController extends Controller
             }
             return $query;
         })->paginate(10);
-        return Inertia::render('FuelTypes/List', [
+        return Inertia::render('Admin/FuelTypes/List', [
             'fuelTypes' => $fuelTypes
         ]);
     }
 
-    public function get(Request $request)
+    public function create(FuelTypeDataRequest $request): RedirectResponse
     {
-        $fuelTypes = FuelType::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $fuelTypes;
-    }
-
-    public function create(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        FuelType::create([
-            'name' => $request->name
-        ]);
+        $this->patchFuelType($request);
 
         return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(FuelTypeDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
         $fuelType = FuelType::findOrFail($id);
-        $fuelType->name = $request->name;
-        $fuelType->save();
+        $this->patchFuelType($request, $fuelType);
 
         return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
@@ -75,5 +54,35 @@ class FuelTypeController extends Controller
         $fuelType->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $fuelTypes = FuelType::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $fuelTypes;
+    }
+
+    public function apiCreate(FuelTypeDataRequest $request)
+    {
+        $fuelType = $this->patchFuelType($request);
+
+        return response()->json($fuelType);
+    }
+
+    private function patchFuelType(Request $request, FuelType $fuelType = null)
+    {
+        if (!$fuelType) {
+            $fuelType = new FuelType();
+        }
+
+        $fuelType->name = $request->name;
+        $fuelType->save();
+
+        return $fuelType;
     }
 }

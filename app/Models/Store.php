@@ -21,7 +21,12 @@ class Store extends Model
         'email',
         'phone',
         'whatsapp',
-        'slug'
+        'instagram',
+        'facebook',
+        'site',
+        'slug',
+        'max_motorcycles',
+        'max_cars'
     ];
 
     public $displayName = 'Loja';
@@ -29,12 +34,12 @@ class Store extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, table: 'store_users');
+        return $this->belongsToMany(User::class, 'store_users');
     }
 
     public function cars()
     {
-        return $this->hasMany(Car::class);
+        return $this->hasMany(Car::class, 'store_id', 'id');
     }
 
     public function motorcycles()

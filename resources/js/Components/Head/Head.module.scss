@@ -3,7 +3,7 @@
 }
 
 .header {
-    @apply flex justify-start items-center mb-5 min-h-12;
+    @apply flex justify-start items-center mb-5 min-h-12 text-gray-500 text-sm;
 
     button {
         @apply ml-5;
@@ -16,7 +16,19 @@
             pr-2;
 
         > a {
-            @apply p-1 relative text-blue-600 text-sm;
+            @apply p-1 relative;
         }
+    }
+
+    h2 {
+        @apply text-gray-900;
+    }
+}
+
+.folder {
+    @apply flex items-center;
+
+    svg {
+        @apply h-4;
     }
 }

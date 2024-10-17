@@ -1,5 +1,7 @@
 import { Head as InertiaHead, Link } from '@inertiajs/react';
 import { FC, Fragment, PropsWithChildren } from 'react';
+import { ArrowRightIcon } from '../Icons/ArrowRight';
+import { Folder } from '../Icons/Folder';
 import styles from './Head.module.scss';
 
 export interface HeadProps extends PropsWithChildren {
@@ -21,10 +23,11 @@ export const Head: FC<HeadProps> = ({
         <div className={styles.breadcrumb}>
           {breadcrumb?.map((item, index) => (
             <Fragment key={`breadcrumb_link_${index}`}>
-              <Link href={item.url} preserveScroll>
+              <Link href={item.url} preserveScroll className={styles.folder}>
+                <Folder />
                 {item.title}
               </Link>
-              <span>{'>'}</span>
+              <ArrowRightIcon />
             </Fragment>
           ))}
         </div>

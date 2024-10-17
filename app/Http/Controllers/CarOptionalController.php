@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarOptionalDataRequest;
 use App\Models\CarOptional;
 use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,44 +28,22 @@ class CarOptionalController extends Controller
             }
             return $query;
         })->paginate(10);
-        return Inertia::render('CarOptional/List', [
+        return Inertia::render('Admin/Car/Optionals/List', [
             'optional' => $optional
         ]);
     }
 
-    public function get(Request $request)
+    public function create(CarOptionalDataRequest $request): RedirectResponse
     {
-        $optional = CarOptional::where(function ($query) use ($request) {
-            if ($request->has('where')) {
-                $query = $this->filterService->apply($query, $request->where);
-            }
-            return $query;
-        })->get();
-        return $optional;
-    }
-
-    public function create(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        CarOptional::create([
-            'name' => $request->name
-        ]);
+        $this->patchOptional($request);
 
         return redirect()->back()->with('success', 'Item criado com sucesso.');
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(CarOptionalDataRequest $request, $id): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
         $fuelType = CarOptional::findOrFail($id);
-        $fuelType->name = $request->name;
-        $fuelType->save();
+        $this->patchOptional($request, $fuelType);
 
         return redirect()->back()->with('success', 'Item atualizado com sucesso.');
     }
@@ -76,5 +54,35 @@ class CarOptionalController extends Controller
         $fuelType->delete();
 
         return redirect()->back()->with('success', 'Item excluído com sucesso.');
+    }
+
+    public function apiGet(Request $request)
+    {
+        $optional = CarOptional::where(function ($query) use ($request) {
+            if ($request->has('where')) {
+                $query = $this->filterService->apply($query, $request->where);
+            }
+            return $query;
+        })->get();
+        return $optional;
+    }
+
+    function apiCreate(CarOptionalDataRequest $request)
+    {
+        $optional = $this->patchOptional($request);
+
+        return response()->json($optional);
+    }
+
+    public function patchOptional(Request $request, CarOptional $optional = null)
+    {
+        if (!$optional) {
+            $optional = new CarOptional();
+        }
+
+        $optional->name = $request->name;
+        $optional->save();
+
+        return $optional;
     }
 }

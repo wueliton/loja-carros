@@ -44,7 +44,7 @@ export const Editor: FC<{
   onChange?: (value: string) => void;
 }> = ({ className, error, value, label, hint, onChange }) => {
   return (
-    <div className={className ? className : ''}>
+    <div className={className ? className : ''} aria-label={label}>
       <CKEditor
         editor={ClassicEditor}
         onChange={(_, editor) => onChange?.(editor.getData())}
@@ -216,9 +216,7 @@ export const Editor: FC<{
           translations: [translations],
         }}
       />
-      <p>
-        {error ? <ErrorLabel error={error} fieldName={label} /> : hint ?? ''}
-      </p>
+      <p>{error ? <ErrorLabel error={error} /> : hint ?? ''}</p>
     </div>
   );
 };
