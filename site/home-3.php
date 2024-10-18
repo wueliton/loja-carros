@@ -6,7 +6,13 @@ include "resources/api.php";
 include "includes/head-3.php";
 ?>
 <main>
-    <div class="carousel"></div>
+    <div class="carousel swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="/assets/img/veiculos-novos-semi-novos.jpg"
+                    alt="Os melhores veículos novos e semi novos" class="img-fluid"></div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
     <section class="about">
         <div class="bg-secondary-light">
             <div class="container">
@@ -22,8 +28,8 @@ include "includes/head-3.php";
                             <a href="" class="d-flex gap-4 justify-content-between align-items-center">
                                 <div>
                                     <h3 class="h6">Carros</h3>
-                                    <p class="body-alt">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                        Sit, voluptatum!</p>
+                                    <p class="body-alt">Descubra seu próximo carro com segurança e conforto em nosso
+                                        autoshopping!</p>
                                 </div>
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
@@ -31,8 +37,7 @@ include "includes/head-3.php";
                             <a href="" class="d-flex gap-4 justify-content-between align-items-center">
                                 <div>
                                     <h3 class="h6">Motos</h3>
-                                    <p class="body-alt">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                        Sit, voluptatum!</p>
+                                    <p class="body-alt">Acelere sua busca e realize o sonho de ter a moto ideal!</p>
                                 </div>
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
@@ -40,8 +45,8 @@ include "includes/head-3.php";
                             <a href="" class="d-flex gap-4 justify-content-between align-items-center">
                                 <div>
                                     <h3 class="h6">Lojas</h3>
-                                    <p class="body-alt">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                        Sit, voluptatum!</p>
+                                    <p class="body-alt">Explore as opções disponíveis em nossas lojas e encontre o
+                                        automóvel que atende às suas necessidades.</p>
                                 </div>
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
@@ -293,12 +298,12 @@ include "includes/head-3.php";
         </div>
     </section>
     <section class="for-business py-4">
+        <img src="./assets/img/raposo-autoshopping.jpg" class="bg-image" alt="Raposo Auto Shopping">
         <div class="container py-5">
-            <div class="row">
-                <div class="col-lg-6"></div>
-                <div class="col-lg-6">
-                    <p class="subtitle mb-2"><i class="fa-solid fa-store"></i> Lojistas</p>
-                    <h2 class="h3 mb-4">Potencialize seu negócio no nosso auto shopping!</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <p class="subtitle mb-2 justify-content-center"><i class="fa-solid fa-store"></i> Lojistas</p>
+                    <h2 class="h3 mb-5">Potencialize seu negócio com nosso auto shopping!</h2>
                     <a class="btn">Saiba mais <i class="fa-solid fa-up-right-from-square"></i></a>
                 </div>
             </div>
