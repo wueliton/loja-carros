@@ -3,8 +3,9 @@
         <div class="row py-4">
             <div class="col-lg-4 d-flex flex-column gap-2 mb-5 mb-lg-0">
                 <h3 class="h6 mb-3">Saiba mais</h3>
-                <a href="">Sobre a Raposo Auto Shopping</a>
-                <a href="">Mapa do Site</a>
+                <a href="<?= $url ?>">Sobre a Raposo Auto Shopping</a>
+                <a href="<?= $url ?>mapa-site">Mapa do Site</a>
+                <a href="<?= $url ?>admin">Área do Logista</a>
             </div>
             <div class="col-lg-4 d-flex flex-column gap-2 mb-5 mb-lg-0">
                 <h3 class="h6 mb-3">Atendimento</h3>
@@ -28,58 +29,45 @@
     </div>
     <div class="container py-5 body-alt">
         <div class="row align-items-center">
-            <div class="col-auto d-flex align-items-center gap-2">
-                <img src="https://www.raposoautoshopping.com.br//assets/img/logo.jpeg" width="60"
-                    alt="Raposo Auto Shopping">
+            <div
+                class="col-md-auto d-flex align-items-center gap-2 justify-content-center justify-content-md-start pb-4 pb-md-0">
+                <picture>
+                    <source type="image/webp" srcset="<?= $url ?>assets/img/webp/logo.webp">
+                    <img src="<?= $url ?>assets/img/logo.jpg" width="60" height="44" alt="Raposo Auto Shopping">
+                </picture>
                 Raposo Auto Shopping
             </div>
-            <div class="col footer-icons d-flex align-items-center justify-content-center gap-2">
+            <div class="col footer-icons d-flex align-items-center justify-content-center gap-2 pb-4 pb-md-0">
                 <a href="https://www.conceitopublicidade.com.br/" target="_blank" rel="nofollow">
-                    <img src="<?= $url ?>/assets/img/conceito.png" alt="<?= $nomeEmpresa; ?>"
-                        title="<?= $nomeEmpresa; ?>" class="img-fluid">
+                    <picture>
+                        <source type="image/webp" srcset="<?= $url ?>/assets/img/webp/conceito.webp">
+                        <img src="<?= $url ?>/assets/img/conceito.png" alt="<?= $nomeEmpresa; ?>"
+                            title="<?= $nomeEmpresa; ?>" class="img-fluid" height="20" width="20">
+                    </picture>
                 </a>
                 <a href="<?= $linkNavSecurity ?>" target="_blank" rel="nofollow">
-                    <img src="<?= $url ?>/assets/img/cadeado.png" alt="<?= $nomeEmpresa; ?>"
-                        title="<?= $nomeEmpresa; ?>" class="img-fluid">
+                    <picture>
+                        <source type="image/webp" srcset="<?= $url ?>/assets/img/webp/cadeado.webp">
+                        <img src="<?= $url ?>/assets/img/cadeado.png" alt="<?= $nomeEmpresa; ?>"
+                            title="<?= $nomeEmpresa; ?>" class="img-fluid" height="20" width="20">
+                    </picture>
                 </a>
                 <a href="<?= $linkResponsinator ?>" target="_blank" rel="nofollow">
-                    <img src="<?= $url ?>/assets/img/celular.png" alt="<?= $nomeEmpresa; ?>"
-                        title="<?= $nomeEmpresa; ?>" class="img-fluid">
+                    <picture>
+                        <source type="image/webp" srcset="<?= $url ?>/assets/img/webp/celular.webp">
+                        <img src="<?= $url ?>/assets/img/celular.png" alt="<?= $nomeEmpresa; ?>"
+                            title="<?= $nomeEmpresa; ?>" class="img-fluid" height="20" width="20">
+                    </picture>
                 </a>
             </div>
-            <div class="col-auto">
+            <div class="col-md-auto text-center text-md-left">
                 &copy; 2024 Todos os direitos reservados
             </div>
         </div>
     </div>
-    <script src="assets/js/swiper-bundle.min.js"></script>
-    <script>
-        var swiper = new Swiper(".carousel", {
-            pagination: {
-                el: ".swiper-pagination",
-                dynamicBullets: true,
-            },
-        });
-
-        var menuToggle = document.getElementById('menu-toggle');
-        var menu = document.querySelector('.menu');
-        menuToggle.addEventListener('click', function () {
-            menu.classList.toggle('active');
-        });
-
-        var menuDropdown = document.querySelector('.dropdown');
-        menuDropdown.addEventListener('click', function () {
-            menuDropdown.classList.toggle('active');
-            document.querySelector('.dropdown + ul').classList.toggle('active');
-        });
-
-        var closeBtn = document.getElementById('close-btn');
-        closeBtn.addEventListener('click', function () {
-            menu.classList.remove('active');
-        });
-
-    </script>
+    <script src="assets/js/alpinejs.min.js" defer></script>
 </footer>
+<?php include "includes/cookie-consent.php" ?>
 </body>
 
 </html>

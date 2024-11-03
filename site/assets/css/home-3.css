@@ -57,6 +57,10 @@
     --black-02: rgba(0,0,0,0.02);
 }
 
+body, * {
+    scroll-behavior: smooth;
+}
+
 strong {
     font-weight: bold;
 }
@@ -142,11 +146,23 @@ a {
     flex: 1;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
 .img-fluid {
     max-width: 100%;
     border: 0;
     margin: auto;
     display: block;
+}
+
+.object-cover {
+    object-fit: cover;
+}
+
+.object-contain {
+    object-fit: contain;
 }
 
 .text-right {
@@ -204,6 +220,24 @@ a {
     background-color: var(--primary-light-hover);
 }
 
+.green-divider {
+    position: relative;
+    height: 40px;
+    background-image: linear-gradient(129deg,#E42B13 40%, #40A8DF 60%);
+}
+
+.green-divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(45deg, white 25%, transparent 25%), linear-gradient(-45deg, white 25%, transparent 25%), linear-gradient(45deg, transparent 75%, white 75%), linear-gradient(-45deg, transparent 75%, white 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
 header {
     background-color: var(--primary);
     padding: 12px;
@@ -217,7 +251,14 @@ header {
 }
 
 header img {
-    width: 100px;
+    width: 140px;
+    height: auto;
+    transition: width 0.2s;
+}
+
+header.scrolled img {
+    width: 80px;
+    height: auto;
 }
 
 header .menu {
@@ -321,6 +362,12 @@ header .close {
 
 .carousel {
     background-color: black;
+}
+
+.carousel img {
+    height: 70vh;
+    width: 100%;
+    object-fit: cover;
 }
 
 .bg-secondary-light {
@@ -607,7 +654,6 @@ hr {
 
 .footer-icons img {
     width: 20px;
-    filter: invert(100%);
 }
 
 footer a {
@@ -618,6 +664,44 @@ footer a {
 
 footer a i {
     font-size: 0.8rem;
+}
+
+.cookie-consent {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: none;
+    background: #333;
+    color: white;
+    padding: 20px;
+    z-index: 10;
+}
+
+.cookie-consent.active {
+    display: block;
+}
+
+.cookie-consent a {
+    color: var(--primary-light);
+}
+
+.cookie-consent button {
+    padding: 12px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .carousel img {
+        height: 360px;
+        object-position: left;
+    }
 }
 
 @media (min-width: 992px) {
@@ -667,5 +751,11 @@ footer a i {
     header button.dropdown.active + ul {
         display: block;
         opacity: 1;
+    }
+
+    .carousel img {
+        height: 600px;
+        width: auto;
+        object-position: left;
     }
 }
