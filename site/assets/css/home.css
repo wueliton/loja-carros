@@ -40,7 +40,7 @@
 }
 
 :root {
-    --primary: hsl(241, 49%, 30%);
+    --primary: #112e63;
     --primary-light: #40A8DF;
     --primary-light-hover: #68bdeb;
     --primary-dark: hsl(241, 49%, 10%);
@@ -55,6 +55,7 @@
     --outline: #EEE;
     --third: #F2F2F2;
     --black-02: rgba(0,0,0,0.02);
+    --alert: #E42B13;
 }
 
 body, * {
@@ -220,6 +221,14 @@ a {
     background-color: var(--primary-light-hover);
 }
 
+.bg-primary {
+    background-color: var(--primary);
+}
+
+.bg-primary-dark {
+    background-color: var(--primary-dark);
+}
+
 .green-divider {
     position: relative;
     height: 40px;
@@ -246,10 +255,6 @@ header {
     z-index: 10;
 }
 
-header {
-    background-color: #233263;
-}
-
 header img {
     width: 140px;
     height: auto;
@@ -270,7 +275,7 @@ header .menu {
     position: fixed;
     right: 0;
     top: 0;
-    width: 60%;
+    width: 90%;
     height: 100%;
     transform: translateX(100%);
     background-color: var(--primary);
@@ -695,6 +700,132 @@ footer a i {
     background-color: black;
     color: white;
     width: 100%;
+}
+
+.breadcrumb i {
+    font-size: 9pt;
+}
+
+.breadcrumb span {
+    font-weight: bold;
+}
+
+.mapa-lista ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mapa-lista a, span {
+    display: block;
+    padding: 8px;
+    transition: color 0.2s;
+}
+
+.mapa-lista a:hover {
+    color: var(--primary-light)
+}
+
+.mapa-lista > ul  ul ul > li {
+    margin-left: 40px;
+}
+
+.text-palavra {
+    max-width: 700px;
+    margin: auto;
+    margin-bottom: 80px;
+}
+
+.text-palavra p {
+    font-size: 14pt;
+    line-height: 1.8;
+}
+
+.text-palavra h2 {
+    margin-top: 40px;
+    margin-bottom: 12px;
+}
+
+.copy-notification {
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background-color: var(--primary);
+    color: white;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.copy-notification i {
+    font-size: 20pt;
+}
+
+.regions .tabs {
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.regions button {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px 4px 0px 0px;
+    background-color: transparent;
+}
+
+.regions button[data-active='true'] {
+    background-color: var(--primary-light);
+    color: white;
+}
+
+.regions .tabs {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+}
+
+.regions .tab-content {
+    padding: 20px;
+}
+
+.list-tags {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.list-tags a {
+    font-size: 9pt;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: var(--third);
+    display: inline-block;
+}
+
+.carrossel-keyword {
+    padding: 0;
+}
+
+.carrossel-keyword .item {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--third);
+}
+
+.carrossel-keyword .item h5 {
+    padding: 12px;
+}
+
+.carrossel-keyword .item h5 a {
+    color: var(--primary);
+    font-size: 14pt;
+    font-weight: bold;
 }
 
 @media (min-width: 768px) {
