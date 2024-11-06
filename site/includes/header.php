@@ -2,13 +2,14 @@
     :class="{ 'scrolled': !atTop }">
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-auto">
                 <picture>
                     <source type="image/webp" srcset="<?= $url ?>assets/img/webp/logo.webp">
-                    <img src="<?= $url ?>assets/img/logo.jpg" alt="Raposo Auto Shopping" width="140" height="104">
+                    <img src="<?= $url ?>assets/img/logo.jpg" class="img-fluid" alt="Raposo Auto Shopping" width="140"
+                        height="104">
                 </picture>
             </div>
-            <div class="col-auto d-flex align-items-center gap-2">
+            <div class="col d-flex align-items-center justify-content-end gap-2">
                 <ul class="position-fixed position-lg-relative d-lg-flex menu col-auto justify-items-center align-items-center gap-2"
                     :class="{ 'active': opened }">
                     <li class="close d-lg-none"><button @click="opened = false" class="btn-icon" id="close-btn"
@@ -35,10 +36,16 @@
                         </ul>
                     </li>
                 </ul>
+                <div>
+                    <a href="<?= $whatsapplink ?>" target="_blank" class="btn btn-sm btn-whats"><i
+                            class="fa-brands fa-whatsapp"></i><span
+                            class="d-none d-md-block"><?= $whatsapp ?></span></a>
+                </div>
                 <div class="admin-link">
                     <a href="<?= $url ?>admin" aria-label="Acessar área administrativa" class="btn-icon"><i
                             class="fa-solid fa-user-large"></i></a>
                 </div>
+
                 <div class="d-lg-none">
                     <button @click="opened = true" class="btn-icon" id="menu-toggle"
                         aria-label="Clique para exibir o menu"><i class="fa-solid fa-bars"></i></button>

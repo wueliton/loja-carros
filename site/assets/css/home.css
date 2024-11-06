@@ -221,6 +221,18 @@ a {
     background-color: var(--primary-light-hover);
 }
 
+.btn-sm {
+    padding: 12px 16px;
+}
+
+.btn-whats {
+    background-color: #25d366;
+}
+
+.btn-whats:hover {
+    background-color: #128c7e;
+}
+
 .bg-primary {
     background-color: var(--primary);
 }
@@ -716,7 +728,7 @@ footer a i {
     padding: 0;
 }
 
-.mapa-lista a, span {
+.mapa-lista a, .mapa-lista span {
     display: block;
     padding: 8px;
     transition: color 0.2s;

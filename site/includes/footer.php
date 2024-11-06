@@ -9,9 +9,22 @@
             </div>
             <div class="col-lg-4 d-flex flex-column gap-2 mb-5 mb-lg-0">
                 <h3 class="h6 mb-3">Atendimento</h3>
-                <p><strong>Segunda à Sexta</strong> das 10h às 19h</p>
-                <p><strong>Sábado</strong> das 19h às 20h</p>
-                <p><strong>Domingo</strong> das 10h às 18h</p>
+                <div class="d-flex gap-2 align-items-center">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <p>Rodovia Raposo Taveres, KM 18,5</p>
+                        <p>São Paulo - SP, 05576-000</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 align-items-center">
+                    <i class="fa-solid fa-clock"></i>
+                    <div>
+                        <p><strong>Segunda à Sexta</strong> das 10h às 19h</p>
+                        <p><strong>Sábado</strong> das 19h às 20h</p>
+                        <p><strong>Domingo</strong> das 10h às 18h</p>
+                    </div>
+                </div>
+
             </div>
             <div class="col-lg-4 d-flex flex-column gap-2 mb-5 mb-lg-0">
                 <h3 class="h6 mb-3">Links Úteis</h3>
