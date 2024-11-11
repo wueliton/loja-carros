@@ -1,22 +1,21 @@
 import { IconButton } from '@/Components/IconButton';
 import { EyeIcon } from '@/Components/Icons/Eye';
 import { EyeNoIcon } from '@/Components/Icons/EyeNo';
-import { useMask } from '@/Hooks/useMask';
+import { Mask } from '@/utils/mask/mask';
+import { MaskOptions } from '@/utils/mask/types';
 import {
+  ChangeEvent,
   InputHTMLAttributes,
-  LegacyRef,
   ReactElement,
   forwardRef,
-  useEffect,
   useId,
   useState,
 } from 'react';
-import { ReactMaskOpts } from 'react-imask';
 import { ErrorLabel } from '../Error';
 import styles from './Input.module.scss';
 
 export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix' | 'value'> {
   label: string;
   error?: string;
   hint?: string;
@@ -24,13 +23,9 @@ export interface InputProps
   suffix?: ReactElement;
   hideInput?: boolean;
   disabled?: boolean;
-  mask?:
-    | string
-    | (ReactMaskOpts['mask'] &
-        { comparison?: (value: string) => boolean; mask: string }[])
-    | unknown;
-  maskOptions?: { [k in string]: unknown };
-  unmaskedValueChange?: (value: string) => void;
+  mask?: MaskOptions;
+  value?: string | number;
+  unmaskedValueChange?: (value: string | number) => void;
 }
 
 export const Input = forwardRef<HTMLDivElement, InputProps>(
@@ -48,31 +43,28 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       hideInput,
       disabled,
       className,
-      maskOptions,
       unmaskedValueChange,
+      onChange,
+      max,
       ...props
     },
     ref,
   ) => {
+    const initialValue = mask ? Mask[mask](value ?? '', '', max) : value;
     const id = useId();
     const [showPass, setShowPass] = useState(false);
-    const {
-      ref: inputRef,
-      setValue,
-      unmaskedValue,
-      value: maskValue,
-    } = useMask({
-      mask: mask,
-      maskOptions,
-    });
+    const [valueState, setValueState] = useState(initialValue ?? '');
 
-    useEffect(() => {
-      setValue(String(value ?? ''));
-    }, []);
+    const handleOnChage = (e: ChangeEvent<HTMLInputElement>) => {
+      let value = e.target.value;
+      if (mask) {
+        value = Mask[mask](value, valueState, max) as string;
+        unmaskedValueChange?.(Mask.number(value));
+      }
 
-    useEffect(() => {
-      unmaskedValueChange?.(unmaskedValue);
-    }, [unmaskedValue]);
+      setValueState(value);
+      onChange?.(e);
+    };
 
     return (
       <div className={`${styles['form-field']} ${className ?? ''}`} ref={ref}>
@@ -91,11 +83,11 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
           <input
             {...props}
             id={id}
-            ref={inputRef as LegacyRef<HTMLInputElement>}
-            value={maskValue}
+            value={valueState}
             type={showPass ? 'text' : type}
             disabled={disabled}
             hidden={hideInput}
+            onChange={handleOnChage}
           />
           {type === 'password' ? (
             <IconButton
