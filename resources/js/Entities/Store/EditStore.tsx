@@ -79,26 +79,14 @@ const StoreEdit: FC<{
           error={errors.phone}
           value={data.phone}
           label="Telefone"
-          mask={[
-            {
-              mask: '(00) 90000-0000',
-              comparison: (value: string) => value.charAt(5) === '9',
-            },
-            { mask: '(00) 0000-0000' },
-          ]}
+          mask="brazilPhone"
           onChange={(e) => setData('phone', e.target.value)}
         />
         <Input
           error={errors.whatsapp}
           value={data.whatsapp}
           label="WhatsApp"
-          mask={[
-            {
-              mask: '(00) 90000-0000',
-              comparison: (value: string) => value.charAt(5) === '9',
-            },
-            { mask: '(00) 0000-0000' },
-          ]}
+          mask="brazilPhone"
           onChange={(e) => setData('whatsapp', e.target.value)}
         />
         <UploadFile
