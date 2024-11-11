@@ -29,7 +29,7 @@ class SuperCarController extends Controller
                 'brand_id',
                 'model_id',
                 'store_id',
-                'created_id'
+                'created_at'
             )->where(function ($query) use ($request) {
                 if ($request->has('where')) {
                     $query = $this->filterService->apply($query, $request->where);

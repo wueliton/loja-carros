@@ -112,7 +112,7 @@ class MotorcycleController extends Controller
         $storeMotorcycleLimit = Store::where('id', $lastStoreId)->value('max_motorcycles');
         $storeMotorcycleCount = Motorcycle::where('store_id', $lastStoreId)->count();
 
-        $canCreate = $storeMotorcycleLimit > $storeMotorcycleCount;
+        $canCreate = isset($storeMotorcycleLimit) ? $storeMotorcycleLimit > $storeMotorcycleCount : true;
         return $canCreate;
     }
 

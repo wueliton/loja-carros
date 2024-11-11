@@ -106,7 +106,7 @@ class CarController extends Controller
         $storeCarLimit = Store::where('id', $lastStoreId)->value('max_cars');
         $storeCarsCount = Car::where('store_id', $lastStoreId)->count();
 
-        $canCreate = $storeCarLimit > $storeCarsCount;
+        $canCreate = isset($storeCarLimit) ? $storeCarLimit > $storeCarsCount : true;
         return $canCreate;
     }
 

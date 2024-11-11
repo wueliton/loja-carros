@@ -9,62 +9,62 @@ for ($i = 0; $i < count($pastaEPagina); $i++) {
     }
 }
 
-$url                 = "http://" . $_SERVER['HTTP_HOST'] . $pastaDominio;
+$url = "http://" . $_SERVER['HTTP_HOST'] . $pastaDominio;
 
 include 'includes/functions.php';
 
-$nomeEmpresa        = 'Auto Shopping Raposo';
-$slogan                = '';
-$author                = 'https://www.conceitopublicidade.com.br/';
-$creditos            = 'Conceito Publicidade';
-$ramo                = 'Auto Shopping Raposo';
-$email                = 'vendas@raposoautoshopping.com.br';
-$tel                = '(11) 91371-9497';
-$tel2                = 'Troca - Tel';
-$tellink             = (isset($tel)) ? preg_replace('/\(|\)|\+|\.|-| | /', '', $tel) : '';
-$tel2link             = (isset($tel2)) ? preg_replace('/\(|\)|\+|\.|-| | /', '', $tel2) : '';
-$tel3link             = (isset($tel3)) ? preg_replace('/\(|\)|\+|\.|-| | /', '', $tel3) : '';
-$whatsapp            = 'Troca - Whats';
-$whatsapplink        = (isset($whatsapp)) ? "https://api.whatsapp.com/send?1=pr_BR&phone=55" . preg_replace('/\(|\)|\+|\.|-| | /', '', $whatsapp) : '';
-$whatsapp2            = '';
-$whatsapplink2        = (isset($whatsapp2)) ? "https://api.whatsapp.com/send?1=pr_BR&phone=" . preg_replace('/\(|\)|\+|\.|-| | /', '', $whatsapp2) : '';
-$whatsapp3            = '';
-$whatsapplink3        = (isset($whatsapp3)) ? "https://api.whatsapp.com/send?1=pr_BR&phone=" . preg_replace('/\(|\)|\+|\.|-| | /', '', $whatsapp3) : '';
-$whatsapp4            = '';
-$whatsapplink4        = (isset($whatsapp4)) ? "https://api.whatsapp.com/send?1=pr_BR&phone=" . preg_replace('/\(|\)|\+|\.|-| | /', '', $whatsapp4) : '';
-$endereco            = 'Rodovia Raposo Taveres, KM 18,5';
-$bairro             = 'Troca - Endereco';
-$cidade                = 'Troca - Endereco';
-$uf                 = 'Troca - Endereco';
-$cep                = 'Troca - Endereco';
-$horario_s            = '';
-$horario_sab        = '';
-$horario_dom        = '';
+$nomeEmpresa = 'Auto Shopping Raposo';
+$slogan = '';
+$author = 'https://www.conceitopublicidade.com.br/';
+$creditos = 'Conceito Publicidade';
+$ramo = 'Auto Shopping Raposo';
+$email = 'vendas@raposoautoshopping.com.br';
+$tel = '(11) 91371-9497';
+$tel2 = 'Troca - Tel';
+$tellink = (isset($tel)) ? preg_replace('/\(|\)|\+|\.|-| | /', '', $tel) : '';
+$tel2link = (isset($tel2)) ? preg_replace('/\(|\)|\+|\.|-| | /', '', $tel2) : '';
+$tel3link = (isset($tel3)) ? preg_replace('/\(|\)|\+|\.|-| | /', '', $tel3) : '';
+$whatsapp = '(11) 91371-9497';
+$whatsapplink = (isset($whatsapp)) ? "https://api.whatsapp.com/send?1=pr_BR&phone=55" . preg_replace('/\(|\)|\+|\.|-| | /', '', $whatsapp) : '';
+$whatsapp2 = '';
+$whatsapplink2 = (isset($whatsapp2)) ? "https://api.whatsapp.com/send?1=pr_BR&phone=" . preg_replace('/\(|\)|\+|\.|-| | /', '', $whatsapp2) : '';
+$whatsapp3 = '';
+$whatsapplink3 = (isset($whatsapp3)) ? "https://api.whatsapp.com/send?1=pr_BR&phone=" . preg_replace('/\(|\)|\+|\.|-| | /', '', $whatsapp3) : '';
+$whatsapp4 = '';
+$whatsapplink4 = (isset($whatsapp4)) ? "https://api.whatsapp.com/send?1=pr_BR&phone=" . preg_replace('/\(|\)|\+|\.|-| | /', '', $whatsapp4) : '';
+$endereco = 'Rodovia Raposo Taveres, KM 18,5';
+$bairro = 'Troca - Endereco';
+$cidade = 'Troca - Endereco';
+$uf = 'Troca - Endereco';
+$cep = 'Troca - Endereco';
+$horario_s = '';
+$horario_sab = '';
+$horario_dom = '';
 
-$pastaImg           = $url . 'assets/img/';
-$logo                = $pastaImg . 'logo.png';
-$logoCP                = $pastaImg . 'conceito.png';
-$favicon            = $pastaImg . 'favicon2.png';
-$caminhoPalavras    = $pastaImg . 'palavras-chave/';
+$pastaImg = $url . 'assets/img/';
+$logo = $pastaImg . 'logo.png';
+$logoCP = $pastaImg . 'conceito.png';
+$favicon = $pastaImg . 'favicon2.png';
+$caminhoPalavras = $pastaImg . 'palavras-chave/';
 // $caminhoThumbs      = $caminhoPalavras.'thumbs/';
-$caminhoThumbs      = $caminhoPalavras . 'thumbs/';
-$card                = 'assets/images/card.jpg'; //250x250 pixels
-$logoSchema            = 'assets/images/card.jpg'; //250x250 pixels
+$caminhoThumbs = $caminhoPalavras . 'thumbs/';
+$card = 'assets/images/card.jpg'; //250x250 pixels
+$logoSchema = 'assets/images/card.jpg'; //250x250 pixels
 
-$linkIframeMapa        = '';
+$linkIframeMapa = '';
 
-$conceito            = $pastaImg . 'conceito.png';
+$conceito = $pastaImg . 'conceito.png';
 $googleTransparenci = $pastaImg . 'cadeado.png';
-$reposinator        = $pastaImg . 'celular.png';
+$reposinator = $pastaImg . 'celular.png';
 
-$urlPagina             = explode("C:/", $_SERVER['PHP_SELF']);
-$urlPagina             = end($urlPagina);
-$urlPagina            = explode("/", $urlPagina);
-$urlPagina             = end($urlPagina);
-$canonical             = $url . $urlPagina;
-$canonical             = str_replace('.php', '', $canonical);
-$imagem             = str_replace('.php', '.jpg', $urlPagina); //imagem das páginas das palavras-chave
-$bannerTopo            = str_replace('.jpg', '', $imagem);
+$urlPagina = explode("C:/", $_SERVER['PHP_SELF']);
+$urlPagina = end($urlPagina);
+$urlPagina = explode("/", $urlPagina);
+$urlPagina = end($urlPagina);
+$canonical = $url . $urlPagina;
+$canonical = str_replace('.php', '', $canonical);
+$imagem = str_replace('.php', '.jpg', $urlPagina); //imagem das páginas das palavras-chave
+$bannerTopo = str_replace('.jpg', '', $imagem);
 
 if ($_SERVER['HTTP_HOST'] == 'www.onlinepublicidade.com.br' || $_SERVER['HTTP_HOST'] == 'onlinepublicidade.com.br') {
     $infoRobots = "noindex, nofollow";
@@ -78,21 +78,21 @@ $description = (isset($description)) ? $description : '';
 $keywords = (isset($keywords)) ? $keywords : '';
 
 //redes sociais
-$linkface            = 'https://www.facebook.com';
-$linkinstagram        = 'https://www.instagram.com/raposoautoshopping';
-$linktwitter        = '';
-$linkedin            = '';
-$linkgoogle            = '';
-$linkYoutube        = '';
+$linkface = 'https://www.facebook.com';
+$linkinstagram = 'https://www.instagram.com/raposoautoshopping';
+$linktwitter = '';
+$linkedin = '';
+$linkgoogle = '';
+$linkYoutube = '';
 
 $perfilface = str_replace("https://www.facebook.com/", "", $linkface);
 $perfilface = str_replace("/", "", $perfilface);
 $perfilinstagram = str_replace("https://www.instagram.com/", "@", $linkinstagram);
 $perfilinstagram = str_replace("/", "", $perfilinstagram);
 
-$linkNavSecurity    = 'https://www.google.com/transparencyreport/safebrowsing/diagnostic/?hl=pt-BR#url=' . $canonical;
-$linkResponsinator     = 'http://www.responsinator.com/?url=' . $canonical;
-$linkPageSpeed         = 'https://developers.google.com/speed/pagespeed/insights/?url=' . $canonical;
+$linkNavSecurity = 'https://www.google.com/transparencyreport/safebrowsing/diagnostic/?hl=pt-BR#url=' . $canonical;
+$linkResponsinator = 'http://www.responsinator.com/?url=' . $canonical;
+$linkPageSpeed = 'https://developers.google.com/speed/pagespeed/insights/?url=' . $canonical;
 
 $googleMaps = 'https://maps.app.goo.gl/GbiZyFHE5kioDWmu8';
 $geoLatitude = '-23.509731';
@@ -105,8 +105,8 @@ $qntTags = "30";
 $qntThumbsCarrossel = "30";
 
 // Configurações necessárias para o MENU!!!
-$mapaSite           = false;
-$menuRodape         = false;
+$mapaSite = false;
+$menuRodape = false;
 
 
 $menu["loja-automoveis"] = "LOJA DE AUTOMÓVEIS";

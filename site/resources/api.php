@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use GuzzleHttp\Client;
 
-$base = "http://localhost:8000";
+$base = "https://raposoautoshopping.com.br/admin";
 $apiImagesPath = $base . "/storage/uploads/";
 $apiPath = $base . "/api/";
 

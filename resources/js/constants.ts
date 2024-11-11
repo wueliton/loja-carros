@@ -151,6 +151,6 @@ export enum SuperRoutes {
 
 export const userRoles = {
   super: 'Administrador',
-  admin: 'Logista',
+  admin: 'Lojista',
   user: 'Vendedor',
 };
