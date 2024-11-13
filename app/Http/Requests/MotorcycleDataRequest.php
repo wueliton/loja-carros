@@ -30,7 +30,6 @@ class MotorcycleDataRequest extends FormRequest
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
             'images' => 'nullable|array|max:10|min:2',
-            'images.*' => 'image',
             'details' => 'nullable|string'
         ];
     }

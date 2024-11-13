@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SuperMotorcycleDataRequest extends FormRequest
+class SuperEditMotorcycleDataRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -28,7 +28,7 @@ class SuperMotorcycleDataRequest extends FormRequest
             'km' => 'required|numeric',
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
-            'images' => 'nullable|array|max:10|min:2',
+            'images' => 'nullable|array',
             'details' => 'nullable|string'
         ];
     }

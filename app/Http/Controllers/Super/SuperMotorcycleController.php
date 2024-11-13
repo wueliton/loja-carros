@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Super;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SuperEditMotorcycleDataRequest;
 use App\Http\Requests\SuperMotorcycleDataRequest;
 use App\Models\Motorcycle;
 use App\Services\FilterService;
@@ -64,7 +65,7 @@ class SuperMotorcycleController extends Controller
         return Redirect::route('super.motorcycles.list.view');
     }
 
-    public function edit(SuperMotorcycleDataRequest $request, $id)
+    public function edit(SuperEditMotorcycleDataRequest $request, $id)
     {
         $motorcycle = Motorcycle::findOrFail($id);
         $this->patchMoto($request, $motorcycle);
@@ -80,20 +81,23 @@ class SuperMotorcycleController extends Controller
         return redirect()->back();
     }
 
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048'
+        ]);
+
+        $filePath = $this->imageUploadService->upload($request->image);
+
+        return response()->json([
+            'name' => $filePath,
+        ]);
+    }
+
     private function patchMoto(Request $request, Motorcycle $motorcycle = null)
     {
         if (!$motorcycle) {
             $motorcycle = new Motorcycle();
-        }
-
-        $filesPath = [];
-
-        if ($request->has('images')) {
-            $files = $request->images;
-            foreach ($files as $file) {
-                $filePath = $this->imageUploadService->upload($file);
-                array_push($filesPath, ['url' => $filePath]);
-            }
         }
 
         $motorcycle->title = $request->title;
@@ -112,7 +116,9 @@ class SuperMotorcycleController extends Controller
 
         $motorcycle->save();
 
-        $motorcycle->images()->createMany($filesPath);
+        if ($request->images && count($request->images) > 0) {
+            $motorcycle->images()->createMany($request->images);
+        }
 
         if ($request->has('optionals')) {
             $motorcycle->optionals()->detach();

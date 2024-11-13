@@ -11,7 +11,7 @@ $title = $store['name'];
 $description = '';
 $keywords = $title;
 
-include "includes/head-2.php";
+include "includes/head.php";
 ?>
 <main class="container mb-4">
     <div class="row">

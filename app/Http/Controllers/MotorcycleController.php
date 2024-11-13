@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MotorcycleDataRequest;
+use App\Http\Requests\MotorcycleEditDataRequest;
 use App\Models\Motorcycle;
 use App\Models\MotorcycleImages;
 use App\Models\Store;
@@ -78,7 +79,7 @@ class MotorcycleController extends Controller
         return Redirect::route('motorcycles.list.view');
     }
 
-    public function edit(MotorcycleDataRequest $request, $id): RedirectResponse
+    public function edit(MotorcycleEditDataRequest $request, $id): RedirectResponse
     {
         $motorcycle = Motorcycle::findOrFail($id);
         $this->patchMotorcycle($request, $motorcycle);
@@ -116,20 +117,23 @@ class MotorcycleController extends Controller
         return $canCreate;
     }
 
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048'
+        ]);
+
+        $filePath = $this->imageUploadService->upload($request->image);
+
+        return response()->json([
+            'name' => $filePath,
+        ]);
+    }
+
     private function patchMotorcycle(Request $request, Motorcycle $motorcycle = null)
     {
         if (!$motorcycle) {
             $motorcycle = new Motorcycle();
-        }
-
-        $filesPath = [];
-
-        if ($request->has('images')) {
-            $files = $request->images;
-            foreach ($files as $file) {
-                $filePath = $this->imageUploadService->upload($file);
-                array_push($filesPath, ['url' => $filePath]);
-            }
         }
 
         $lastStoreId = $request->user()->lastStoreId();
@@ -150,7 +154,9 @@ class MotorcycleController extends Controller
 
         $motorcycle->save();
 
-        $motorcycle->images()->createMany($filesPath);
+        if ($request->images && count($request->images) > 0) {
+            $motorcycle->images()->createMany($request->images);
+        }
 
         if ($request->has('optionals')) {
             $motorcycle->optionals()->detach();

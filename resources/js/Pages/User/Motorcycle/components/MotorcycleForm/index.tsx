@@ -170,10 +170,16 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
         accept="image/png, image/jpg, image/webp, image/jpeg"
         maxFiles={10}
         className="md:col-span-2"
-        onChange={(files) => setData('images', files)}
+        onChange={(files) =>
+          setData(
+            'images',
+            files?.map(({ fileName }) => ({ url: fileName! })),
+          )
+        }
         error={errors.images}
         files={selectedFiles}
         onDelete={(file) => handleDeleteFile(file.id)}
+        url="api.motorcycle.images.upload"
         isMultiple
       />
       <h2 className="md:col-span-2 text-lg font-bold mt-4">Observações</h2>

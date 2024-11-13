@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CarDataRequest;
+use App\Http\Requests\CarEditDataRequest;
 use App\Models\Car;
 use App\Models\CarImages;
 use App\Models\Store;
@@ -63,7 +64,7 @@ class CarController extends Controller
         return Redirect::route('cars.list.view');
     }
 
-    public function edit(CarDataRequest $request, $id): RedirectResponse
+    public function edit(CarEditDataRequest $request, $id): RedirectResponse
     {
         $car = Car::findOrFail($id);
         $this->patchCar($request, $car);
@@ -110,6 +111,19 @@ class CarController extends Controller
         return $canCreate;
     }
 
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048'
+        ]);
+
+        $filePath = $this->imageUploadService->upload($request->image);
+
+        return response()->json([
+            'name' => $filePath,
+        ]);
+    }
+
     public function patchCar(Request $request, Car $car = null)
     {
         if (!$car) {
@@ -117,18 +131,9 @@ class CarController extends Controller
         }
 
         $currentStore = $request->user()->lastStoreId();
-        $filesPath = [];
 
         if (!$currentStore)
             return $car;
-
-        if ($request->has('images')) {
-            $files = $request->images;
-            foreach ($files as $file) {
-                $filePath = $this->imageUploadService->upload($file);
-                array_push($filesPath, ['url' => $filePath]);
-            }
-        }
 
         $car->title = $request->title;
         $car->brand_id = $request->brand;
@@ -149,7 +154,9 @@ class CarController extends Controller
 
         $car->save();
 
-        $car->images()->createMany($filesPath);
+        if ($request->images && count($request->images) > 0) {
+            $car->images()->createMany($request->images);
+        }
 
         if ($request->has('optionals')) {
             $car->optionals()->detach();

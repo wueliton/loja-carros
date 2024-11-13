@@ -15,7 +15,7 @@
                     <li class="close d-lg-none"><button @click="opened = false" class="btn-icon" id="close-btn"
                             aria-label="Clique para fechar o menu"><i class="fa-solid fa-xmark"></i></button></li>
                     <li><a href="<?= $url ?>" class="menu-btn">Home</a></li>
-                    <li><a href="#" class="menu-btn">Lojas</a></li>
+                    <li><a href="<?= $url ?>lojas" class="menu-btn">Lojas</a></li>
                     <li><a href="#servicos" class="menu-btn">Serviços</a></li>
                     <li><a href="#como-chegar" class="menu-btn">Como Chegar</a></li>
                     <li class="position-relative" x-data="{ opened: false }">
@@ -24,6 +24,8 @@
                             Links úteis <i class="fa-solid fa-chevron-down"></i>
                         </button>
                         <ul :class="{ 'active': opened }">
+                            <li><a target="_blank" href="https://www.potencialseg.com.br/">Corretora de Seguros <i
+                                        class="fa-solid fa-up-right-from-square"></i></a></li>
                             <li><a target="_blank" href="https://veiculos.fipe.org.br">Tabela FIPE <i
                                         class="fa-solid fa-up-right-from-square"></i></a></li>
                             <li><a target="_blank" href="https://www.detran.sp.gov.br">Site DETRAN <i

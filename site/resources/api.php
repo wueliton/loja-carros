@@ -200,13 +200,12 @@ function renderStore($store, $url)
 {
     global $apiImagesPath;
     ?>
-    <a href="<?= $url ?>lojas/<?= $store['slug'] ?>" class="store-card p-2 mb-2 mb-lg-0">
-        <div class="d-flex gap-4">
-            <div>
-                <img src="<?= $apiImagesPath . $store['logo_url'] ?>" title="<?= $store['name'] ?>" width="60"
-                    height="60" />
+    <div class="store-card p-2 mb-2 mb-lg-0">
+        <div class="d-flex flex-column gap-4">
+            <div class="store-image">
+                <img src="<?= $apiImagesPath . $store['logo_url'] ?>" title="<?= $store['name'] ?>" class="img-fluid" />
             </div>
-            <div>
+            <div class="content">
                 <div><strong><?= $store['name'] ?></strong></div>
                 <div>Loja: <?= $store['store_number'] ?></div>
                 <?php if ($store['phone']): ?>
@@ -214,7 +213,7 @@ function renderStore($store, $url)
                 <?php endif; ?>
             </div>
         </div>
-    </a>
+    </div>
     <?php
 }
 
@@ -257,17 +256,22 @@ function paginatedStores($results, $url)
         </div>
         <div></div>
     <?php else: ?>
-        <div class="col-12">
-            <div class="row">
-                <?php foreach ($results['data'] as $store): ?>
-                    <div class="col-lg-4 mb-4">
-                        <?= renderStore($store, $url); ?>
-                    </div>
-                <?php endforeach; ?>
+        <div x-data="{ search: '' }">
+            <div class="col pb-5">
+                <label class="form-field">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Pesquisar loja" x-model="search">
+                </label>
             </div>
-        </div>
-        <div class="col-12 pt-4">
-            <?= paginator($results) ?>
+            <div class="col-12">
+                <div class="row">
+                    <?php foreach ($results['data'] as $store): ?>
+                        <div class="col-lg-4 mb-4" x-show="'<?= strtolower($store['name']) ?>'.includes(search.toLowerCase())">
+                            <?= renderStore($store, $url); ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
         </div>
     <?php endif; ?>
 <?php

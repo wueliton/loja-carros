@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SuperMotorcycleDataRequest extends FormRequest
+class SuperCarEditDataRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,21 +15,23 @@ class SuperMotorcycleDataRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'storeId' => 'required|numeric|exists:stores,id',
             'brand' => 'required|numeric|exists:brands,id',
-            'model' => 'required|numeric|exists:motorcycle_brand_models,id',
+            'model' => 'required|numeric|exists:car_brand_models,id',
             'price' => 'required|numeric',
-            'type' => 'required|numeric|exists:motorcycle_types,id',
             'manufacturingYear' => 'required|numeric|digits:4',
             'year' => 'required|numeric|digits:4',
-            'cylinder' => 'required',
-            'motor' => 'string|nullable',
+            'version' => 'string|nullable',
+            'storeId' => 'required|numeric|exists:stores,id',
             'color' => 'required|numeric|exists:colors,id',
+            'doors' => 'required|numeric',
+            'transmission' => 'required|numeric|exists:car_transmissions,id',
+            'motor' => 'required|numeric',
             'km' => 'required|numeric',
+            'lastDigit' => 'required|numeric',
+            'images' => 'nullable|array',
+            'details' => 'nullable|string',
             'optionals' => 'nullable|array',
-            'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
-            'images' => 'nullable|array|max:10|min:2',
-            'details' => 'nullable|string'
+            'optionals.*' => 'nullable|numeric|exists:car_optionals,id'
         ];
     }
 }
