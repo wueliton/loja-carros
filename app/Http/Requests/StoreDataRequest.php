@@ -24,7 +24,7 @@ class StoreDataRequest extends FormRequest
             'site' => 'nullable|string|url',
             'users' => 'required|array',
             'users.*' => 'nullable|required|numeric|exists:users,id',
-            'logo_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:1024',
+            'logo_url' => 'nullable|string',
             'max_cars' => 'nullable|numeric',
             'max_motorcycles' => 'nullable|numeric',
         ];

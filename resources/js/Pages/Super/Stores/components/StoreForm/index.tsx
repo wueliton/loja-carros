@@ -77,10 +77,12 @@ export const StoreForm: FC<StoreFormProps> = ({ store, postUrl }) => {
       <UploadFile
         hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
         className="md:col-span-2"
-        onChange={(files) => setData('logo_url', files?.[0])}
+        onChange={(files) => setData('logo_url', files?.[0].fileName)}
         accept="image/png, image/jpg, image/webp, image/jpeg"
         error={errors.logo_url}
         fieldName="Logo da Empresa"
+        url="api.super.stores.upload"
+        maxFiles={1}
         handle={
           store ? (
             <img

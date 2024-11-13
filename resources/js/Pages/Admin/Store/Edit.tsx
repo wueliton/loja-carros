@@ -83,9 +83,11 @@ const AdminEditStorePage = ({
           <UploadFile
             hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
             className="md:col-span-2"
-            onChange={(files) => setData('logo_url', files?.[0])}
+            onChange={(files) => setData('logo_url', files?.[0].fileName)}
             error={errors.logo_url}
             fieldName="Logo da Empresa"
+            accept="image/png, image/jpg, image/webp, image/jpeg"
+            url="api.admin.stores.upload"
             handle={
               <img
                 src={`storage/uploads/${store.logo_url}`}

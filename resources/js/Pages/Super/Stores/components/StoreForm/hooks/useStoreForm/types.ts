@@ -6,7 +6,7 @@ export interface UseStoreFormProps {
 }
 
 export interface StoreFormProps {
-  logo_url?: File;
+  logo_url?: string;
   name?: string;
   store_number?: string;
   email?: string;
