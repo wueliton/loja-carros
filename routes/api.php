@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminStoreController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Api\ApiCarController;
 use App\Http\Controllers\Api\ApiMotorcycleController;
@@ -88,11 +89,16 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
             Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
                 Route::get('', [AdminUserController::class, 'apiGet'])->name('list');
             });
+
+            Route::group(['prefix' => 'stores', 'as' => 'stores.'], function () {
+                Route::post('upload', [AdminStoreController::class, 'uploadImage'])->name('upload');
+            });
         });
 
         Route::group(['prefix' => 'super', 'as' => 'super.', 'middleware' => ['role:super']], function () {
             Route::group(['prefix' => 'stores', 'as' => 'stores.'], function () {
                 Route::get('', [SuperStoreController::class, 'apiGet'])->name('list');
+                Route::post('upload', [SuperStoreController::class, 'uploadImage'])->name('upload');
             });
         });
     });

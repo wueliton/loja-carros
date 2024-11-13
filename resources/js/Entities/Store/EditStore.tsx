@@ -2,7 +2,6 @@ import { Button } from '@/Components/Button';
 import { Card } from '@/Components/Card';
 import { Autocomplete } from '@/Components/Forms/Autocomplete';
 import { Input } from '@/Components/Forms/Input';
-import { UploadFile } from '@/Components/Forms/UploadFile';
 import { useUser } from '@/Context/User';
 import { useDiscardUnsaved } from '@/Hooks/useDiscardUnsaved';
 import { Store } from '@/models/Store';
@@ -89,7 +88,7 @@ const StoreEdit: FC<{
           mask="brazilPhone"
           onChange={(e) => setData('whatsapp', e.target.value)}
         />
-        <UploadFile
+        {/* <UploadFile
           hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
           className="md:col-span-2"
           onChange={(files) => setData('logo_url', files?.[0])}
@@ -102,7 +101,7 @@ const StoreEdit: FC<{
               title={data.name}
             />
           }
-        />
+        /> */}
         <div className="md:col-span-2 mt-2">
           <h2 className="text-lg font-bold">Administradores</h2>
           <Autocomplete

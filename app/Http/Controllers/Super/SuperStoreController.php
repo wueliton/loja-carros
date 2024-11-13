@@ -77,6 +77,19 @@ class SuperStoreController extends Controller
         return $stores;
     }
 
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048'
+        ]);
+
+        $filePath = $this->imageUploadService->upload($request->image);
+
+        return response()->json([
+            'name' => $filePath,
+        ]);
+    }
+
     private function patchStore(Request $request, Store $store = null)
     {
         $fileName = 'no-image.jpg';
@@ -95,9 +108,7 @@ class SuperStoreController extends Controller
                 }
             }
 
-            $file = $request->file('logo_url');
-            $fileName = $this->imageUploadService->upload($file);
-            $store->logo_url = $fileName;
+            $store->logo_url = $request->logo_url;
         }
 
         $store->name = $request->name;
