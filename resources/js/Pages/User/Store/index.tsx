@@ -1,7 +1,6 @@
 import { Button } from '@/Components/Button';
 import { Card } from '@/Components/Card';
 import { Input } from '@/Components/Forms/Input';
-import { UploadFile } from '@/Components/Forms/UploadFile';
 import { Head } from '@/Components/Head';
 import { InfoBlockMessage } from '@/Components/InfoBlockMessage';
 import { Store } from '@/models/Store';
@@ -89,7 +88,7 @@ export default function EditStore({
                 label="Site"
                 onChange={(e) => setData('site', e.target.value)}
               />
-              <UploadFile
+              {/* <UploadFile
                 hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
                 className="md:col-span-2"
                 onChange={(files) => setData('logo_url', files?.[0])}
@@ -103,7 +102,7 @@ export default function EditStore({
                     title={data.name}
                   />
                 }
-              />
+              /> */}
               <div className="col-span-full flex justify-end gap-2">
                 <Button
                   type="button"

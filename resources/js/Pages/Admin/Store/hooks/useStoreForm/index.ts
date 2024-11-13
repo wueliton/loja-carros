@@ -8,7 +8,7 @@ export const useStoreForm = ({ store, postRoute }: UseStoreFormProps) => {
     Omit<Store, 'logo_url' | 'phone' | 'whatsapp'> & {
       phone?: string | number;
       whatsapp?: string | number;
-      logo_url?: File;
+      logo_url?: string;
       users: number[];
     }
   >({

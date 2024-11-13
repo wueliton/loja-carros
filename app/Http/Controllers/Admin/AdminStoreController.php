@@ -37,18 +37,29 @@ class AdminStoreController extends Controller
         return Redirect::route('admin.store.edit.view');
     }
 
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048'
+        ]);
+
+        $filePath = $this->imageUploadService->upload($request->image);
+
+        return response()->json([
+            'name' => $filePath,
+        ]);
+    }
+
     protected function patchStore(Request $request, Store $store = null)
     {
         if (!$store) {
             $store = new Store();
         }
 
-        $filePath = 'no-image.jpg';
+        $store->logo_url = 'no-image.jpg';
 
         if ($request->has('logo_url') && isset($request->logo_url)) {
-            $file = $request->file('logo_url');
-            $filePath = $this->imageUploadService->upload($file);
-            $store->logo_url = $filePath;
+            $store->logo_url = $request->logo_url;
         }
 
         $store->name = $request->name;
