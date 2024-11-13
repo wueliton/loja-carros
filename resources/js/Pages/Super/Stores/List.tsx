@@ -4,7 +4,6 @@ import { Head } from '@/Components/Head';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { THeadProps, Table } from '@/Components/Table';
 import { useDialog } from '@/Context/Dialog';
-import { useUser } from '@/Context/User';
 import { SuperRoutes } from '@/constants';
 import { Paginated } from '@/models/Paginated';
 import { Store } from '@/models/Store';
@@ -49,7 +48,6 @@ export default function ListStorePage({
   stores,
 }: PageProps<{ stores: Paginated<Store> }>) {
   const { openDialog } = useDialog();
-  const { hasRole } = useUser();
 
   const handleDelete = (item: Store) => {
     openDialog({
@@ -86,7 +84,7 @@ export default function ListStorePage({
       <Table
         data={stores}
         headers={storeHeader}
-        onDelete={hasRole('admin') ? (item) => handleDelete(item) : undefined}
+        onDelete={(item) => handleDelete(item)}
         onEdit={(item) =>
           router.visit(route(SuperRoutes.STORE_EDIT_VIEW, { id: item.id }), {
             preserveScroll: true,
