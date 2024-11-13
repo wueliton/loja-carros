@@ -22,6 +22,6 @@ export interface CarFormSchema {
   km?: number;
   lastDigit?: number;
   optionals?: (number | undefined)[];
-  images?: File[];
+  images?: { url: string }[];
   details?: string;
 }

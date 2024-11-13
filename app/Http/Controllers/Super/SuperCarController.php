@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Super;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SuperCarDataRequest;
+use App\Http\Requests\SuperCarEditDataRequest;
 use App\Services\FilterService;
 use App\Models\Car;
 use App\Services\ImageUploadService;
@@ -63,7 +64,7 @@ class SuperCarController extends Controller
         return Redirect::route('super.cars.list.view');
     }
 
-    public function edit(SuperCarDataRequest $request, $id)
+    public function edit(SuperCarEditDataRequest $request, $id)
     {
         $car = Car::findOrFail($id);
         $this->patchCar($request, $car);
@@ -85,16 +86,6 @@ class SuperCarController extends Controller
             $car = new Car();
         }
 
-        $filesPath = [];
-
-        if ($request->has('images')) {
-            $files = $request->images;
-            foreach ($files as $file) {
-                $filePath = $this->imageUploadService->upload($file);
-                array_push($filesPath, ['url' => $filePath]);
-            }
-        }
-
         $car->title = $request->title;
         $car->brand_id = $request->brand;
         $car->model_id = $request->model;
@@ -114,7 +105,9 @@ class SuperCarController extends Controller
 
         $car->save();
 
-        $car->images()->createMany($filesPath);
+        if ($request->images && count($request->images) > 0) {
+            $car->images()->createMany($request->images);
+        }
 
         if ($request->has('optionals')) {
             $car->optionals()->detach();

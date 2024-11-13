@@ -30,7 +30,6 @@ class CarDataRequest extends FormRequest
             'km' => 'required|numeric',
             'lastDigit' => 'required|numeric',
             'images' => 'nullable|array|max:10|min:2',
-            'images.*' => 'image',
             'details' => 'nullable|string',
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:car_optionals,id'

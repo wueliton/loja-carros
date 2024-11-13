@@ -57,6 +57,7 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
 
             Route::group(['prefix' => 'images', 'as' => 'images.'], function () {
                 Route::delete('{id}', [CarController::class, 'apiDeleteImage'])->name('delete')->where('id', '[0-9]+');
+                Route::post('upload', [CarController::class, 'uploadImage'])->name('upload');
             });
         });
 
@@ -78,6 +79,7 @@ Route::group(['prefix' => '/api', 'as' => 'api.'], function () {
 
             Route::group(['prefix' => 'images', 'as' => 'images.'], function () {
                 Route::delete('{id}', [MotorcycleController::class, 'apiDeleteImage'])->name('delete')->where('id', '[0-9]+');
+                Route::post('upload', [MotorcycleController::class, 'uploadImage'])->name('upload');
             });
         });
 

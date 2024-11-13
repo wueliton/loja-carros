@@ -12,6 +12,15 @@ if (keysExist() == false) {
 <html lang="pt-br">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PH9FLERJGS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-PH9FLERJGS');
+    </script>
     <!-- Site Desenvolvido por <?php echo $creditos; ?> / <?php echo $author; ?> -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
