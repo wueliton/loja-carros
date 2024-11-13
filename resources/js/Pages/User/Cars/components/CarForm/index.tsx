@@ -203,10 +203,16 @@ export const CarForm: React.FC<CarFormProps> = ({
         accept="image/png, image/jpg, image/webp, image/jpeg"
         maxFiles={10}
         className="md:col-span-2"
-        onChange={(files) => setData('images', files)}
+        onChange={(files) =>
+          setData(
+            'images',
+            files?.map(({ fileName }) => ({ url: fileName! })),
+          )
+        }
         onDelete={(files) => handleDeleteFile(files.id)}
         error={errors.images}
         files={selectedFiles}
+        url="api.cars.images.upload"
         isMultiple
       />
       <h2 className="md:col-span-2 text-lg font-bold mt-4">Observações</h2>

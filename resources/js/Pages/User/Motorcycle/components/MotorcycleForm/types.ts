@@ -13,7 +13,7 @@ export interface MotorcycleSchema {
   color?: number;
   km?: number;
   optionals?: number[];
-  images?: File[];
+  images?: { url: string }[];
   details?: string;
 }
 

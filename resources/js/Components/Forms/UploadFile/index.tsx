@@ -2,6 +2,8 @@ import { IconButton } from '@/Components/IconButton';
 import { CloseIcon } from '@/Components/Icons/Close';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { UploadIcon } from '@/Components/Icons/Upload';
+import axios from 'axios';
+import { uniqueId } from 'lodash';
 import {
   ChangeEvent,
   DragEvent,
@@ -13,6 +15,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { ErrorLabel } from '../Error';
 import styles from './UploadFile.module.scss';
 
@@ -28,8 +31,16 @@ export interface UploadFileProps<InitialFile extends SavedFile>
   accept?: string;
   maxFiles?: number;
   files?: InitialFile[];
-  onChange?: (files?: File[]) => void;
+  url: string;
+  onChange?: (files?: InitialFile[]) => void;
   onDelete?: (file: InitialFile) => void;
+}
+
+interface FileStateProps {
+  id: string;
+  file: File;
+  isLoading: boolean;
+  progress: number;
 }
 
 export const UploadFile = <InitialFile extends SavedFile>({
@@ -42,32 +53,85 @@ export const UploadFile = <InitialFile extends SavedFile>({
   maxFiles,
   handle,
   accept,
-  onChange,
+  url,
   onDelete,
+  onChange,
   ...props
 }: UploadFileProps<InitialFile>) => {
-  const [files, setFiles] = useState<File[]>();
+  const [uploadList, setUploadList] = useState<FileStateProps[]>();
+  const [files, setFiles] = useState<InitialFile[]>();
   const [currentFiles, setCurrentFiles] = useState<InitialFile[]>();
   const [hoverActive, setHoverActive] = useState(false);
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleFilesChanges = useCallback((files?: FileList | null) => {
+  const handleFilesChanges = useCallback((files?: InitialFile[] | null) => {
     const newFiles = Array.from(files ?? []);
-    setFiles((prev) => [...(prev ?? []), ...newFiles].slice(0, maxFiles));
+    setFiles((prev) => [...newFiles, ...(prev ?? [])].slice(0, maxFiles));
     if (inputRef.current) inputRef.current.value = '';
   }, []);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
-    handleFilesChanges(e.target.files);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = (e.target.files ?? [])[0];
+
+    addFileToUploadList(file);
+  };
 
   const handleRemoveFile = (index: number) => {
-    setFiles((prev) => prev?.filter((_, fileIndex) => fileIndex !== index));
+    setFiles((prev) =>
+      (prev ?? []).filter((_, fileIndex) => fileIndex !== index),
+    );
+  };
+
+  const addFileToUploadList = (file: File) => {
+    const fileId = uuidv4();
+    setUploadList((prev) => [
+      ...(prev ?? []),
+      {
+        id: fileId,
+        file: file,
+        isLoading: true,
+        progress: 0,
+      },
+    ]);
+
+    handleUploadImage(file, fileId);
+  };
+
+  const handleUploadImage = async (file: File, id: string) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const data = await axios.post<{ name: string }>(route(url), formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress: (progressEvent) => {
+        if (progressEvent.total) {
+          const percent = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total,
+          );
+          setUploadList((prev) =>
+            prev?.map((fileState) =>
+              fileState.id === id
+                ? {
+                    ...fileState,
+                    progress: percent,
+                  }
+                : fileState,
+            ),
+          );
+        }
+      },
+    });
+
+    setUploadList((prev) => prev?.filter((fileState) => fileState.id !== id));
+    handleFilesChanges([{ fileName: data.data.name } as InitialFile]);
   };
 
   const handleDropFiles = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    handleFilesChanges(e.dataTransfer.files);
+    addFileToUploadList(e.dataTransfer.files[0]);
     setHoverActive(false);
   };
 
@@ -84,19 +148,13 @@ export const UploadFile = <InitialFile extends SavedFile>({
     setHoverActive(false);
   };
 
-  const calculateSize = useCallback(
-    (fileSize: number) => (fileSize / (1024 * 1024)).toFixed(2) + 'MB',
-    [],
-  );
-
-  useEffect(() => {
-    if (!onChange) return;
-    onChange(files);
-  }, [files]);
-
   useEffect(() => {
     setCurrentFiles(initialFiles);
   }, [initialFiles]);
+
+  useEffect(() => {
+    onChange?.(files);
+  }, [files]);
 
   return (
     <div className={className} aria-label={fieldName}>
@@ -136,16 +194,16 @@ export const UploadFile = <InitialFile extends SavedFile>({
         </>
       )}
 
-      {(!!files?.length || !!currentFiles?.length) && (
+      {(!!files?.length || !!currentFiles?.length || !!uploadList?.length) && (
         <div className={styles['list']}>
           <p>
             Arquivo{isMultiple ? 's' : ''} (
             {(files?.length ?? 0) + (currentFiles?.length ?? 0)}/{maxFiles})
           </p>
-          {currentFiles?.map((file, index) => (
+          {currentFiles?.map((file) => (
             <div
               className={`${styles['list-item']} ${styles['list-existing-file']}`}
-              key={index}
+              key={uniqueId()}
             >
               <div className={styles['header']}>
                 <span>
@@ -163,13 +221,33 @@ export const UploadFile = <InitialFile extends SavedFile>({
               </div>
             </div>
           ))}
-          {files?.map((file, index) => (
-            <div className={styles['list-item']} key={index}>
+          {uploadList?.map(({ file, isLoading, progress }) => (
+            <div className={styles['list-item']} key={uniqueId()}>
               <div className={styles['header']}>
                 <span></span>
-                <div>
+                <div className="flex-1">
                   <p>{file.name}</p>
-                  <p>{calculateSize(file.size)}</p>
+                  <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+                    {isLoading ? (
+                      <div
+                        className="bg-blue-600 h-2 rounded-full"
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+          {files?.map((file, index) => (
+            <div className={styles['list-item']} key={uniqueId()}>
+              <div className={styles['header']}>
+                <span>
+                  <img src={`storage/uploads/${file.fileName}`} />
+                </span>
+                <div className="flex-1">
+                  <p>{file.fileName}</p>
+                  <p>Carregado</p>
                 </div>
                 <IconButton
                   size="xs"

@@ -37,7 +37,7 @@ include "includes/head.php";
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
                             <hr />
-                            <a href="" class="d-flex gap-4 justify-content-between align-items-center">
+                            <a href="<?= $url ?>lojas" class="d-flex gap-4 justify-content-between align-items-center">
                                 <div>
                                     <h3 class="h6">Lojas</h3>
                                     <p class="body-alt">Explore as opções disponíveis em nossas lojas e encontre o
@@ -112,7 +112,7 @@ include "includes/head.php";
                 <div class="col-12 align-items-center justify-content-center d-flex flex-column pb-2">
                     <h2 class="h3 text-center mb-2">Serviços</h2>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3 mb-4 mb-md-none">
                     <div class="icon-section flex-1 d-flex gap-2 align-items-start flex-column">
                         <i class="fa-solid fa-mug-hot"></i>
                         <div>
@@ -124,7 +124,7 @@ include "includes/head.php";
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3 mb-4 mb-md-none">
                     <div class="icon-section flex-1 d-flex gap-2 align-items-start flex-column">
                         <i class="fa-solid fa-headset"></i>
                         <div>
@@ -136,7 +136,7 @@ include "includes/head.php";
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3 mb-4 mb-md-none">
                     <div class="icon-section flex-1 d-flex gap-2 align-items-start flex-column">
                         <i class="fa-solid fa-users-gear"></i>
                         <div>
@@ -144,6 +144,18 @@ include "includes/head.php";
                             <p class="body-alt">
                                 Nossa equipe de supervisão garante uma experiência tranquila e segura, acompanhando você
                                 em cada etapa da compra!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-none">
+                    <div class="icon-section flex-1 d-flex gap-2 align-items-start flex-column">
+                        <i class="fa-solid fa-building-shield"></i>
+                        <div>
+                            <h3 class="h6 mb-2"> Corretora</h3>
+                            <p class="body-alt">
+                                Busque, compare e contrate seu Seguro. <strong><a href="https://www.potencialseg.com.br"
+                                        target="_blank">Clique aqui e encontre o melhor seguro para você!</a></strong>
                             </p>
                         </div>
                     </div>

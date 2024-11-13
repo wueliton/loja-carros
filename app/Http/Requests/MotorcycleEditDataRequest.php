@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Motorcycle;
+use App\Models\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SuperMotorcycleDataRequest extends FormRequest
+class MotorcycleEditDataRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,7 +17,6 @@ class SuperMotorcycleDataRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'storeId' => 'required|numeric|exists:stores,id',
             'brand' => 'required|numeric|exists:brands,id',
             'model' => 'required|numeric|exists:motorcycle_brand_models,id',
             'price' => 'required|numeric',
@@ -28,7 +29,7 @@ class SuperMotorcycleDataRequest extends FormRequest
             'km' => 'required|numeric',
             'optionals' => 'nullable|array',
             'optionals.*' => 'nullable|numeric|exists:motorcycle_optionals,id',
-            'images' => 'nullable|array|max:10|min:2',
+            'images' => 'nullable|array',
             'details' => 'nullable|string'
         ];
     }
