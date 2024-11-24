@@ -20,7 +20,7 @@ include "includes/head.php";
                     </div>
                     <div class="col-lg-6 position-relative">
                         <div class="side-menu">
-                            <a href="" class="d-flex gap-4 justify-content-between align-items-center">
+                            <a href="<?= $url ?>carros" class="d-flex gap-4 justify-content-between align-items-center">
                                 <div>
                                     <h3 class="h6">Carros</h3>
                                     <p class="body-alt">Descubra seu próximo carro com segurança e conforto em nosso
@@ -29,7 +29,7 @@ include "includes/head.php";
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
                             <hr />
-                            <a href="" class="d-flex gap-4 justify-content-between align-items-center">
+                            <a href="<?= $url ?>motos" class="d-flex gap-4 justify-content-between align-items-center">
                                 <div>
                                     <h3 class="h6">Motos</h3>
                                     <p class="body-alt">Acelere sua busca e realize o sonho de ter a moto ideal!</p>

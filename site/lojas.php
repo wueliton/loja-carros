@@ -2,9 +2,10 @@
 
 include "resources/api.php";
 
-$title = "Lojas";
-$description = '';
-$keywords = $title;
+$title = 'Lojas';
+$description = 'Busca de lojas';
+$keywords = $title . ", Orçamento para " . $title . ", Valores para " . $title . ", Preços para " . $title;
+$keyregiao = "$title";
 
 $stores = api("GET", "stores?" . $_SERVER['QUERY_STRING']);
 
@@ -14,8 +15,6 @@ include "includes/head.php";
     <div class="container py-4">
         <div class="d-flex gap-1 pb-2 align-items-center">
             <a href="<?= $url ?>">Home</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <span><?= $title ?></span>
         </div>
         <h1 class="h2"><?= $title ?></h1>
     </div>

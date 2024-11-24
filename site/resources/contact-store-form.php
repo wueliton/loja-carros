@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="col-12 d-flex justify-content-end">
-            <button>Enviar</button>
+            <button class="btn">Enviar</button>
         </div>
         <div class="col-12 pt-2">
             <div class="info-message">

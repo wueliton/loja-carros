@@ -15,11 +15,11 @@ if (keysExist() == false) {
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PH9FLERJGS"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-      gtag('config', 'G-PH9FLERJGS');
+        gtag('config', 'G-PH9FLERJGS');
     </script>
     <!-- Site Desenvolvido por <?php echo $creditos; ?> / <?php echo $author; ?> -->
     <meta charset="utf-8" />
@@ -132,6 +132,10 @@ if (keysExist() == false) {
 
     <?php
     $cssFile = minimizeCSSsimple('assets/css/home.css');
+    echo "<style>" . $cssFile . "</style>";
+    ?>
+    <?php
+    $cssFile = minimizeCSSsimple('assets/css/swiper-bundle.min.css');
     echo "<style>" . $cssFile . "</style>";
     ?>
 </head>

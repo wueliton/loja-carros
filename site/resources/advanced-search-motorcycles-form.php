@@ -10,14 +10,14 @@ $optionals = $advancedSearchOptions['motorcycles']['optionals'];
 $types = $advancedSearchOptions['motorcycles']['types'];
 ?>
 
-<form method="post" action="buscar">
+<form action="buscar" x-data="advancedMotorcyclesSearch()">
     <input type="hidden" name="type" value="motorcycles" />
     <div class="row">
         <div class="col-lg-6">
             <div class="form-field">
                 <label for="brand">Marca</label>
                 <div class="field">
-                    <select name="brand_id" id="brand" onchange="onModelChange()">
+                    <select name="brand_id" x-model="brandId" x-on:change="loadModels($event)">
                         <option value="">Selecione uma opção</option>
                         <?php foreach ($brands as $brand): ?>
                             <option value="<?= $brand['id'] ?>"><?= $brand['name'] ?></option>
@@ -29,8 +29,12 @@ $types = $advancedSearchOptions['motorcycles']['types'];
             <div class="form-field">
                 <label for="brand_model">Modelo</label>
                 <div class="field">
-                    <select name="model_id" id="brand_model" disabled>
-                        <option value="">Selecione uma opção</option>
+                    <select name="model_id" :disabled="!brandId">
+                        <option value="" x-text="isLoading ? 'Carregando' : 'Todos os Modelos'">Selecione uma opção
+                        </option>
+                        <template x-for="model in modelOptions">
+                            <option :value="model.id" x-text="model.name"></option>
+                        </template>
                     </select>
                 </div>
                 <div class="error"></div>
@@ -163,7 +167,34 @@ $types = $advancedSearchOptions['motorcycles']['types'];
             </div>
         </div>
         <div class="d-flex justify-content-end gap-4">
-            <button type="submit">Buscar</button>
+            <button type="submit" class="btn">Buscar</button>
         </div>
     </div>
 </form>
+
+<script>
+    const loadMotorcycleBrandModels = (brandId) => {
+        return fetch(`${baseUrl}/motorcycles/brand-models?where[and][0][fieldName]=brand_id&where[and][0][value]=${brandId}&where[and][0][comparison]=equals`).then((res) => res.json());
+    }
+
+    function advancedMotorcyclesSearch() {
+        return {
+            brandId: "",
+            modelId: "",
+            isLoading: false,
+            modelOptions: [],
+            loadModels(event) {
+                this.isLoading = true;
+                const value = event.target.value;
+                if (!value) {
+                    this.isLoading = false;
+                    return;
+                };
+                loadMotorcycleBrandModels(value).then((res) => {
+                    this.modelOptions = res;
+                    this.isLoading = false;
+                })
+            }
+        }
+    }
+</script>
