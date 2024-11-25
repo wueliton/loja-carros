@@ -1,6 +1,5 @@
 <?php
-// $highlights = api("GET", "cars/highlights?take=6");
-$highlights = [];
+$highlights = api("GET", "cars/highlights?take=6");
 ?>
 
 <section>
@@ -10,19 +9,21 @@ $highlights = [];
                 <h2 class="h2">Encontre seu veículo</h2>
                 <p>Novos veículos são cadastrados todos os meses. Não perca a oportunidade de encontrar o seu!</p>
             </div>
-            <div class="py-4">
-                <div class="search" x-data="search()" x-init="loadBrandOptions()">
+            <form x-data="search()" action="buscar" class="py-4">
+                <input type="hidden" name="type" :value="type">
+                <div class="search" x-init="loadBrandOptions()">
                     <div class="actions">
                         <button type="button" x-on:click="changeOption('cars')"
                             :data-active="type === 'cars'">Carros</button>
                         <button type="button" x-on:click="changeOption('motorcycles')"
                             :data-active="type === 'motorcycles'">Motos</button>
-                        <a href="#" class="body2">Busca Avançada <i class="fa-solid fa-chevron-right"></i></a>
+                        <a href="<?= $url ?>busca-avancada" class="body2">Busca Avançada <i
+                                class="fa-solid fa-chevron-right"></i></a>
                     </div>
                     <div class="form d-flex flex-column flex-lg-row gap-4">
                         <label class="field">
                             <span>Marca</span>
-                            <select name="brand" x-model="brandId" x-on:change="loadBrandModelOptions(type, $event)">
+                            <select name="brand_id" x-model="brandId" x-on:change="loadBrandModelOptions(type, $event)">
                                 <option value="">Todas as Marcas</option>
                                 <template x-for="brand in brandOptions">
                                     <option :value="brand.id" x-text="brand.name"></option>
@@ -31,7 +32,7 @@ $highlights = [];
                         </label>
                         <label class="field">
                             <span>Modelo</span>
-                            <select name="model" x-model="modelId" :disabled="!brandId">
+                            <select name="model_id" x-model="modelId" :disabled="!brandId">
                                 <option value="" x-text="isLoading ? 'Carregando' : 'Todos os Modelos'">Todos os
                                     Modelos
                                 </option>
@@ -43,16 +44,16 @@ $highlights = [];
                         <label class="field">
                             <span>Ano</span>
                             <select name="year">
-                                <option>Todos os Anos</option>
+                                <option value="">Todos os Anos</option>
                                 <template x-for="year in yearOptions">
                                     <option :value="year" x-text="year"></option>
                                 </template>
                             </select>
                         </label>
                         <label class="field">
-                            <span>Preço</span>
-                            <select name="year">
-                                <option>Todos os Preços</option>
+                            <span>Preço <span style="font-size: 10px">(máximo)</span></span>
+                            <select name="max_price">
+                                <option value="">Todos os Preços</option>
                                 <template x-for="price in priceOptions">
                                     <option :value="price" x-text="formatPrice(price)"></option>
                                 </template>
@@ -61,7 +62,7 @@ $highlights = [];
                         <button class="btn">Mostrar Resultados</button>
                     </div>
                 </div>
-            </div>
+            </form>
             <?php if (count($highlights) > 0): ?>
                 <div class="pt-4">
                     <div class="row">
@@ -72,7 +73,7 @@ $highlights = [];
                                 $carImageUrl = 'https://www.raposoautoshopping.com.br/admin/storage/uploads/' . $car['single_image']['url'];
                             ?>
                             <div class="col-6 col-lg-4 mb-3">
-                                <a href="<?= $url . "carros/" . $car['slug'] ?>" class="product">
+                                <a href="<?= $url . "carro/" . $car['slug'] ?>" class="product">
                                     <p class="h6"><?= $car['title'] ?></p>
                                     <p class="body-alt"><?= $car['color']['color'] ?> | <?= toKM($car['km']) ?></p>
                                     <img src="<?= $carImageUrl ?>" alt="<?= $car['title'] ?>" loading="lazy">

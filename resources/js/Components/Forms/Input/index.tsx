@@ -59,7 +59,13 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
       let value = e.target.value;
       if (mask) {
         value = Mask[mask](value, valueState, max) as string;
-        unmaskedValueChange?.(Mask.number(value));
+        if (mask === 'currency') {
+          unmaskedValueChange?.(
+            value.replace(/[^\d,-]/g, '').replace(',', '.'),
+          );
+        } else {
+          unmaskedValueChange?.(Mask.number(value));
+        }
       }
 
       setValueState(value);

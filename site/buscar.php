@@ -2,14 +2,23 @@
 $title = 'Busca'; //20-70 CARATERES
 $description = 'Visite o Auto Shopping Raposo, o maior centro automotivo da América, com lojas e serviços para apaixonados por veículos.'; //70 - 160 CARACTERES
 $keywords = $title;
-include "includes/head-2.php";
+include "includes/head.php";
 include "resources/api.php";
 
-$searchParams = convertSearchFilter($_POST);
-$results = api('GET', $searchParams['type'] . '?' . $searchParams['filter']);
+$searchParams = convertSearchFilter($_GET);
+$page = isset($_GET['page']) ? $_GET['page'] : "";
+$results = api('GET', $searchParams['type'] . '?' . $searchParams['filter'] . "&page=" . $page);
 $itemLinkType = $searchParams['type'] === 'cars' ? 'carros' : 'motos';
 ?>
 
+<section class="bg-third py-3 breadcrumb">
+    <div class="container py-4">
+        <div class="d-flex gap-1 pb-2 align-items-center">
+            <a href="<?= $url ?>">Home</a>
+        </div>
+        <h1 class="h2"><?= $title ?></h1>
+    </div>
+</section>
 <section>
     <div class="container py-5">
         <div class="row">

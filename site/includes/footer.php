@@ -78,7 +78,7 @@
             </div>
         </div>
     </div>
-    <script src="assets/js/alpinejs.min.js" defer></script>
+    <script src="<?= $url ?>assets/js/alpinejs.min.js" defer></script>
 </footer>
 <?php include "includes/cookie-consent.php" ?>
 </body>
