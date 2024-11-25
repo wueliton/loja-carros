@@ -19,7 +19,17 @@ RewriteRule ^carros/([^/]+)$ /carros.php?slug=$1 [L,QSA]
 # Página de Veículos
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^carro/([^/]+)$ /carro.php?slug=$1 [L,QSA]
+
+# Página de Veículos
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^motos/([^/]+)$ /motos.php?slug=$1 [L,QSA]
+
+# Página de Veículos
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^moto/([^/]+)$ /moto.php?slug=$1 [L,QSA]
 
 # Página de Loja
 RewriteCond %{REQUEST_FILENAME} !-f

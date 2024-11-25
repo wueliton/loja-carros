@@ -869,6 +869,7 @@ footer a i {
 
 .store-card img {
     max-height: 100px;
+    object-fit: contain;
 }
 
 .store-card .content {
@@ -879,20 +880,58 @@ footer a i {
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.form-field {
+.search-form-field {
+    display: flex;
+    gap: 4px;
     border: 1px solid #CCC;
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
     padding: 0 12px;
+    align-items: center;
 }
 
-.form-field input {
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.search-form-field input, .form-field input {
     min-height: 40px;
     flex: 1;
     outline: none;
     font-size: 12pt;
+}
+
+.form-field .field {
+    flex: 1;
+    border: 1px solid var(--outline);
+    border-radius: 4px;
+    padding: 0px 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.form-field .error {
+    min-height: 16px;
+}
+
+.check-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.check-group label {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.optionals-list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 @media (min-width: 768px) {
@@ -953,7 +992,175 @@ footer a i {
 
     .carousel img {
         height: 600px;
-        width: auto;
+        width: 100%;
         object-position: left;
     }
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.pagination a {
+    padding: 10px 14px;
+    border-radius: 4px;
+    background: #EEE;
+}
+
+.btn-toggle {
+    padding: 4px;
+    border-radius: 8px;
+    background-color: var(--outline);
+    display: inline-flex;
+    width: auto;
+}
+
+.btn-toggle button {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 8px 20px;
+}
+
+.btn-toggle button.active {
+    background: white;
+}
+
+.mySwiper {
+  height: 20%;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+
+.mySwiper .swiper-slide {
+  width: 100px;
+  height: 100px;
+  opacity: 0.4;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.mySwiper .swiper-slide-thumb-active {
+  opacity: 1;
+  cursor: default;
+  border: 2px solid var(--primary);
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.mySwiper2 .swiper-wrapper {
+    align-items: center;
+}
+
+.mySwiper img {
+    object-fit: cover;
+}
+
+.whatsapp-btn {
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: #25d366;
+    color: white;
+    display: block;
+    font-weight: bold;
+    text-align: center;
+}
+
+.attribute {
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px;
+    align-items: center;
+}
+
+.attribute i {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-light);
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+}
+
+.divider {
+    display: block;
+    height: 1px;
+    background: #EEE;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+table {
+    border-radius: 4px;
+    border: 1px solid var(--outline);
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table tr td {
+    padding: 16px;
+    font-size: 10pt;
+}
+
+table tr td:first-of-type {
+    font-weight: bold;
+}
+
+table tr:nth-child(2n) {
+    background: var(--outline);
+}
+
+.contact-card {
+    border-radius: 8px;
+    border: 1px solid var(--outline);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.info-message {
+    padding: 12px;
+    border-radius: 8px;
+    background-color: var(--black-02);
+    font-size: 10pt;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--outline);
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    border-radius: 4px 4px 0px 0px;
+    border: 1px solid var(--outline);
+    background-color: white;
+    padding: 20px;
+    cursor: pointer;
+    min-width: 136px;
+    background-color: var(--outline);
+    margin-bottom: -1px;
+}
+
+.tabs button.active {
+    background-color: white;
+    border-bottom: 1px solid white;
+    color: var(--primary-light);
+    font-weight: bold;
 }

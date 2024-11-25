@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use GuzzleHttp\Client;
 
-$base = "https://raposoautoshopping.com.br/admin";
+$base = "http://localhost:8000";
 $apiImagesPath = $base . "/storage/uploads/";
 $apiPath = $base . "/api/";
 
@@ -147,6 +147,7 @@ function convertSearchFilter($formSearch)
 {
     $searchType = $formSearch['type'];
     unset($formSearch['type']);
+    unset($formSearch['page']);
     $removedNullValues = array_filter($formSearch, fn($value) => $value !== '');
     $filter = ['where' => ['and' => []]];
 
@@ -200,7 +201,7 @@ function renderStore($store, $url)
 {
     global $apiImagesPath;
     ?>
-    <div class="store-card p-2 mb-2 mb-lg-0">
+    <a href="<?= $url ?>lojas/<?= $store['slug'] ?>" class="store-card p-2 mb-2 mb-lg-0">
         <div class="d-flex flex-column gap-4">
             <div class="store-image">
                 <img src="<?= $apiImagesPath . $store['logo_url'] ?>" title="<?= $store['name'] ?>" class="img-fluid" />
@@ -213,28 +214,21 @@ function renderStore($store, $url)
                 <?php endif; ?>
             </div>
         </div>
-    </div>
+    </a>
     <?php
 }
 
 function renderAds($vehicle, $url, $type)
 {
     global $apiImagesPath;
+    $typeUrl = $type === 'cars' ? 'carro' : 'moto';
     ?>
-    <a href="<?= $url ?><?= isset($vehicle['type']) ? ($vehicle['type'] === 'motorcycles' ? 'motos' : 'carros') : $type ?>/<?= $vehicle['slug'] ?>"
-        class="adv-details">
-        <div class="head"><img
-                src="<?= empty($vehicle['single_image']) ? $url . 'assets/img/logo.png' : $apiImagesPath . $vehicle['single_image']['url'] ?>"
-                title="<?= $vehicle['title'] ?>" class="img-fluid" /></div>
-        <div class="content">
-            <p class="title"><strong><?= $vehicle['title'] ?></strong></p>
-            <p><?= $vehicle['color']['color'] ?>
-                <?php if (isset($vehicle['year'])): ?> | <?= $vehicle['year'] ?>
-                <?php endif; ?> |
-                <?= toKM($vehicle['km']) ?>
-            </p>
-            <h3><?= toBRL($vehicle['price']) ?></h3>
-        </div>
+    <a href="<?= $url ?><?= $typeUrl ?>/<?= $vehicle['slug'] ?>" class="product">
+        <p class="h6"><?= $vehicle['title'] ?></p>
+        <p class="body-alt"><?= $vehicle['color']['color'] ?> | <?= toKM($vehicle['km']) ?></p>
+        <img src="<?= empty($vehicle['single_image']) ? $url . 'assets/img/logo.jpg' : $apiImagesPath . $vehicle['single_image']['url'] ?>"
+            alt="<?= $vehicle['title'] ?>" loading="lazy">
+        <p class="h5 text-right"><?= toBRL($vehicle['price']) ?></p>
     </a>
     <?php
 }
@@ -258,7 +252,7 @@ function paginatedStores($results, $url)
     <?php else: ?>
         <div x-data="{ search: '' }">
             <div class="col pb-5">
-                <label class="form-field">
+                <label class="search-form-field">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Pesquisar loja" x-model="search">
                 </label>
@@ -277,7 +271,7 @@ function paginatedStores($results, $url)
 <?php
 }
 
-function paginatedAds($results, $url, $type = 'cars')
+function paginatedAds($results, $url, $type = 'cars', $pageParam = 'page', $typeParams = null)
 {
     ?>
     <?php if (!isset($results)): ?>
@@ -289,8 +283,8 @@ function paginatedAds($results, $url, $type = 'cars')
     <?php elseif ($results['total'] === 0): ?>
         <div class="py-5 empty-search mb-5">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <p class="subtitle"><strong>Nenhum veículo cadastrado.</strong></p>
-            <p>Não existem veículos para serem listados.</p>
+            <p class="subtitle"><strong>Nenhum veículo encontrado.</strong></p>
+            <p>Sua busca não retornou nenhum resultado, modifique a busca e tente novamente.</p>
         </div>
         <div></div>
     <?php else: ?>
@@ -304,29 +298,40 @@ function paginatedAds($results, $url, $type = 'cars')
             </div>
         </div>
         <div class="col-12 pt-4">
-            <?= paginator($results) ?>
+            <?= paginator($results, $pageParam, $typeParams) ?>
         </div>
     <?php endif; ?>
 <?php
 }
 
-function paginator($results)
+function paginator($results, $pageParam = 'page', $type = null)
 {
+    $params = $_GET;
+    unset($params[$pageParam]);
+    unset($params['slug']);
+    unset($params['tipo']);
+    $paramsToString = http_build_query($params);
+    if (isset($type)) {
+        $paramsToString = "tipo=" . $type . "&" . $paramsToString;
+    }
+
     ?>
     <div class="pagination">
-        <?php if ($results['prev_page_url']): ?><a href="?page=<?= $results['current_page'] - 1 ?>"><i
+        <?php if ($results['prev_page_url']): ?><a
+                href="?<?= $paramsToString ?>&<?= $pageParam ?>=<?= $results['current_page'] - 1 ?>"><i
                     class="fa-solid fa-chevron-left"></i>
                 Anterior</a><?php endif; ?>
         <?php if ($results['current_page'] > 8): ?>
-            <a href="?page=1">1</a>
+            <a href="?<?= $paramsToString ?>&<?= $pageParam ?>=1">1</a>
             <span>...</span>
         <?php endif ?>
         <?php for ($i = $results['current_page']; $i <= min($results['last_page'], $results['current_page'] + 8); $i++): ?>
-            <a href="?page=<?= $i ?>" class="<?= $results['current_page'] === $i ? 'active' : '' ?>"><?= $i ?></a>
+            <a href="?<?= $paramsToString ?>&<?= $pageParam ?>=<?= $i ?>"
+                class="<?= $results['current_page'] === $i ? 'active' : '' ?>"><?= $i ?></a>
         <?php endfor; ?>
-        <?php if ($results['next_page_url']): ?><a href="?page=<?= $results['current_page'] + 1 ?>"><i
-                    class="fa-solid fa-chevron-right"></i>
-                Próxima</a><?php endif; ?>
+        <?php if ($results['next_page_url']): ?><a
+                href="?<?= $paramsToString ?>&<?= $pageParam ?>=<?= $results['current_page'] + 1 ?>">
+                Próxima <i class="fa-solid fa-chevron-right"></i></a><?php endif; ?>
     </div>
     <?php
 }

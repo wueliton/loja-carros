@@ -11,14 +11,14 @@ $stores = $advancedSearchOptions['stores'];
 $optionals = $advancedSearchOptions['cars']['optionals'];
 ?>
 
-<form method="post" action="buscar">
+<form action="buscar" x-data="advancedCarSearch()">
     <input type="hidden" name="type" value="cars" />
     <div class="row">
         <div class="col-lg-6">
             <div class="form-field">
                 <label for="car_brand">Marca</label>
                 <div class="field">
-                    <select name="brand_id" id="car_brand" onchange="onModelChange('#car_brand', '#car_brand_model')">
+                    <select name="brand_id" x-model="brandId" x-on:change="loadModels($event)">
                         <option value="">Selecione uma opção</option>
                         <?php foreach ($brands as $brand): ?>
                             <option value="<?= $brand['id'] ?>"><?= $brand['name'] ?></option>
@@ -30,8 +30,12 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
             <div class="form-field">
                 <label for="car_brand_model">Modelo</label>
                 <div class="field">
-                    <select name="model_id" id="car_brand_model" disabled>
-                        <option value="">Selecione uma opção</option>
+                    <select name="model_id" :disabled="!brandId">
+                        <option value="" x-text="isLoading ? 'Carregando' : 'Todos os Modelos'">Selecione uma opção
+                        </option>
+                        <template x-for="model in modelOptions">
+                            <option :value="model.id" x-text="model.name"></option>
+                        </template>
                     </select>
                 </div>
                 <div class="error"></div>
@@ -39,7 +43,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
             <div class="form-field">
                 <label for="version">Versão</label>
                 <div class="field">
-                    <input name="version" id="version" />
+                    <input name="version" />
                 </div>
                 <div class="error"></div>
             </div>
@@ -48,7 +52,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
                     <div class="form-field">
                         <label for="year_start">De Ano</label>
                         <div class="field">
-                            <select name="year_start" id="year_start">
+                            <select name="year_start">
                                 <option value="">Selecione uma opção</option>
                                 <?php for ($i = 0; $i <= 40; $i++): ?>
                                     <?php $year = date('Y') - $i; ?>
@@ -63,7 +67,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
                     <div class="form-field">
                         <label for="year_end">Até o Ano</label>
                         <div class="field">
-                            <select name="year_end" id="year_end">
+                            <select name="year_end">
                                 <option value="">Selecione uma opção</option>
                                 <?php for ($i = 0; $i <= 40; $i++): ?>
                                     <?php $year = date('Y') - $i; ?>
@@ -78,7 +82,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
             <div class="form-field">
                 <label for="fuel_type_id">Combustível</label>
                 <div class="field">
-                    <select name="fuel_type_id" id="fuel_type_id">
+                    <select name="fuel_type_id">
                         <option value="">Selecione uma opção</option>
                         <?php foreach ($fuelTypes as $fuelType): ?>
                             <option value="<?= $fuelType['id'] ?>"><?= $fuelType['name'] ?></option>
@@ -113,7 +117,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
             <div class="form-field">
                 <label for="color_id">Cor</label>
                 <div class="field">
-                    <select name="color_id" id="color_id">
+                    <select name="color_id">
                         <option value="">Selecione uma opção</option>
                         <?php foreach ($colors as $color): ?>
                             <option value="<?= $color['id'] ?>"><?= $color['color'] ?></option>
@@ -125,7 +129,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
             <div class="form-field">
                 <label for="transmission_id">Câmbio</label>
                 <div class="field">
-                    <select name="transmission_id" id="transmission_id">
+                    <select name="transmission_id">
                         <option value="">Selecione uma opção</option>
                         <?php foreach ($transmissions as $transmission): ?>
                             <option value="<?= $transmission['id'] ?>"><?= $transmission['name'] ?></option>
@@ -137,7 +141,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
             <div class="form-field">
                 <label for="doors">Nº de Portas</label>
                 <div class="field">
-                    <select name="doors" id="doors">
+                    <select name="doors">
                         <option value="">Selecione uma opção</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -151,7 +155,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
                     <div class="form-field">
                         <label for="min_price">Preço mínimo</label>
                         <div class="field">
-                            <select name="min_price" id="min_price">
+                            <select name="min_price">
                                 <option value="">Selecione uma opção</option>
                                 <?php for ($i = 1; $i <= 20; $i++): ?>
                                     <?php $price = $i * 5000; ?>
@@ -170,7 +174,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
                     <div class="form-field">
                         <label for="max_price">Preço máximo</label>
                         <div class="field">
-                            <select name="max_price" id="max_price">
+                            <select name="max_price">
                                 <option value="">Selecione uma opção</option>
                                 <?php for ($i = 1; $i <= 20; $i++): ?>
                                     <?php $price = $i * 5000; ?>
@@ -189,7 +193,7 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
             <div class="form-field">
                 <label for="store_id">Loja</label>
                 <div class="field">
-                    <select name="store_id" id="store_id">
+                    <select name="store_id">
                         <option value="">Selecione uma opção</option>
                         <?php foreach ($stores as $store): ?>
                             <option value="<?= $store['id'] ?>"><?= $store['name'] ?></option>
@@ -209,7 +213,34 @@ $optionals = $advancedSearchOptions['cars']['optionals'];
             </div>
         </div>
         <div class="d-flex justify-content-end gap-4">
-            <button type="submit">Buscar</button>
+            <button type="submit" class="btn">Buscar</button>
         </div>
     </div>
 </form>
+<script>
+    const baseUrl = 'https://www.raposoautoshopping.com.br/admin/api';
+    const loadBrandModels = (brandId) => {
+        return fetch(`${baseUrl}/cars/brand-models?where[and][0][fieldName]=brand_id&where[and][0][value]=${brandId}&where[and][0][comparison]=equals`).then((res) => res.json());
+    }
+
+    function advancedCarSearch() {
+        return {
+            brandId: "",
+            modelId: "",
+            isLoading: false,
+            modelOptions: [],
+            loadModels(event) {
+                this.isLoading = true;
+                const value = event.target.value;
+                if (!value) {
+                    this.isLoading = false;
+                    return;
+                };
+                loadBrandModels(value).then((res) => {
+                    this.modelOptions = res;
+                    this.isLoading = false;
+                })
+            }
+        }
+    }
+</script>
