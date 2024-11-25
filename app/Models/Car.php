@@ -14,6 +14,10 @@ class Car extends Model
 {
     use HasFactory, LogsActivity, LogsActivityWithDescription, SoftDeletes, CreatedBy;
 
+    protected $casts = [
+        "price" => "decimal:2"
+    ];
+
     public $displayName = 'Carro';
     public $displayProperty = 'title';
 
