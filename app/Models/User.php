@@ -62,7 +62,9 @@ class User extends Authenticatable
 
     public function lastStore()
     {
-        return $this->hasOne(LastStore::class);
+        return $this->hasOne(LastStore::class)->whereHas('store', function ($query) {
+            $query->whereNull('deleted_at');
+        });
     }
 
     public function lastStoreId()

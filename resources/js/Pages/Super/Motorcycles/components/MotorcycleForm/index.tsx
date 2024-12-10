@@ -12,6 +12,7 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
   defaultValues,
   postUrl,
   images,
+  showCode,
 }) => {
   const {
     onSubmit,
@@ -38,6 +39,14 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
         error={errors.title}
         required
       />
+
+      {showCode ? (
+        <>
+          <Input label="Slug" value={defaultValues?.slug} readOnly />
+          <Input label="Código" value={defaultValues?.code} readOnly />
+        </>
+      ) : null}
+
       <h2 className="md:col-span-2 text-lg font-bold">Dados gerais</h2>
       <Autocomplete
         label="Loja"

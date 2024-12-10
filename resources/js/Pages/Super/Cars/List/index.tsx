@@ -31,7 +31,8 @@ const carHeader: THeadProps<Car>[] = [
   {
     key: 'store',
     title: 'Loja',
-    render: (data) => <Chip canRemove={false}>{data.store?.name}</Chip>,
+    render: (data) =>
+      data.store ? <Chip canRemove={false}>{data.store?.name}</Chip> : <></>,
   },
   {
     key: 'created_at',

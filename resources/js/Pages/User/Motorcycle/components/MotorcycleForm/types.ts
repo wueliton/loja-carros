@@ -15,10 +15,13 @@ export interface MotorcycleSchema {
   optionals?: number[];
   images?: { url: string }[];
   details?: string;
+  code?: string;
+  slug?: string;
 }
 
 export interface MotorcycleFormProps {
   postUrl: string;
   defaultValues?: MotorcycleSchema;
   images?: Motorcycle['images'];
+  showCode?: boolean;
 }

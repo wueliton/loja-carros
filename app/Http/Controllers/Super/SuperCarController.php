@@ -11,6 +11,7 @@ use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
 
 class SuperCarController extends Controller
 {
@@ -84,6 +85,7 @@ class SuperCarController extends Controller
     {
         if (!$car) {
             $car = new Car();
+            $car->slug = Car::generateUniqueSlug($request->title);
         }
 
         $car->title = $request->title;

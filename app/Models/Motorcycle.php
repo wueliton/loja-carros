@@ -79,15 +79,16 @@ class Motorcycle extends Model
         return $this->belongsTo(Store::class, 'store_id', 'id');
     }
 
-    public function generateUniqueSlug($title)
+    protected static function generateUniqueSlug($title)
     {
         $slug = Str::slug($title);
 
         $originalSlug = $slug;
         $count = 1;
 
-        while (self::where('slug', $slug)->exists()) {
-            $slug = "{$originalSlug}-" . $count++;
+        while (static::withTrashed()->where('slug', $slug)->exists()) {
+            $slug = $originalSlug . "-" . $count;
+            $count++;
         }
 
         return $slug;
@@ -96,10 +97,6 @@ class Motorcycle extends Model
     protected static function boot()
     {
         parent::boot();
-
-        static::creating(function ($model) {
-            $model->slug = $model->generateUniqueSlug($model->title);
-        });
 
         static::created(function ($model) {
             $model->code = $model->id . date('Y');

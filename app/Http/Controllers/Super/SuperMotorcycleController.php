@@ -113,6 +113,7 @@ class SuperMotorcycleController extends Controller
         $motorcycle->color_id = $request->color;
         $motorcycle->km = $request->km;
         $motorcycle->details = $request->details;
+        $motorcycle->slug = Motorcycle::generateUniqueSlug($request->title);
 
         $motorcycle->save();
 
