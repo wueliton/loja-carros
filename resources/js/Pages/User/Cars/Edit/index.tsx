@@ -34,6 +34,7 @@ export default function EditCarPage({ car }: PageProps<{ car: Car }>) {
             ...image,
             fileName: image.url,
           }))}
+          showCode
         />
       </Card>
     </>

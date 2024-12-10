@@ -11,6 +11,7 @@ export const CarForm: React.FC<CarFormProps> = ({
   postUrl,
   defaultValues,
   images,
+  showCode,
 }) => {
   const {
     onSubmit,
@@ -37,6 +38,14 @@ export const CarForm: React.FC<CarFormProps> = ({
         error={errors.title}
         required
       />
+
+      {showCode ? (
+        <>
+          <Input label="Slug" value={defaultValues?.slug} readOnly />
+          <Input label="Código" value={defaultValues?.code} readOnly />
+        </>
+      ) : null}
+
       <h2 className="md:col-span-2 text-lg font-bold">Dados gerais</h2>
       <Autocomplete
         label="Marca"

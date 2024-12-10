@@ -34,6 +34,7 @@ export default function EditMotorcyclePage({
           postUrl={route(SuperRoutes.MOTORCYCLE_EDIT, { id: motorcycle.id })}
           defaultValues={defaultValues}
           images={motorcycle.images}
+          showCode
         />
       </Card>
     </>

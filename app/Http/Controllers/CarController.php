@@ -151,6 +151,7 @@ class CarController extends Controller
         $car->km = $request->km;
         $car->last_digit = $request->lastDigit;
         $car->details = $request->details;
+        $car->slug = Car::generateUniqueSlug($request->title);
 
         $car->save();
 

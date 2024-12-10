@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 use \Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class Car extends Model
 {
@@ -87,23 +88,20 @@ class Car extends Model
         return $this->belongsToMany(CarOptional::class, 'car_optionals_relations', 'car_id', 'car_optional_id');
     }
 
-    public function generateUniqueSlug($title)
+    protected static function generateUniqueSlug($title)
     {
         $slug = Str::slug($title);
 
         $originalSlug = $slug;
         $count = 1;
 
-        while (self::where('slug', $slug)->exists()) {
-            $slug = "{$originalSlug}-" . $count++;
+
+        while (Car::withTrashed()->where('slug', $slug)->exists()) {
+            $slug = "{$originalSlug}-{$count}";
+            $count++;
         }
 
         return $slug;
-    }
-
-    private function generateUniqueCode()
-    {
-
     }
 
     protected static function boot()
@@ -111,7 +109,6 @@ class Car extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->slug = $model->generateUniqueSlug($model->title);
             $model->code = date('Y');
         });
 
