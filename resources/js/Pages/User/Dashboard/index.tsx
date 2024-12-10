@@ -1,13 +1,23 @@
 import { Card } from '@/Components/Card';
+import { CarIcon } from '@/Components/Icons/Car';
+import { MotoIcon } from '@/Components/Icons/Moto';
 import { InfoBlockMessage } from '@/Components/InfoBlockMessage';
 import { Timeline } from '@/Components/Timeline';
 import { useUser } from '@/Context/User';
-import { CustomLog, Logs } from '@/models/Logs';
-import { PageProps } from '@/types';
+import { CustomLog } from '@/models/Logs';
 import { Head } from '@inertiajs/react';
 import { useMemo } from 'react';
+import { VehicleLimit } from './components/VehicleLimit';
+import { VisitsPerVehicle } from './components/VisitsPerVehicle';
+import { DashboardProps } from './types';
 
-export default function Dashboard({ auth, logs }: PageProps<{ logs: Logs[] }>) {
+export default function Dashboard({
+  auth,
+  logs,
+  cars,
+  motorcycles,
+  store,
+}: DashboardProps) {
   const parsedLogs = useMemo<CustomLog[]>(() => {
     return logs.map((log) => JSON.parse(log.description ?? ''));
   }, [logs]);
@@ -24,26 +34,35 @@ export default function Dashboard({ auth, logs }: PageProps<{ logs: Logs[] }>) {
       </div>
 
       <div className="flex gap-4 flex-col">
-        {/* <div className="flex gap-4 mb-4">
-        <Card className="flex gap-4 items-center">
-          <div className="rounded-full bg-slate-900 text-white p-2">
-            <CarIcon />
-          </div>
-          <div>
-            <h3 className="text-xl font-bold">34</h3>
-            <p className="text-sm text-slate-400">Carros Anunciados</p>
-          </div>
-        </Card>
-        <Card className="flex gap-4 items-center">
-          <div className="rounded-full bg-slate-900 text-white p-2">
-            <MotoIcon />
-          </div>
-          <div>
-            <h3 className="text-xl font-bold">4</h3>
-            <p className="text-sm text-slate-400">Motos Anunciadas</p>
-          </div>
-        </Card>
-      </div> */}
+        {store ? (
+          <>
+            <div className="flex gap-4 mb-4">
+              <VehicleLimit
+                title="Carros Anunciados"
+                max={cars.limit}
+                used={cars.registerCount}
+                icon={<CarIcon />}
+              />
+              <VehicleLimit
+                title="Motos Anunciadas"
+                max={motorcycles.limit}
+                used={motorcycles.registerCount}
+                icon={<MotoIcon />}
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <VisitsPerVehicle
+                vehicles={[
+                  ...cars.moreVisited.map((car) => ({ ...car, type: 'carro' })),
+                  ...motorcycles.moreVisited.map((moto) => ({
+                    ...moto,
+                    type: 'moto',
+                  })),
+                ]}
+              />
+            </div>
+          </>
+        ) : null}
         {stores?.length ? null : (
           <InfoBlockMessage variant="important">
             <div>

@@ -4,6 +4,7 @@ export interface CarFormProps {
   postUrl: string;
   defaultValues?: CarFormSchema;
   images?: Car['images'];
+  showCode?: boolean;
 }
 
 export interface CarFormSchema {
@@ -24,4 +25,6 @@ export interface CarFormSchema {
   optionals?: (number | undefined)[];
   images?: { url: string }[];
   details?: string;
+  slug?: string;
+  code?: string;
 }

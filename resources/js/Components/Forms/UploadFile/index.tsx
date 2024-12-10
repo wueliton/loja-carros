@@ -72,9 +72,11 @@ export const UploadFile = <InitialFile extends SavedFile>({
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = (e.target.files ?? [])[0];
+    const files = e.target.files;
 
-    addFileToUploadList(file);
+    if (!files || !files.length) return;
+
+    addFileToUploadList(Array.from(files));
   };
 
   const handleRemoveFile = (index: number) => {
@@ -83,19 +85,25 @@ export const UploadFile = <InitialFile extends SavedFile>({
     );
   };
 
-  const addFileToUploadList = (file: File) => {
-    const fileId = uuidv4();
-    setUploadList((prev) => [
-      ...(prev ?? []),
-      {
-        id: fileId,
-        file: file,
-        isLoading: true,
-        progress: 0,
-      },
-    ]);
+  const addFileToUploadList = (files: File[]) => {
+    let filesState: FileStateProps[] = [];
 
-    handleUploadImage(file, fileId);
+    files.forEach((file) => {
+      const fileId = uuidv4();
+      filesState = [
+        ...filesState,
+        {
+          id: fileId,
+          file: file,
+          isLoading: true,
+          progress: 0,
+        },
+      ];
+
+      handleUploadImage(file, fileId);
+    });
+
+    setUploadList((prev) => [...(prev ?? []), ...filesState]);
   };
 
   const handleUploadImage = async (file: File, id: string) => {
@@ -131,7 +139,7 @@ export const UploadFile = <InitialFile extends SavedFile>({
 
   const handleDropFiles = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    addFileToUploadList(e.dataTransfer.files[0]);
+    addFileToUploadList(Array.from(e.dataTransfer.files));
     setHoverActive(false);
   };
 
