@@ -4,9 +4,10 @@ import { useCarService } from '@/Hooks/useCarService';
 import { useCommonService } from '@/Hooks/useCommonService';
 import { APIRoutes } from '@/constants';
 import { Car } from '@/models/Car';
+import { CarOptional } from '@/models/VehicleOptional';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
-import { FormEvent, useMemo, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import { CarFormSchema } from '../../types';
 import { UseCarFormProps } from './type';
 
@@ -18,6 +19,7 @@ export const useCarForm = ({
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const { openDialog } = useDialog();
   const [currentFiles, setCurrentFiles] = useState<Car['images']>(images);
+  const [optionalState, setOptionalState] = useState<CarOptional[]>([]);
   const commonService = useCommonService();
   const carService = useCarService();
 
@@ -28,6 +30,23 @@ export const useCarForm = ({
     transmission: undefined,
     ...defaultValues,
   });
+
+  const handleOptionalsChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    id: number,
+  ) => {
+    const isChecked = e.target.checked;
+    const currentOptionals = (data.optionals ?? []) as number[];
+    if (isChecked) {
+      setData('optionals', [...currentOptionals, id]);
+      return;
+    }
+
+    setData(
+      'optionals',
+      currentOptionals.filter((optional) => optional !== id),
+    );
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,6 +85,12 @@ export const useCarForm = ({
     [currentFiles],
   );
 
+  useEffect(() => {
+    axios
+      .get(route(APIRoutes.CAR_OPTIONALS_LIST))
+      .then((res) => setOptionalState(res.data));
+  }, []);
+
   return {
     data,
     setData,
@@ -77,7 +102,9 @@ export const useCarForm = ({
     selectedFiles,
     carService,
     currentYear,
+    optionalList: optionalState,
     handleCreateModel,
     handleDeleteFile,
+    handleOptionalsChange,
   };
 };

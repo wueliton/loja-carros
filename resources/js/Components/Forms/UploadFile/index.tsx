@@ -3,6 +3,7 @@ import { CloseIcon } from '@/Components/Icons/Close';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { UploadIcon } from '@/Components/Icons/Upload';
 import axios from 'axios';
+import imageCompression from 'browser-image-compression';
 import { uniqueId } from 'lodash';
 import {
   ChangeEvent,
@@ -107,6 +108,14 @@ export const UploadFile = <InitialFile extends SavedFile>({
   };
 
   const handleUploadImage = async (file: File, id: string) => {
+    if (accept?.includes('image')) {
+      const compressed = await imageCompression(file, {
+        maxSizeMB: 1.5,
+        maxWidthOrHeight: 1200,
+      });
+      file = compressed;
+    }
+
     const formData = new FormData();
     formData.append('image', file);
 
