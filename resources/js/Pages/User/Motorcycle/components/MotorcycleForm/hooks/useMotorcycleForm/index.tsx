@@ -4,9 +4,10 @@ import { useCommonService } from '@/Hooks/useCommonService';
 import { useMotorcycleService } from '@/Hooks/useMotorcycleService';
 import { APIRoutes } from '@/constants';
 import { Motorcycle } from '@/models/Motorcycle';
+import { MotorcycleOptional } from '@/models/MotorcycleOptional';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
-import { FormEvent, useMemo, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import { MotorcycleSchema } from '../../types';
 import { UseMotorcycleFormProps } from './types';
 
@@ -18,6 +19,7 @@ export const useMotorcycleForm = ({
   const [currentFiles, setCurrentFiles] = useState<Motorcycle['images']>(
     images ?? [],
   );
+  const [optionalState, setOptionalState] = useState<MotorcycleOptional[]>([]);
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const commonService = useCommonService();
   const motorcycleService = useMotorcycleService();
@@ -30,6 +32,23 @@ export const useMotorcycleForm = ({
     color: undefined,
     ...defaultValues,
   });
+
+  const handleOptionalsChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    id: number,
+  ) => {
+    const isChecked = e.target.checked;
+    const currentOptionals = (data.optionals ?? []) as number[];
+    if (isChecked) {
+      setData('optionals', [...currentOptionals, id]);
+      return;
+    }
+
+    setData(
+      'optionals',
+      currentOptionals.filter((optional) => optional !== id),
+    );
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,6 +87,12 @@ export const useMotorcycleForm = ({
     [currentFiles],
   );
 
+  useEffect(() => {
+    axios
+      .get(route(APIRoutes.MOTO_OPTIONALS_LIST))
+      .then((res) => setOptionalState(res.data));
+  }, []);
+
   return {
     data,
     setData,
@@ -76,8 +101,10 @@ export const useMotorcycleForm = ({
     selectedFiles,
     currentYear,
     motorcycleService,
+    optionalList: optionalState,
     onSubmit: handleSubmit,
     handleCreateModel,
     handleDeleteFile,
+    handleOptionalsChange,
   };
 };

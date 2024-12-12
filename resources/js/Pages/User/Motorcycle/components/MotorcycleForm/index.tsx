@@ -1,5 +1,6 @@
 import { Button } from '@/Components/Button';
 import { Autocomplete } from '@/Components/Forms/Autocomplete';
+import { Checkbox } from '@/Components/Forms/Checkbox';
 import { Editor } from '@/Components/Forms/Editor';
 import { Input } from '@/Components/Forms/Input';
 import { UploadFile } from '@/Components/Forms/UploadFile';
@@ -23,11 +24,13 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
     currentYear,
     commonService,
     motorcycleService,
+    optionalList,
     handleCreateModel,
     handleDeleteFile,
+    handleOptionalsChange,
   } = useMotorcycleForm({ defaultValues, postUrl, images });
   const { createBrand, createColor } = commonService;
-  const { createOptional, createType } = motorcycleService;
+  const { createType } = motorcycleService;
 
   return (
     <form className="grid grid-cols-1 md:grid-cols-2 gap-3" onSubmit={onSubmit}>
@@ -198,21 +201,18 @@ export const MotorcycleForm: FC<MotorcycleFormProps> = ({
         onChange={(data) => setData('details', data)}
         error={errors.details}
       />
-      <h2 className="md:col-span-2 text-lg font-bold mt-4">Outros</h2>
-      <Autocomplete
-        label="Opcionais"
-        propertyToDisplay="name"
-        propertyValue="id"
-        url={route(APIRoutes.MOTO_OPTIONALS_LIST)}
-        searchProperties={['name']}
-        value={data.optionals}
-        onChange={(e) => setData('optionals', e as number[])}
-        onCreate={createOptional}
-        name="optionals"
-        className={'md:col-span-2'}
-        moreThanOne
-        error={errors.optionals}
-      />
+      <h2 className="md:col-span-2 text-lg font-bold mt-4">Opcionais</h2>
+      <div className="grid grid-flow-col auto-cols-max gap-6">
+        {optionalList.map((optional, index) => (
+          <Checkbox
+            key={index}
+            defaultChecked={defaultValues?.optionals?.includes(optional.id!)}
+            onChange={(e) => handleOptionalsChange(e, Number(optional.id))}
+          >
+            {optional.name}
+          </Checkbox>
+        ))}
+      </div>
       <div className="col-span-full flex justify-end">
         <Button type="submit">Salvar</Button>
       </div>
