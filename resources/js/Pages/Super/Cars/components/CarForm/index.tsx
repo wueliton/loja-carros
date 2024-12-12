@@ -251,7 +251,7 @@ export const CarForm: React.FC<CarFormProps> = ({
         error={errors.details}
       />
       <h2 className="md:col-span-2 text-lg font-bold mt-4">Opcionais</h2>
-      <div className="grid grid-flow-col auto-cols-max gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:col-span-2">
         {optionalList.map((optional, index) => (
           <Checkbox
             key={index}
