@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SuperEditMotorcycleDataRequest;
 use App\Http\Requests\SuperMotorcycleDataRequest;
 use App\Models\Motorcycle;
+use App\Models\MotorcycleImages;
 use App\Services\FilterService;
 use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
@@ -118,7 +119,20 @@ class SuperMotorcycleController extends Controller
         $motorcycle->save();
 
         if ($request->images && count($request->images) > 0) {
-            $motorcycle->images()->createMany($request->images);
+            $itemsToUpdate = array_filter($request->images, fn($item) => isset ($item['id']));
+            $itemsToCreate = array_filter($request->images, fn($item) => !isset ($item['id']));
+
+            if (count($itemsToUpdate) > 0) {
+                foreach ($itemsToUpdate as $image) {
+                    $motorcycleImage = MotorcycleImages::find($image['id']);
+
+                    if ($motorcycleImage) {
+                        $motorcycleImage->update($image);
+                    }
+                }
+            }
+
+            $motorcycle->images()->createMany($itemsToCreate);
         }
 
         if ($request->has('optionals')) {

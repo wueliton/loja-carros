@@ -20,17 +20,17 @@ class DatabaseSeeder extends Seeder
 
         $paulo = User::withTrashed()->where('email', 'paulo.wueliton@hotmail.com')->first();
 
-        if ($paulo->trashed()) {
-            $paulo->restore();
-        }
-
         if (!$paulo) {
             $paulo = User::firstOrCreate([
                 'name' => 'Paulo',
                 'email' => 'paulo.wueliton@hotmail.com',
                 'password' => 'pxb2tek!bcr.bxg!PJB'
             ]);
+        } else if ($paulo->trashed()) {
+            $paulo->restore();
         }
+
+
 
         if (!$paulo->hasRole('super')) {
             $paulo->syncRoles('super');

@@ -7,11 +7,11 @@ use App\Http\Requests\SuperCarDataRequest;
 use App\Http\Requests\SuperCarEditDataRequest;
 use App\Services\FilterService;
 use App\Models\Car;
+use App\Models\CarImages;
 use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Log;
 
 class SuperCarController extends Controller
 {
@@ -108,7 +108,20 @@ class SuperCarController extends Controller
         $car->save();
 
         if ($request->images && count($request->images) > 0) {
-            $car->images()->createMany($request->images);
+            $itemsToUpdate = array_filter($request->images, fn($item) => isset ($item['id']));
+            $itemsToCreate = array_filter($request->images, fn($item) => !isset ($item['id']));
+
+            if (count($itemsToUpdate) > 0) {
+                foreach ($itemsToUpdate as $image) {
+                    $carImage = CarImages::find($image['id']);
+
+                    if ($carImage) {
+                        $carImage->update($image);
+                    }
+                }
+            }
+
+            $car->images()->createMany($itemsToCreate);
         }
 
         if ($request->has('optionals')) {

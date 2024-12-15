@@ -11,11 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table("cars", function (Blueprint $table) {
-            $table->text('details')->change();
+            $table->text('details')->nullable()->change();
         });
 
         Schema::table("motorcycles", function (Blueprint $table) {
-            $table->text('details')->change();
+            $table->text('details')->nullable()->change();
         });
     }
 
@@ -25,11 +25,11 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table("cars", function (Blueprint $table) {
-            $table->string('details')->change();
+            $table->string('details')->nullable()->change();
         });
 
         Schema::table("motorcycles", function (Blueprint $table) {
-            $table->string('details')->change();
+            $table->string('details')->nullable()->change();
         });
     }
 };

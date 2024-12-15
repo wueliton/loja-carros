@@ -21,7 +21,7 @@ class UserController extends Controller
     public function list(Request $request): Response
     {
         $loggedUserId = Auth::id();
-        $users = User::where('id', '!=', $loggedUserId)->with('roles')->where(function ($query) use ($request) {
+        $users = User::where('id', '!=', $loggedUserId)->where('created_by', $loggedUserId)->with('roles')->where(function ($query) use ($request) {
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }

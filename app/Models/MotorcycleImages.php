@@ -17,7 +17,8 @@ class MotorcycleImages extends Model
 
     protected $fillable = [
         'url',
-        'motorcycle_id'
+        'motorcycle_id',
+        'order'
     ];
 
     public function motorcycles()

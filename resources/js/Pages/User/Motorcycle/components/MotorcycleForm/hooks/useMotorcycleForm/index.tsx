@@ -1,3 +1,4 @@
+import { InitialFilesProps } from '@/Components/Forms/MultipleUploadFiles/hooks/useUploadFiles/types';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { useDialog } from '@/Context/Dialog';
 import { useCommonService } from '@/Hooks/useCommonService';
@@ -59,7 +60,7 @@ export const useMotorcycleForm = ({
     return motorcycleService.createModel(search, data.brand!);
   };
 
-  const handleDeleteFile = (id?: number) => {
+  const handleDeleteFile = ({ id }: InitialFilesProps) => {
     openDialog({
       content: {
         title: 'Deseja excluir a imagem?',
@@ -72,7 +73,7 @@ export const useMotorcycleForm = ({
         axios
           .delete(route(APIRoutes.MOTO_IMAGE_DELETE, { id }))
           .then(() =>
-            setCurrentFiles((prev) => prev?.filter((img) => img.id !== id)),
+            setCurrentFiles((prev) => prev?.filter((img) => img.id != id)),
           );
       },
     });
@@ -80,9 +81,10 @@ export const useMotorcycleForm = ({
 
   const selectedFiles = useMemo(
     () =>
-      currentFiles?.map((file) => ({
-        ...file,
-        fileName: file.url,
+      (currentFiles ?? []).map((file) => ({
+        name: file.url,
+        id: String(file.id),
+        order: file.order,
       })),
     [currentFiles],
   );

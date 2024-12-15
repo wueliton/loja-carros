@@ -46,12 +46,12 @@ class Motorcycle extends Model
 
     public function images()
     {
-        return $this->hasMany(MotorcycleImages::class, 'motorcycle_id', 'id');
+        return $this->hasMany(MotorcycleImages::class, 'motorcycle_id', 'id')->orderBy('order');
     }
 
     public function singleImage()
     {
-        return $this->hasOne(MotorcycleImages::class, 'motorcycle_id', 'id');
+        return $this->hasOne(MotorcycleImages::class, 'motorcycle_id', 'id')->orderBy('order');
     }
 
     public function brand()

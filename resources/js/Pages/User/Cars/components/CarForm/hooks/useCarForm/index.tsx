@@ -1,3 +1,4 @@
+import { InitialFilesProps } from '@/Components/Forms/MultipleUploadFiles/hooks/useUploadFiles/types';
 import { TrashIcon } from '@/Components/Icons/Trash';
 import { useDialog } from '@/Context/Dialog';
 import { useCarService } from '@/Hooks/useCarService';
@@ -57,7 +58,7 @@ export const useCarForm = ({
     return carService.createModel(search, data.brand!);
   };
 
-  const handleDeleteFile = (id?: number) => {
+  const handleDeleteFile = ({ id }: InitialFilesProps) => {
     openDialog({
       content: {
         title: 'Deseja excluir a imagem?',
@@ -70,7 +71,7 @@ export const useCarForm = ({
         axios
           .delete(route(APIRoutes.CAR_IMAGE_DELETE, { id }))
           .then(() =>
-            setCurrentFiles((prev) => prev?.filter((img) => img.id !== id)),
+            setCurrentFiles((prev) => prev?.filter((img) => img.id != id)),
           );
       },
     });
@@ -78,9 +79,10 @@ export const useCarForm = ({
 
   const selectedFiles = useMemo(
     () =>
-      currentFiles?.map((file) => ({
-        ...file,
-        fileName: file.url,
+      (currentFiles ?? []).map((file) => ({
+        name: file.url,
+        id: String(file.id),
+        order: file.order,
       })),
     [currentFiles],
   );

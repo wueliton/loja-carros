@@ -3,7 +3,7 @@ import { Autocomplete } from '@/Components/Forms/Autocomplete';
 import { Checkbox } from '@/Components/Forms/Checkbox';
 import { Editor } from '@/Components/Forms/Editor';
 import { Input } from '@/Components/Forms/Input';
-import { UploadFile } from '@/Components/Forms/UploadFile';
+import MultipleUploadFiles from '@/Components/Forms/MultipleUploadFiles';
 import { APIRoutes } from '@/constants';
 import { useCarForm } from './hooks/useCarForm';
 import { CarFormProps } from './types';
@@ -209,23 +209,25 @@ export const CarForm: React.FC<CarFormProps> = ({
         required
       />
       <h2 className="md:col-span-2 text-lg font-bold mt-4">Imagens</h2>
-      <UploadFile
+      <MultipleUploadFiles
         hint="JPG, PNG, WEBP ou GIF (Max 1MB)"
-        fieldName="Logo da Empresa"
         accept="image/png, image/jpg, image/webp, image/jpeg"
         maxFiles={10}
         className="md:col-span-2"
+        error={errors.images}
+        initialFiles={selectedFiles}
+        onDelete={handleDeleteFile}
         onChange={(files) =>
           setData(
             'images',
-            files?.map(({ fileName }) => ({ url: fileName! })),
+            files.map((file) => ({
+              url: file.name!,
+              order: file.order!,
+              id: file.id,
+            })),
           )
         }
-        onDelete={(files) => handleDeleteFile(files.id)}
-        error={errors.images}
-        files={selectedFiles}
         url="api.cars.images.upload"
-        isMultiple
       />
       <h2 className="md:col-span-2 text-lg font-bold mt-4">Observações</h2>
       <Editor
