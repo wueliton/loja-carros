@@ -156,7 +156,20 @@ class MotorcycleController extends Controller
         $motorcycle->save();
 
         if ($request->images && count($request->images) > 0) {
-            $motorcycle->images()->createMany($request->images);
+            $itemsToUpdate = array_filter($request->images, fn($item) => isset ($item['id']));
+            $itemsToCreate = array_filter($request->images, fn($item) => !isset ($item['id']));
+
+            if (count($itemsToUpdate) > 0) {
+                foreach ($itemsToUpdate as $image) {
+                    $motorcycleImage = MotorcycleImages::find($image['id']);
+
+                    if ($motorcycleImage) {
+                        $motorcycleImage->update($image);
+                    }
+                }
+            }
+
+            $motorcycle->images()->createMany($itemsToCreate);
         }
 
         if ($request->has('optionals')) {

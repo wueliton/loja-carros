@@ -16,7 +16,8 @@ class CarImages extends Model
 
     protected $fillable = [
         'url',
-        'car_id'
+        'car_id',
+        'order',
     ];
 
     public function cars()
