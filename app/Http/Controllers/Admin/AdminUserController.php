@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 class AdminUserController extends Controller
 {
@@ -19,7 +20,8 @@ class AdminUserController extends Controller
 
     public function list(Request $request)
     {
-        $users = User::role(['admin', 'user'])->with('roles')->where(function ($query) use ($request) {
+        $loggedUserId = Auth::id();
+        $users = User::role(['admin', 'user'])->with('roles')->where('created_by', $loggedUserId)->where(function ($query) use ($request) {
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }

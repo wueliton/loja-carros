@@ -31,7 +31,7 @@ export class Car extends DefaultModel {
   km?: number;
   last_digit?: number;
   details?: string;
-  images?: { id?: number; url?: string }[];
+  images?: { id?: number; url?: string; order?: number }[];
   optionals?: CarOptional[];
   created_at?: string;
 }

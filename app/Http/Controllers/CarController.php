@@ -156,7 +156,20 @@ class CarController extends Controller
         $car->save();
 
         if ($request->images && count($request->images) > 0) {
-            $car->images()->createMany($request->images);
+            $itemsToUpdate = array_filter($request->images, fn($item) => isset ($item['id']));
+            $itemsToCreate = array_filter($request->images, fn($item) => !isset ($item['id']));
+
+            if (count($itemsToUpdate) > 0) {
+                foreach ($itemsToUpdate as $image) {
+                    $carImage = CarImages::find($image['id']);
+
+                    if ($carImage) {
+                        $carImage->update($image);
+                    }
+                }
+            }
+
+            $car->images()->createMany($itemsToCreate);
         }
 
         if ($request->has('optionals')) {

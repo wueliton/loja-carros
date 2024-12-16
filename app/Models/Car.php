@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 use \Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 
 class Car extends Model
 {
@@ -75,12 +74,12 @@ class Car extends Model
 
     public function images()
     {
-        return $this->hasMany(CarImages::class, 'car_id', 'id');
+        return $this->hasMany(CarImages::class, 'car_id', 'id')->orderBy('order');
     }
 
     public function singleImage()
     {
-        return $this->hasOne(CarImages::class, 'car_id', 'id');
+        return $this->hasOne(CarImages::class, 'car_id', 'id')->orderBy('order');
     }
 
     public function optionals()
