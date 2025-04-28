@@ -17,14 +17,14 @@ class ApiCarController extends Controller
     public function highlights(Request $request)
     {
         $take = $request->has('take') ? $request->take : 4;
-        $highlights = Car::select('id', 'title', 'brand_id', 'created_at', 'slug', 'visits', 'color_id', 'km', 'price')->with('singleImage', 'brand', 'color')->orderBy('visits', 'desc')->take($take)->get();
+        $highlights = Car::select('id', 'title', 'brand_id', 'created_at', 'slug', 'visits', 'color_id', 'km', 'price')->with('singleImage', 'brand', 'color')->whereNotNull('store_id')->orderBy('visits', 'desc')->take($take)->get();
         return response()->json($highlights);
     }
 
     public function latest(Request $request)
     {
         $take = $request->has('take') ? $request->take : 5;
-        $lastCars = Car::select('id', 'title', 'brand_id', 'created_at', 'slug')->with('singleImage', 'brand')->whereHas('singleImage')->take($take)->get();
+        $lastCars = Car::select('id', 'title', 'brand_id', 'created_at', 'slug')->with('singleImage', 'brand')->whereHas('singleImage')->whereNotNull('store_id')->take($take)->get();
         return response()->json($lastCars);
     }
 
@@ -52,7 +52,7 @@ class ApiCarController extends Controller
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }
-        })->with('brand', 'singleImage', 'color', 'model', 'optionals')->select('id', 'title', 'brand_id', 'price', 'year', 'km', 'color_id', 'slug', 'model_id')->orderBy('visits', 'desc')->paginate(10);
+        })->whereNotNull('store_id')->with('brand', 'singleImage', 'color', 'model', 'optionals')->select('id', 'title', 'brand_id', 'price', 'year', 'km', 'color_id', 'slug', 'model_id')->orderBy('visits', 'desc')->paginate(10);
 
         return response()->json($cars);
     }

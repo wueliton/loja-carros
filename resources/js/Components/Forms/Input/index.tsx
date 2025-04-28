@@ -65,6 +65,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps>(
           );
         } else {
           unmaskedValueChange?.(Mask.number(value));
+          e.target.value = String(Mask.number(value));
         }
       }
 
