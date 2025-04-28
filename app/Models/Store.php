@@ -68,5 +68,10 @@ class Store extends Model
         static::creating(function ($model) {
             $model->slug = $model->generateUniqueSlug($model->name);
         });
+
+        static::deleting(function ($model) {
+            $model->cars()->delete();
+            $model->motorcycles()->delete();
+        });
     }
 }

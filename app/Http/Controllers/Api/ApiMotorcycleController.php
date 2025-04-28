@@ -27,7 +27,7 @@ class ApiMotorcycleController extends Controller
 
     public function find(Request $request)
     {
-        $motorcycles = Motorcycle::latest()->where(function ($query) use ($request) {
+        $motorcycles = Motorcycle::latest()->whereNotNull('store_id')->where(function ($query) use ($request) {
             if ($request->has('where')) {
                 $query = $this->filterService->apply($query, $request->where);
             }
