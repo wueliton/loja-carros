@@ -37,7 +37,7 @@ class ApiStoresController extends Controller
                 $query = $this->filterService->apply($query, $request->where);
             }
             return $query;
-        })->orderBy('name', 'asc')->get();
+        })->inRandomOrder()->get();
         return response()->json([
             'data' => $stores,
             'total' => count($stores)
